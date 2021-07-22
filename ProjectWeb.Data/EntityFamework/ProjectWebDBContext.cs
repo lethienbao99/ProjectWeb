@@ -17,6 +17,8 @@ namespace ProjectWeb.Data.EntityFamework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            //Fluent API.
             modelBuilder.ApplyConfiguration(new AppConfigFluentAPI());
             modelBuilder.ApplyConfiguration(new ProductFluentAPI());
             modelBuilder.ApplyConfiguration(new CategoryFluentAPI());
@@ -25,6 +27,8 @@ namespace ProjectWeb.Data.EntityFamework
             modelBuilder.ApplyConfiguration(new OrderDetailFluentAPI());
             modelBuilder.ApplyConfiguration(new ProductCategoryFluentAPI());
 
+            //DataSeed.
+            //modelBuilder.Seed();
             //base.OnModelCreating(modelBuilder);
         }
 

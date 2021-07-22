@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectWeb.Data.EntityFamework;
 
 namespace ProjectWeb.Data.Migrations
 {
     [DbContext(typeof(ProjectWebDBContext))]
-    partial class ProjectWebDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210722083730_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,16 +59,6 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("AppConfigs");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = new Guid("6e48c829-e01a-4204-b297-17f421915116"),
-                            DateCreated = new DateTime(2021, 7, 22, 15, 44, 42, 894, DateTimeKind.Local).AddTicks(2542),
-                            Key = "SuperAdmin",
-                            Sort = 0,
-                            Value = "True"
-                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>
@@ -361,15 +353,6 @@ namespace ProjectWeb.Data.Migrations
                     b.HasIndex("ProductID");
 
                     b.ToTable("ProductCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = new Guid("628da97c-6ddb-4ab4-9bb8-55b429b50dc4"),
-                            ProductID = new Guid("e75990a1-04dd-4413-9644-1bc157c9e477"),
-                            CategoryID = new Guid("3bc23769-d612-40c9-8d7a-6b15c621302d"),
-                            DateCreated = new DateTime(2021, 7, 22, 15, 44, 42, 897, DateTimeKind.Local).AddTicks(1326)
-                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>
