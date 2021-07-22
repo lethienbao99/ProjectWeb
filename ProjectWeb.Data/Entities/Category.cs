@@ -20,7 +20,7 @@ namespace ProjectWeb.Data.Entities
         public DateTime? DateDeleted { get; set; }
         public bool? IsDelete { get; set; }
 
-                public List<ProductCategory> ProductCategories { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; }
 
     }
 }
