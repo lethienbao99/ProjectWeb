@@ -206,7 +206,7 @@ namespace ProjectWeb.Data.Migrations
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "c0bd8abb-04c0-4c18-9af4-365aca52889b",
+                            ConcurrencyStamp = "17aa9af8-a663-481d-a12d-412e8655b41a",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -503,6 +503,9 @@ namespace ProjectWeb.Data.Migrations
                     b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Sort")
+                        .HasColumnType("int");
+
                     b.HasKey("ID", "ProductID", "CategoryID");
 
                     b.HasIndex("CategoryID");
@@ -594,13 +597,13 @@ namespace ProjectWeb.Data.Migrations
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3e0689e8-dd79-49df-b984-496f59e14a5c",
+                            ConcurrencyStamp = "3b4b5cfe-524a-4b40-a575-d56012a5f5ef",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFhIyRY8mslLjbEGvDvVtAHv1lgdtU7xBUwtzG3fjlgTPwc78Uq5iDn4SisDAmDETQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM9aJaKPdkZptjrCGCkN8k4Kg4Sm6Hq+vG5lA73mguPP1WxKnRP8WdHcJUPJ265vug==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             Sort = 0,
