@@ -37,6 +37,7 @@ namespace ProjectWeb.Bussiness.Repositories
                 throw new ArgumentNullException("entity");
             }
             entity.IsDelete = true;
+            entity.DateDeleted = DateTime.Now;
             context.SaveChanges();
         }
 
