@@ -24,5 +24,7 @@ namespace ProjectWeb.Data.Entities
         public bool? IsDelete { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; }
+        public SystemUser SystemUser { get; set; }
+
     }
 }

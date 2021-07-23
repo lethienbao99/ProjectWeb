@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Data.FluentAPIConfig;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProjectWeb.Data.EntityFamework
 {
-    public class ProjectWebDBContext : DbContext
+    public class ProjectWebDBContext : IdentityDbContext<SystemUser,AppRole,Guid>
     {
         public ProjectWebDBContext(DbContextOptions options) : base(options)
         {
@@ -27,8 +29,19 @@ namespace ProjectWeb.Data.EntityFamework
             modelBuilder.ApplyConfiguration(new OrderDetailFluentAPI());
             modelBuilder.ApplyConfiguration(new ProductCategoryFluentAPI());
 
+            //Authen
+            modelBuilder.ApplyConfiguration(new UserInformationFluentAPI());
+            modelBuilder.ApplyConfiguration(new SystemUserFluentAPI());
+            modelBuilder.ApplyConfiguration(new AppRoleFluentAPI());
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.RoleId, x.UserId });
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins").HasKey(x => x.UserId);
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens").HasKey(x => x.UserId);
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
+
+
             //DataSeed.
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
             //base.OnModelCreating(modelBuilder);
         }
 
@@ -39,6 +52,7 @@ namespace ProjectWeb.Data.EntityFamework
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<AppConfig> AppConfigs { get; set; }
+        public DbSet<UserInformation> UserInformations { get; set; }
 
     }
 }
