@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProjectWeb.Bussiness.Repositories;
+using ProjectWeb.Bussiness.Services.Products;
+using ProjectWeb.Common.IServices;
+using ProjectWeb.Common.Repositories;
+using ProjectWeb.Common.UnitOfWorks;
 using ProjectWeb.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -26,8 +29,9 @@ namespace ProjectWeb.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddScoped(typeof(IRepository<Product>), typeof(Repository<Product>));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IProductServices, ProductServices>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

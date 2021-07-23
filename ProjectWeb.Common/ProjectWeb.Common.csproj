@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProjectWeb.Common\ProjectWeb.Common.csproj" />
     <ProjectReference Include="..\ProjectWeb.Data\ProjectWeb.Data.csproj" />
-    <ProjectReference Include="..\ProjectWeb.Models\ProjectWeb.Models.csproj" />
   </ItemGroup>
 
 </Project>
