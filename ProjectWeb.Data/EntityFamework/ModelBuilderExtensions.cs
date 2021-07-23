@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ProjectWeb.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,52 @@ namespace ProjectWeb.Data.EntityFamework
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AppConfig>().HasData(
+
+
+
+            var roleId = new Guid("EE976566-D4BE-407B-96D4-5C69DA8806A8");
+            var adminId = new Guid("FD3BC079-8C61-4FF2-A5B7-278A58EC5273");
+
+            var userID = new Guid("2AE5FECC-AEB6-4514-BFB5-34F2284ADBF8");
+
+            modelBuilder.Entity<UserInformation>().HasData(new UserInformation
+            {
+                ID = userID,
+                FirstName = "admin",
+                LastName = "admin",
+                PhoneNumber = "454545",
+            });
+
+
+            modelBuilder.Entity<AppRole>().HasData(new AppRole
+            {
+                Id = roleId,
+                Name = "admin",
+                NormalizedName = "admin",
+                Description = "Administrator role"
+            });
+
+            var hasher = new PasswordHasher<SystemUser>();
+            modelBuilder.Entity<SystemUser>().HasData(new SystemUser
+            {
+                Id = adminId,
+                UserName = "admin",
+                NormalizedUserName = "admin",
+                Email = "lethienbao3012@gmail.com",
+                NormalizedEmail = "lethienbao3012@gmail.com",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "123abC!"),
+                SecurityStamp = string.Empty,
+                UserInfomationID = userID,
+            });
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            {
+                RoleId = roleId,
+                UserId = adminId
+            });
+
+
+            /*modelBuilder.Entity<AppConfig>().HasData(
                 new AppConfig()
                 {
                     ID = Guid.Parse("6E48C829-E01A-4204-B297-17F421915116"),
@@ -29,7 +75,7 @@ namespace ProjectWeb.Data.EntityFamework
                     CategoryID = Guid.Parse("3BC23769-D612-40C9-8D7A-6B15C621302D"),
                     DateCreated = DateTime.Now
                 }
-                );
+                );*/
         }
     }
 }

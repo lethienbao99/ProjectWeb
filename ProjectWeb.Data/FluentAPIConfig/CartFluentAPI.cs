@@ -17,10 +17,14 @@ namespace ProjectWeb.Data.FluentAPIConfig
             builder.HasKey(x => x.ID);
             builder.Property(x => x.Sort).UseIdentityColumn();
             builder.HasOne(x => x.Product).WithMany(x => x.Carts).HasForeignKey(x => x.ProductID);
+
+
+            builder.HasOne(x => x.SystemUser).WithMany(x => x.Carts).HasForeignKey(x => x.UserID);
             builder.Property(x => x.DateCreated).IsRequired(false);
             builder.Property(x => x.DateDeleted).IsRequired(false);
             builder.Property(x => x.DateUpdated).IsRequired(false);
             builder.Property(x => x.IsDelete).IsRequired(false);
+         
         }
     }
 }
