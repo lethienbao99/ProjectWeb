@@ -10,7 +10,7 @@ using ProjectWeb.Data.EntityFamework;
 namespace ProjectWeb.Data.Migrations
 {
     [DbContext(typeof(ProjectWebDBContext))]
-    [Migration("20210723081406_Initial")]
+    [Migration("20210723084334_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,13 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("RoleId", "UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
+                            UserId = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -196,6 +203,17 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
+                            ConcurrencyStamp = "17aa9af8-a663-481d-a12d-412e8655b41a",
+                            Description = "Administrator role",
+                            Name = "admin",
+                            NormalizedName = "admin",
+                            Sort = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>
@@ -487,6 +505,9 @@ namespace ProjectWeb.Data.Migrations
                     b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Sort")
+                        .HasColumnType("int");
+
                     b.HasKey("ID", "ProductID", "CategoryID");
 
                     b.HasIndex("CategoryID");
@@ -572,6 +593,26 @@ namespace ProjectWeb.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("SystemUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3b4b5cfe-524a-4b40-a575-d56012a5f5ef",
+                            Email = "lethienbao3012@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "lethienbao3012@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM9aJaKPdkZptjrCGCkN8k4Kg4Sm6Hq+vG5lA73mguPP1WxKnRP8WdHcJUPJ265vug==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            Sort = 0,
+                            TwoFactorEnabled = false,
+                            UserInfomationID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.UserInformation", b =>
@@ -624,6 +665,16 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("UserInformations");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
+                            FirstName = "admin",
+                            LastName = "admin",
+                            PhoneNumber = "454545",
+                            Sort = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>

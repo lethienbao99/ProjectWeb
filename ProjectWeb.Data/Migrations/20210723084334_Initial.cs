@@ -194,6 +194,7 @@ namespace ProjectWeb.Data.Migrations
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Sort = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -299,10 +300,10 @@ namespace ProjectWeb.Data.Migrations
                     ShipEmail = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     ShipNumberPhone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Sort = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     DateOrderd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateRejected = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Sort = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -351,6 +352,26 @@ namespace ProjectWeb.Data.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AppRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "DateCreated", "DateDeleted", "DateUpdated", "Description", "IsDelete", "Name", "NormalizedName" },
+                values: new object[] { new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"), "17aa9af8-a663-481d-a12d-412e8655b41a", null, null, null, "Administrator role", null, "admin", "admin" });
+
+            migrationBuilder.InsertData(
+                table: "UserInformations",
+                columns: new[] { "ID", "Address", "DateCreated", "DateDeleted", "DateOfBirth", "DateUpdated", "FirstName", "IsDelete", "LastName", "PhoneNumber", "Status" },
+                values: new object[] { new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"), null, null, null, null, null, "admin", null, "admin", "454545", null });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"), new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273") });
+
+            migrationBuilder.InsertData(
+                table: "SystemUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateCreated", "DateDeleted", "DateUpdated", "Email", "EmailConfirmed", "IsDelete", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserInfomationID", "UserName" },
+                values: new object[] { new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"), 0, "3b4b5cfe-524a-4b40-a575-d56012a5f5ef", null, null, null, "lethienbao3012@gmail.com", true, null, false, null, "lethienbao3012@gmail.com", "admin", "AQAAAAEAACcQAAAAEM9aJaKPdkZptjrCGCkN8k4Kg4Sm6Hq+vG5lA73mguPP1WxKnRP8WdHcJUPJ265vug==", null, false, "", false, new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"), "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_ProductID",

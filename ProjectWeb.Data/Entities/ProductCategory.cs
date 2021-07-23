@@ -6,15 +6,10 @@ using System.Threading.Tasks;
 
 namespace ProjectWeb.Data.Entities
 {
-    public class ProductCategory
+    public class ProductCategory: BaseEntity
     {
-        public Guid ID { get; set; }
         public Guid ProductID { get; set; }
         public Guid CategoryID { get; set; }
-        public DateTime? DateCreated { get; set; }
-        public DateTime? DateUpdated { get; set; }
-        public DateTime? DateDeleted { get; set; }
-        public bool? IsDelete { get; set; }
 
 
         public Product Product { get; set; }
