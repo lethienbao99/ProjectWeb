@@ -10,6 +10,7 @@ namespace ProjectWeb.Common.UnitOfWorks
     public interface IUnitOfWork : IDisposable
     {
         IProductServices Products { get; }
+        IStorageServices Images { get; }
         int Complete();
     }
 }
