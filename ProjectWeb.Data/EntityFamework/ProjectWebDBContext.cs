@@ -28,6 +28,7 @@ namespace ProjectWeb.Data.EntityFamework
             modelBuilder.ApplyConfiguration(new OrderFluentAPI());
             modelBuilder.ApplyConfiguration(new OrderDetailFluentAPI());
             modelBuilder.ApplyConfiguration(new ProductCategoryFluentAPI());
+            modelBuilder.ApplyConfiguration(new ImageFluentAPI());
 
             //Authen
             modelBuilder.ApplyConfiguration(new UserInformationFluentAPI());
@@ -41,7 +42,7 @@ namespace ProjectWeb.Data.EntityFamework
 
 
             //DataSeed.
-            modelBuilder.Seed();
+            //modelBuilder.Seed();
             //base.OnModelCreating(modelBuilder);
         }
 
@@ -53,6 +54,7 @@ namespace ProjectWeb.Data.EntityFamework
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<AppConfig> AppConfigs { get; set; }
         public DbSet<UserInformation> UserInformations { get; set; }
+        public DbSet<Image> Images { get; set; }
 
     }
 }

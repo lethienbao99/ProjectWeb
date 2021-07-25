@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectWeb.Data.EntityFamework;
 
 namespace ProjectWeb.Data.Migrations
 {
     [DbContext(typeof(ProjectWebDBContext))]
-    partial class ProjectWebDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210724053811_AddImage")]
+    partial class AddImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +94,13 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("RoleId", "UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
+                            UserId = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -194,6 +203,17 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
+                            ConcurrencyStamp = "60d82b65-c54c-44ab-bda2-a8ab5c1f29da",
+                            Description = "Administrator role",
+                            Name = "admin",
+                            NormalizedName = "admin",
+                            Sort = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>
@@ -313,8 +333,8 @@ namespace ProjectWeb.Data.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FileSize")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
@@ -622,6 +642,26 @@ namespace ProjectWeb.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("SystemUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "eb3171b8-61ef-4675-8262-a47edb3441d4",
+                            Email = "lethienbao3012@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "lethienbao3012@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOfn+Ejgye0CL2ynZ3M/QLGinW5LB1xmqAKMi+dBpnzp8zxBTR6Ktc2eO8FgMFhn1Q==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            Sort = 0,
+                            TwoFactorEnabled = false,
+                            UserInfomationID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.UserInformation", b =>
@@ -674,6 +714,16 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("UserInformations");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
+                            FirstName = "admin",
+                            LastName = "admin",
+                            PhoneNumber = "454545",
+                            Sort = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>

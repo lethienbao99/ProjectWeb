@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectWeb.Bussiness.Services.Commons;
 using ProjectWeb.Bussiness.Services.Products;
 using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
@@ -31,6 +32,7 @@ namespace ProjectWeb.App
             services.AddControllersWithViews();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IProductServices, ProductServices>();
+            services.AddTransient<IStorageServices, StorageServices>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
