@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectWeb.Data", "ProjectW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectWeb.Bussiness", "ProjectWeb.Bussiness\ProjectWeb.Bussiness.csproj", "{F0CB75E0-137A-4116-B0C2-877C0708C628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectWeb.Models", "ProjectWeb.Models\ProjectWeb.Models.csproj", "{F86E40A0-426F-4CD6-B70B-9DEE8010B376}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectWeb.Models", "ProjectWeb.Models\ProjectWeb.Models.csproj", "{F86E40A0-426F-4CD6-B70B-9DEE8010B376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectWeb.Common", "ProjectWeb.Common\ProjectWeb.Common.csproj", "{6731E0DD-DF50-4D8A-9F74-F91E8C4ADD59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectWeb.Common", "ProjectWeb.Common\ProjectWeb.Common.csproj", "{6731E0DD-DF50-4D8A-9F74-F91E8C4ADD59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectWeb.API", "ProjectWeb.API\ProjectWeb.API.csproj", "{883005DD-92C4-4059-B9DB-167F32148F22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{6731E0DD-DF50-4D8A-9F74-F91E8C4ADD59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6731E0DD-DF50-4D8A-9F74-F91E8C4ADD59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6731E0DD-DF50-4D8A-9F74-F91E8C4ADD59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{883005DD-92C4-4059-B9DB-167F32148F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{883005DD-92C4-4059-B9DB-167F32148F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{883005DD-92C4-4059-B9DB-167F32148F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{883005DD-92C4-4059-B9DB-167F32148F22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

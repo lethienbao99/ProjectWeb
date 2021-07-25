@@ -1,15 +1,23 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectWeb.Bussiness.Services.Commons;
+using ProjectWeb.Bussiness.Services.Products;
+using ProjectWeb.Common.Enums;
+using ProjectWeb.Common.IServices;
+using ProjectWeb.Common.Repositories;
+using ProjectWeb.Common.UnitOfWorks;
+using ProjectWeb.Data.EntityFamework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjectWeb.App
+namespace ProjectWeb.API
 {
     public class Startup
     {
@@ -23,11 +31,16 @@ namespace ProjectWeb.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            /*services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddDbContext<ProjectWebDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString(EnumConstants.SystemsConstants.ConnectionString)));
+
+            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IStorageServices, StorageServices>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();*/
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

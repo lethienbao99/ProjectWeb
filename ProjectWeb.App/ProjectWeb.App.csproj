@@ -4,9 +4,4 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ProjectWeb.Bussiness\ProjectWeb.Bussiness.csproj" />
-    <ProjectReference Include="..\ProjectWeb.Common\ProjectWeb.Common.csproj" />
-  </ItemGroup>
-
 </Project>
