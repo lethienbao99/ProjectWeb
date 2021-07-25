@@ -14,16 +14,20 @@ namespace ProjectWeb.Common.UnitOfWorks
 
         //Add Interface Services here.
         public IProductServices Products { get; }
+        public IStorageServices Images { get; }
 
 
-        public UnitOfWork(ProjectWebDBContext context,
-            IProductServices productServices)
+        public UnitOfWork(
+            ProjectWebDBContext context,
+            IProductServices productServices,
+            IStorageServices storageServices)
         {
             //DBContext.
             _context = context;
 
             //Services.
             Products = productServices;
+            Images = storageServices;
         }
         public int Complete()
         {

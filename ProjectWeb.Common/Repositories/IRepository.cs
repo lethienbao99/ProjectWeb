@@ -13,6 +13,7 @@ namespace ProjectWeb.Common.Repositories
         T GetByID(Guid id);
         void Insert(T entity);
         void Update(T entity);
+        void Update(Guid id);
         void DeleteByModel(T entity);
         string DeleteByID(Guid id);
         void DeleteNotSQLByModel(T entity);
@@ -23,6 +24,7 @@ namespace ProjectWeb.Common.Repositories
         Task<T> GetByIDAsync(Guid id);
         Task InsertAsync(T entity);
         Task UpdateAsync(T entity);
+        Task UpdateAsync(Guid id);
         Task DeleteByModelAsync(T entity);
         Task<string> DeleteByIDAsync(Guid id);
         Task DeleteNotSQLByModelAsync(T entity);

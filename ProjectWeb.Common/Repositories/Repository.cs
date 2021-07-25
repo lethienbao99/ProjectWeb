@@ -82,6 +82,7 @@ namespace ProjectWeb.Common.Repositories
             {
                 throw new ArgumentNullException("entity");
             }
+            entity.ID = Guid.NewGuid();
             entity.DateCreated = DateTime.Now;
             entities.Add(entity);
             _context.SaveChanges();
@@ -95,6 +96,16 @@ namespace ProjectWeb.Common.Repositories
             }
             entity.DateUpdated = DateTime.Now;
             _context.SaveChanges();
+        }
+
+        public void Update(Guid id)
+        {
+            var result = entities.FirstOrDefault(x => x.ID == id && x.IsDelete == null);
+            if(result != null)
+            {
+                result.DateUpdated = DateTime.Now;
+                _context.SaveChanges();
+            }
         }
 
         public string DeleteNotSQLByID(Guid id)
@@ -136,6 +147,7 @@ namespace ProjectWeb.Common.Repositories
             {
                 throw new ArgumentNullException("entity");
             }
+            entity.ID = Guid.NewGuid();
             entity.DateCreated = DateTime.Now;
             await entities.AddAsync(entity);
             await _context.SaveChangesAsync();
@@ -201,6 +213,16 @@ namespace ProjectWeb.Common.Repositories
             }
             else
                 return mess;
+        }
+
+        public async Task UpdateAsync(Guid id)
+        {
+            var result = await entities.FirstOrDefaultAsync(x => x.ID == id && x.IsDelete == null);
+            if (result != null)
+            {
+                result.DateUpdated = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
