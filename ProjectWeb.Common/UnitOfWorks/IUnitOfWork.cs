@@ -11,6 +11,7 @@ namespace ProjectWeb.Common.UnitOfWorks
     {
         IProductServices Products { get; }
         IStorageServices Images { get; }
+        ICategoryServices Categories { get; }
         int Complete();
     }
 }

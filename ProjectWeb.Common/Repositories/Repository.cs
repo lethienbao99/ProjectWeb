@@ -61,7 +61,7 @@ namespace ProjectWeb.Common.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            return entities.Where(x => x.IsDelete == null).AsEnumerable();
+            return entities.Where(x => x.IsDelete == null).AsEnumerable().OrderBy(x => x.Sort);
         }
 
         public T GetByID(Guid id)
@@ -126,7 +126,7 @@ namespace ProjectWeb.Common.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await _context.Set<T>().OrderBy(x => x.Sort).ToListAsync();
         }
 
         public async Task<T> GetByIDAsync(Guid id)

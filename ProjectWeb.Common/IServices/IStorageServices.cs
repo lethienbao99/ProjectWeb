@@ -19,8 +19,9 @@ namespace ProjectWeb.Common.IServices
 
         Task DeleteFileAsync(string fileName);
 
-        Task<int> AddImages(int imageId, List<IFormFile> files);
-        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
+        Task<Guid> AddImages(Guid entityId, ImageModel request);
+        Task<int> UpdateImage(Guid imageId, ImageModel request);
+        Task<int> RemoveImage(Guid imageId);
         Task<List<ImageModel>> GetListImageByProductID(Guid ProductID);
     }
 }

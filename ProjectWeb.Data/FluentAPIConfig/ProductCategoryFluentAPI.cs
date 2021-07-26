@@ -17,6 +17,7 @@ namespace ProjectWeb.Data.FluentAPIConfig
             builder.HasKey(x => new { x.ID, x.ProductID, x.CategoryID });
             builder.HasOne(x => x.Product).WithMany(x => x.ProductCategories).HasForeignKey(x => x.ProductID);
             builder.HasOne(x => x.Category).WithMany(x => x.ProductCategories).HasForeignKey(x => x.CategoryID);
+            builder.Property(x => x.Sort).UseIdentityColumn();
             builder.Property(x => x.DateCreated).IsRequired(false);
             builder.Property(x => x.DateDeleted).IsRequired(false);
             builder.Property(x => x.DateUpdated).IsRequired(false);

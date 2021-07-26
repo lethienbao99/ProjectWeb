@@ -15,7 +15,7 @@ namespace ProjectWeb.Common.IServices
     {
         Task<Guid> CreateWithImages(ProductModel request);
         Task<int> UpdateWithImages(ProductModel request);
-        Task<PageResultModel<ProductModel>> GetAllPaging(ProductPagingRequest request);
+        Task<PageResultModel<ProductViewModel>> GetAllPaging(ProductPagingRequest request);
         Task<PageResultModel<ProductModel>> GetAllByCategoryId(ProductByCategoryIdPagingRequest request);
         Task<ProductViewModel> GetProductByID(Guid ID);
     }

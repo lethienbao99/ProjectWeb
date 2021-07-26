@@ -125,7 +125,7 @@ namespace ProjectWeb.Bussiness.Services.Products
 
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderBy(x => x.p.Sort)
                  .Select(x => new ProductModel()
                  {
                      ID = x.p.ID,
@@ -138,7 +138,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                      Stock = x.p.Stock,
                      Alias = x.p.Alias,
                      DateCreated = DateTime.Now,
-                 }).ToListAsync();
+                 }).Distinct().ToListAsync();
 
             var pagedResult = new PageResultModel<ProductModel>()
             {
@@ -149,30 +149,38 @@ namespace ProjectWeb.Bussiness.Services.Products
             return pagedResult;
         }
 
-        public async Task<PageResultModel<ProductModel>> GetAllPaging(ProductPagingRequest request)
+        public async Task<PageResultModel<ProductViewModel>> GetAllPaging(ProductPagingRequest request)
         {
             var query = from p in _context.Products
-                        join pc in _context.ProductCategories on p.ID equals pc.ProductID
-                        where pc.IsDelete == null
-                        join c in _context.Categories on pc.CategoryID equals c.ID
-                        where c.IsDelete == null
                         where p.IsDelete == null
-                        select new { p, pc, c };
+
+                        //List Categories
+                        let categories = (from pc in _context.ProductCategories
+                                          join c in _context.Categories on pc.CategoryID equals c.ID
+                                          where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
+                                          select c.CategoryName).ToList()
+
+                        select new { p, categories };
+
             //Filter.
             if (!string.IsNullOrEmpty(request.Keyword))
             {
                 query = query.Where(x => x.p.ProductName.Contains(request.Keyword));
             }
 
-            if (request.CategoryIds.Count > 0)
+          /*if (request.CategoryIds != null)
             {
-                query = query.Where(x => request.CategoryIds.Contains(x.c.ID));
-            }
+                if (request.CategoryIds.Count > 0)
+                {
+                    query = query.Where(x => request.CategoryIds.Contains(x.categories));
+                }
+            }*/
+
 
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
-                 .Select(x => new ProductModel()
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderBy(x => x.p.Sort)
+                 .Select(x => new ProductViewModel()
                  {
                      ID = x.p.ID,
                      ProductName = x.p.ProductName,
@@ -184,9 +192,11 @@ namespace ProjectWeb.Bussiness.Services.Products
                      Stock = x.p.Stock,
                      Alias = x.p.Alias,
                      DateCreated = DateTime.Now,
+                     Categories = x.categories
+                     
                  }).ToListAsync();
 
-            var pagedResult = new PageResultModel<ProductModel>()
+            var pagedResult = new PageResultModel<ProductViewModel>()
             {
                 TotalRecord = totalRow,
                 Items = data
@@ -200,13 +210,13 @@ namespace ProjectWeb.Bussiness.Services.Products
             var product = await _context.Products.FirstOrDefaultAsync(s => s.ID == ID && s.IsDelete == null);
             if(product != null)
             {
-                var query = from c in _context.Categories
-                               join pc in _context.ProductCategories on c.ID equals pc.CategoryID
-                               where pc.IsDelete == null
-                               where c.IsDelete == null && pc.ProductID == ID
-                               select c;
+                var query = await (from c in _context.Categories
+                                   join pc in _context.ProductCategories on c.ID equals pc.CategoryID
+                                   where pc.IsDelete == null
+                                   where c.IsDelete == null && pc.ProductID == ID
+                                   select c.CategoryName).ToListAsync();
 
-                var data = await query.Select(x => new ProductViewModel()
+                var data =  new ProductViewModel()
                 {
                     ID = product.ID,
                     ProductName = product.ProductName,
@@ -220,16 +230,13 @@ namespace ProjectWeb.Bussiness.Services.Products
                     DateCreated = product.DateCreated,
                     DateUpdated = product.DateUpdated,
                     DateDeleted = product.DateDeleted,
-                    CategoryName = x.CategoryName,
-                    CategoryCode = x.Code
-                }).FirstOrDefaultAsync();
-                
+                    Categories = query,
+                };
                 return data;
             }
 
             return null;
         }
 
-        
     }
 }

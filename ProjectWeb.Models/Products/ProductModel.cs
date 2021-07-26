@@ -36,6 +36,7 @@ namespace ProjectWeb.Models.Products
 
         public string CategoryName { get; set; }
         public string CategoryCode { get; set; }
+        public List<string> Categories { get; set; } = new List<string>();
     }
 
     public class ProductPagingRequest : PagingRequestBase

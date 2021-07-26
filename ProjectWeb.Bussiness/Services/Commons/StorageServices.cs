@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using ProjectWeb.Common.Exceptions;
 using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
 using ProjectWeb.Data.Entities;
@@ -9,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,19 +51,75 @@ namespace ProjectWeb.Bussiness.Services.Commons
             }
         }
 
-        public Task<int> AddImages(int imageId, List<IFormFile> files)
+        public async Task<Guid> AddImages(Guid entityId, ImageModel request)
         {
-            throw new NotImplementedException();
+            var image = new Image()
+            {
+                Caption = request.Caption,
+                DateCreated = DateTime.Now,
+                IsDefault = request.IsDefault,
+                ProductID = entityId,
+            };
+            if(request.ImageFile != null)
+            {
+                image.ImagePath = await this.SaveFile(request.ImageFile);
+                image.FileSize = request.ImageFile.Length;
+            }
+            _context.Images.Add(image);
+             await _context.SaveChangesAsync();
+            return image.ID;
         }
 
-        public Task<int> UpdateImage(int imageId, string caption, bool isDefault)
+        public async Task<int> UpdateImage(Guid imageId, ImageModel request)
         {
-            throw new NotImplementedException();
+            var image = await _context.Images.FindAsync(imageId);
+
+            if (image == null)
+                throw new ProjectWebException("Cannot find image");
+
+            if (request.ImageFile != null)
+            {
+                image.ImagePath = await this.SaveFile(request.ImageFile);
+                image.FileSize = request.ImageFile.Length;
+            }
+            _context.Images.Update(image);
+            return await _context.SaveChangesAsync();
         }
 
-        public Task<List<ImageModel>> GetListImageByProductID(Guid ProductID)
+        public async Task<int> RemoveImage(Guid imageId)
         {
-            throw new NotImplementedException();
+            var image = await _context.Images.FindAsync(imageId);
+            if(image == null)
+                throw new ProjectWebException("Cannot find image");
+
+            _context.Images.Remove(image);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<ImageModel>> GetListImageByProductID(Guid ProductID)
+        {
+            var listImages = await _context.Images.Where(x => x.ProductID == ProductID)
+                .Select(x => new ImageModel()
+            {
+                ID = x.ID,
+                Caption = x.Caption,
+                FilePath = x.ImagePath,
+                IsDefault = x.IsDefault.Value,
+                FileSize = x.FileSize,
+                ProductID = ProductID,
+                Sort = x.Sort
+
+            }).ToListAsync();
+
+            return listImages;
+        }
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
         }
     }
 }
