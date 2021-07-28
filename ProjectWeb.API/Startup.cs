@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,10 +11,12 @@ using Microsoft.OpenApi.Models;
 using ProjectWeb.Bussiness.Services.Categories;
 using ProjectWeb.Bussiness.Services.Commons;
 using ProjectWeb.Bussiness.Services.Products;
+using ProjectWeb.Bussiness.Services.SystemUsers;
 using ProjectWeb.Common.Enums;
 using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
 using ProjectWeb.Common.UnitOfWorks;
+using ProjectWeb.Data.Entities;
 using ProjectWeb.Data.EntityFamework;
 using System;
 using System.Collections.Generic;
@@ -39,11 +42,17 @@ namespace ProjectWeb.API
             services.AddDbContext<ProjectWebDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(EnumConstants.SystemsConstants.ConnectionString)));
 
+            services.AddIdentity<SystemUser, AppRole>()
+                .AddEntityFrameworkStores<ProjectWebDBContext>().AddDefaultTokenProviders();
             //DI
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IStorageServices, StorageServices>();
             services.AddTransient<ICategoryServices, CategoryServices>();
+            services.AddTransient<ISystemUserServices, SystemUserServices>();
+            services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
+            services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddControllersWithViews();
