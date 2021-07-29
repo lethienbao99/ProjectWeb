@@ -1,4 +1,5 @@
-﻿using ProjectWeb.Models.SystemUsers;
+﻿using ProjectWeb.Models.CommonModels;
+using ProjectWeb.Models.SystemUsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,7 @@ namespace ProjectWeb.AdminApp.IServiceBackendAPIs
     public interface ISystemUserBackendAPI
     {
         Task<string> Authenticate(LoginRequest request);
+        Task<PageResultModel<SystemUserModel>> GetUserPaging(UserPagingRequest request);
+
     }
 }

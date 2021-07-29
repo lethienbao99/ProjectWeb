@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ProjectWeb.Common.Exceptions;
@@ -6,6 +7,7 @@ using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Data.EntityFamework;
+using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.SystemUsers;
 using System;
 using System.Collections.Generic;
@@ -99,6 +101,46 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
 
             return false;
 
+        }
+
+
+        public async Task<PageResultModel<SystemUserModel>> GetUserPaging(UserPagingRequest request)
+        {
+            var user = from su in _context.Users
+                       join ui in _context.UserInformations on su.UserInfomationID equals ui.ID
+                       where ui.IsDelete == null && su.IsDelete == null
+                       select new { su, ui };
+                      
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                user = user.Where(x => x.su.UserName.Contains(request.Keyword)
+                || x.ui.FirstName.Contains(request.Keyword) || x.ui.LastName.Contains(request.Keyword));
+            }
+
+            int totalRow = user.Count();
+
+            var data = await user.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderBy(x => x.ui.Sort)
+                 .Select(x => new SystemUserModel()
+                 {
+                     ID = x.su.Id,
+                     Username = x.su.UserName,
+                     FirstName = x.ui.FirstName,
+                     LastName = x.ui.LastName,
+                     PhoneNumber = x.ui.PhoneNumber,
+                     Address = x.ui.Address,
+                     Status = x.ui.Status,
+                     DateOfBirth = x.ui.DateOfBirth,
+                     Email = x.su.Email,
+                     DateCreated = x.ui.DateCreated
+                 }).Distinct().ToListAsync();
+
+            var pagedResult = new PageResultModel<SystemUserModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data
+            };
+
+            return pagedResult;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace ProjectWeb.AdminApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+           
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -39,6 +40,10 @@ namespace ProjectWeb.AdminApp
                 });
 
             services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
+
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
 
             services.AddTransient<ISystemUserBackendAPI, SystemUserBackendAPI>();
             IMvcBuilder builder = services.AddRazorPages();
@@ -65,13 +70,10 @@ namespace ProjectWeb.AdminApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseAuthentication();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

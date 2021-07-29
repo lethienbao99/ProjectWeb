@@ -12,7 +12,7 @@ namespace ProjectWeb.Models.CommonModels
         public int TotalRecord { get; set; }
     }
 
-    public class PagingRequestBase
+    public class PagingRequestBase: RequestBaseModel
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
