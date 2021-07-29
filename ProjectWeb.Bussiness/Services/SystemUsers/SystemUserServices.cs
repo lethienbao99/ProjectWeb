@@ -47,12 +47,15 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
             if (!result.Succeeded)
                 return null;
 
+            var userInfo = _context.UserInformations.FirstOrDefault(x => x.ID == user.UserInfomationID);
+
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                //new Claim(ClaimTypes.GivenName, user.UserInfomation.FirstName),
+                new Claim(ClaimTypes.GivenName, userInfo.FirstName),
                 new Claim(ClaimTypes.Role, string.Join(";", roles)),
+                new Claim(ClaimTypes.Name, request.Username),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));

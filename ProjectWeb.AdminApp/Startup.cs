@@ -1,9 +1,14 @@
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectWeb.AdminApp.IServiceBackendAPIs;
+using ProjectWeb.AdminApp.Services;
+using ProjectWeb.Models.FluentValidations.SystemUsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +28,26 @@ namespace ProjectWeb.AdminApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddHttpClient();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/SystemUser/Login/";
+                    options.AccessDeniedPath = "/SystemUser/Forbidden";
+
+                });
+
+            services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
+
+            services.AddTransient<ISystemUserBackendAPI, SystemUserBackendAPI>();
+            IMvcBuilder builder = services.AddRazorPages();
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if(env == Environments.Development)
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +65,8 @@ namespace ProjectWeb.AdminApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

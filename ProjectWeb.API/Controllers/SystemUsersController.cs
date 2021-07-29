@@ -12,6 +12,7 @@ namespace ProjectWeb.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class SystemUsersController : ControllerBase
     {
         private readonly ISystemUserServices _systemUserServices;
@@ -22,7 +23,7 @@ namespace ProjectWeb.API.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromForm] LoginRequest request)
+        public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -32,12 +33,12 @@ namespace ProjectWeb.API.Controllers
             {
                 return BadRequest("Username or Password is incorrect");
             }
-            return Ok(new { token = resultToken });
+            return Ok(resultToken);
         }
 
         [HttpPost("Signup")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromForm] SignUpRequest request)
+        public async Task<IActionResult> Register([FromBody] SignUpRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
