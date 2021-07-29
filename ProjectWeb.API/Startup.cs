@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +22,8 @@ using ProjectWeb.Common.Repositories;
 using ProjectWeb.Common.UnitOfWorks;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Data.EntityFamework;
+using ProjectWeb.Models.FluentValidations.SystemUsers;
+using ProjectWeb.Models.SystemUsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +61,11 @@ namespace ProjectWeb.API
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddControllers();
+            //Validation Fluent Models.
+            /*services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+            services.AddTransient<IValidator<SignUpRequest>, SignUpRequestValidator>();*/
+
+            services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
             /*services.AddControllers(options =>
             {
                 options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
