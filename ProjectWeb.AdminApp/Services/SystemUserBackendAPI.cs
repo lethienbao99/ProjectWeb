@@ -46,5 +46,18 @@ namespace ProjectWeb.AdminApp.Services
             var users = JsonConvert.DeserializeObject<PageResultModel<SystemUserModel>>(dataRaw);
             return users;
         }
+
+        public async Task<bool> Signup(SignUpRequest request)
+        {
+            var jsonConvert = JsonConvert.SerializeObject(request);
+            var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
+
+            var respose = await client.PostAsync("/api/SystemUsers", httpContext);
+
+            return respose.IsSuccessStatusCode;
+        }
     }
 }

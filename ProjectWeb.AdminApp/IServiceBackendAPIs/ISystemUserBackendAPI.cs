@@ -11,6 +11,7 @@ namespace ProjectWeb.AdminApp.IServiceBackendAPIs
     {
         Task<string> Authenticate(LoginRequest request);
         Task<PageResultModel<SystemUserModel>> GetUserPaging(UserPagingRequest request);
+        Task<bool> Signup(SignUpRequest request);
 
     }
 }

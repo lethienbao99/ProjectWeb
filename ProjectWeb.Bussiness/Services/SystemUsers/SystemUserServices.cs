@@ -86,7 +86,7 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 Status = request.Status
             };
             _context.UserInformations.Add(userInfo);
-            _context.SaveChanges();
+            
             var systemUser = new SystemUser()
             {
                 UserName = request.Username,
@@ -97,7 +97,10 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
 
             var result = await _userManager.CreateAsync(systemUser, request.Password);
             if (result.Succeeded)
+            {
+                _context.SaveChanges();
                 return true;
+            }
 
             return false;
 

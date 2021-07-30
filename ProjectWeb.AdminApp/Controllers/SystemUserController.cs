@@ -31,6 +31,9 @@ namespace ProjectWeb.AdminApp.Controllers
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             var TokenInSession = HttpContext.Session.GetString("Token");
+            if(TokenInSession == null)
+                return RedirectToAction("Login", "SystemUser");
+
             var request = new UserPagingRequest()
             {
                 BearerToken = TokenInSession,
@@ -40,6 +43,24 @@ namespace ProjectWeb.AdminApp.Controllers
             };
             var data = await _systemUserBackendAPI.GetUserPaging(request);
             return View(data);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(SignUpRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _systemUserBackendAPI.Signup(request);
+            if (result)
+                return RedirectToAction("Index","SystemUser");
+            return View(request);
         }
 
         [HttpGet]
@@ -77,6 +98,7 @@ namespace ProjectWeb.AdminApp.Controllers
             HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "SystemUser");
         }
+
 
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {
