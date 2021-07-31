@@ -26,14 +26,14 @@ namespace ProjectWeb.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var resultToken = await _systemUserServices.Authenticate(request);
+            var result = await _systemUserServices.Authenticate(request);
 
-            if (string.IsNullOrEmpty(resultToken))
+            if (result == null)
                 return BadRequest("Username or Password is incorrect");
-            return Ok(resultToken);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -44,17 +44,38 @@ namespace ProjectWeb.API.Controllers
                 return BadRequest(ModelState);
 
             var result = await _systemUserServices.Register(request);
-            if (!result)
+            if (!result.IsSuccessed)
             {
-                return BadRequest("Fail");
+                return BadRequest(result);
             }
-            return Ok();
+            return Ok(result);
         }
 
         [HttpGet("Paging")]
-        public async Task<IActionResult> GetListUser([FromQuery]UserPagingRequest request)
+        public async Task<IActionResult> GetListUser([FromQuery] UserPagingRequest request)
         {
             var result = await _systemUserServices.GetUserPaging(request);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _systemUserServices.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var result = await _systemUserServices.GetUserByID(id);
             return Ok(result);
         }
     }

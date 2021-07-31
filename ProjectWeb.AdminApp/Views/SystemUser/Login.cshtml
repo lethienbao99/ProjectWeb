@@ -39,9 +39,9 @@
 
                 <form class="login100-form validate-form" asp-action="Login" asp-controller="SystemUser" method="post">
                     <span class="login100-form-title">
-                        Login 
+                        Login
                     </span>
-
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                         <input class="input100" type="text" name="Username" placeholder="Username" asp-for="Username">
                         <span class="focus-input100"></span>
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" style="margin-left:50px;">
-                        <input class="form-check-input" type="checkbox" asp-for="IsRememberMe"/>
+                        <input class="form-check-input" type="checkbox" asp-for="IsRememberMe" />
                         <label class="form-check-label">
                             <span class="login100-form-title" style="font-size: small">
                                 Remember Me
@@ -74,20 +74,20 @@
                     </div>
 
                     @*<div class="text-center p-t-12">
-                        <span class="txt1">
-                            Forgot
-                        </span>
-                        <a class="txt2" href="#">
-                            Username / Password?
-                        </a>
-                    </div>*@
+            <span class="txt1">
+                Forgot
+            </span>
+            <a class="txt2" href="#">
+                Username / Password?
+            </a>
+        </div>*@
 
                     @*<div class="text-center p-t-136">
-                        <a class="txt2" href="#">
-                            Create your Account
-                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-                        </a>
-                    </div>*@
+            <a class="txt2" href="#">
+                Create your Account
+                <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+            </a>
+        </div>*@
                 </form>
             </div>
         </div>

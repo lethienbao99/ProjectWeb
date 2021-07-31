@@ -40,7 +40,7 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
             _config = config;
         }
 
-        public async Task<string> Authenticate(LoginRequest request)
+        public async Task<ResultMessage<string>> Authenticate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
             if (user == null) return null;
@@ -69,13 +69,19 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-
+            var JwtToken =  new JwtSecurityTokenHandler().WriteToken(token);
+            return new ResultObjectSuccess<string>(new JwtSecurityTokenHandler().WriteToken(token));
 
         }
 
-        public async Task<bool> Register(SignUpRequest request)
+        public async Task<ResultMessage<bool>> Register(SignUpRequest request)
         {
+            var user = await _userManager.FindByNameAsync(request.Username);
+            if(user != null)
+                return new ResultObjectError<bool>("Tài khoản đã tồn tại");
+
+            if (await _userManager.FindByEmailAsync(request.Email) != null)
+                return new ResultObjectError<bool>("Email đã tồn tại"); ;
             var userInfo = new UserInformation()
             {
                 ID = Guid.NewGuid(),
@@ -83,7 +89,9 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 LastName = request.LastName,
                 DateOfBirth = request.DateOfBirth,
                 DateCreated = DateTime.Now,
-                Status = request.Status
+                Status = request.Status,
+                PhoneNumber = request.PhoneNumber,
+                Address = request.Address
             };
             _context.UserInformations.Add(userInfo);
             
@@ -99,15 +107,16 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
             if (result.Succeeded)
             {
                 _context.SaveChanges();
-                return true;
+                return new ResultObjectSuccess<bool>();
             }
 
-            return false;
+            return new ResultObjectError<bool>("Đăng ký thất bại."); ;
+
 
         }
 
 
-        public async Task<PageResultModel<SystemUserModel>> GetUserPaging(UserPagingRequest request)
+        public async Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request)
         {
             var user = from su in _context.Users
                        join ui in _context.UserInformations on su.UserInfomationID equals ui.ID
@@ -143,7 +152,59 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 Items = data
             };
 
-            return pagedResult;
+            return new ResultObjectSuccess<PageResultModel<SystemUserModel>>(pagedResult);
+        }
+
+
+
+        public async Task<ResultMessage<bool>> Update(Guid ID, UserUpdateRequest request)
+        {
+            if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != ID))
+            {
+                return new ResultObjectError<bool>("Emai đã tồn tại");
+            }
+            var user = await _userManager.FindByIdAsync(ID.ToString());
+            user.Email = request.Email;
+
+            var userInfo = await _context.UserInformations.FirstOrDefaultAsync(x => x.ID == user.UserInfomationID && x.IsDelete == null);
+            userInfo.FirstName = request.FirstName;
+            userInfo.LastName = request.LastName;
+            userInfo.PhoneNumber = request.PhoneNumber;
+            userInfo.Address = request.Address;
+            userInfo.DateOfBirth = request.DateOfBirth;
+            userInfo.DateUpdated = DateTime.Now;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                _context.SaveChanges();
+                return new ResultObjectSuccess<bool>();
+            }
+            return new ResultObjectError<bool>("Cập nhật không thành công");
+        }
+
+        public async Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID)
+        {
+            var user = await _userManager.FindByIdAsync(ID.ToString());
+            if(user == null)
+                return new ResultObjectError<SystemUserModel>("User không tồn tại.");
+
+            var userInfo = await _context.UserInformations.FirstOrDefaultAsync(s => s.ID == user.UserInfomationID && s.IsDelete == null);
+
+            var data = new SystemUserModel()
+            {
+                ID = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = userInfo.FirstName,
+                LastName = userInfo.LastName,
+                PhoneNumber = userInfo.PhoneNumber,
+                Address = userInfo.Address,
+                DateOfBirth = userInfo.DateOfBirth,
+                DateCreated = userInfo.DateCreated,
+                DateUpdated = userInfo.DateUpdated
+            };
+            return new ResultObjectSuccess<SystemUserModel>(data);
         }
     }
 }

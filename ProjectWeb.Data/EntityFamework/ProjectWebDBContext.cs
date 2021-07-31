@@ -42,7 +42,7 @@ namespace ProjectWeb.Data.EntityFamework
 
 
             //DataSeed.
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
             //base.OnModelCreating(modelBuilder);
         }
 

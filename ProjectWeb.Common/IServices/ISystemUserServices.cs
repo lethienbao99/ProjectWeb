@@ -12,9 +12,11 @@ namespace ProjectWeb.Common.IServices
 {
     public interface ISystemUserServices 
     {
-        Task<string> Authenticate(LoginRequest request);
-        Task<bool> Register(SignUpRequest request);
-        Task<PageResultModel<SystemUserModel>> GetUserPaging(UserPagingRequest request);
+        Task<ResultMessage<string>> Authenticate(LoginRequest request);
+        Task<ResultMessage<bool>> Register(SignUpRequest request);
+        Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request);
+        Task<ResultMessage<bool>> Update(Guid ID, UserUpdateRequest request);
+        Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID);
 
     }
 

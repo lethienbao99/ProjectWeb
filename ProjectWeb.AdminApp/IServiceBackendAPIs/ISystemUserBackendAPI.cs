@@ -9,9 +9,12 @@ namespace ProjectWeb.AdminApp.IServiceBackendAPIs
 {
     public interface ISystemUserBackendAPI
     {
-        Task<string> Authenticate(LoginRequest request);
-        Task<PageResultModel<SystemUserModel>> GetUserPaging(UserPagingRequest request);
-        Task<bool> Signup(SignUpRequest request);
+        Task<ResultMessage<string>> Authenticate(LoginRequest request);
+        Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request);
+        Task<ResultMessage<bool>> Signup(SignUpRequest request);
+        Task<ResultMessage<bool>> Update(Guid ID, UserUpdateRequest request);
+        Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID);
+
 
     }
 }

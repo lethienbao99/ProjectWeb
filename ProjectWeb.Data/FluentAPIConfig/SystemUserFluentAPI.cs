@@ -14,7 +14,6 @@ namespace ProjectWeb.Data.FluentAPIConfig
         public void Configure(EntityTypeBuilder<SystemUser> builder)
         {
             builder.ToTable("SystemUsers");
-            builder.Property(x => x.Sort).UseIdentityColumn();
             builder.Property(x => x.DateCreated).IsRequired(false);
             builder.Property(x => x.DateDeleted).IsRequired(false);
             builder.Property(x => x.DateUpdated).IsRequired(false);

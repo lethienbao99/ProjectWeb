@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace ProjectWeb.Models.CommonModels
 {
-    public class RequestBaseModel
+    public class ResultMessage<T>
     {
-        public string BearerToken { get; set; }
+
+        public bool IsSuccessed { get; set; }
+        public string Message { get; set; }
+        public T Object { get; set; }
     }
 }

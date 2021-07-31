@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ProjectWeb.AdminApp.IServiceBackendAPIs;
 using ProjectWeb.Models.CommonModels;
@@ -17,37 +18,64 @@ namespace ProjectWeb.AdminApp.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
-        public SystemUserBackendAPI(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public SystemUserBackendAPI(
+            IHttpClientFactory httpClientFactory, 
+            IConfiguration configuration,
+            IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<string> Authenticate(LoginRequest request)
+        public async Task<ResultMessage<string>> Authenticate(LoginRequest request)
         {
             var jsonConvert = JsonConvert.SerializeObject(request);
             var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
             var respose = await client.PostAsync("/api/SystemUsers/Login", httpContext);
-            var token = await respose.Content.ReadAsStringAsync();
-            return token;
+
+            var dataRaw = await respose.Content.ReadAsStringAsync();
+
+            if (respose.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectSuccess<string>>(dataRaw);
+
+            return new ResultObjectError<string>(dataRaw); 
         }
 
-        public async Task<PageResultModel<SystemUserModel>> GetUserPaging(UserPagingRequest request)
+        public async Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID)
         {
+            var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            var respose = await client.GetAsync($"/api/SystemUsers/{ID}");
+            var dataRaw = await respose.Content.ReadAsStringAsync();
+            if (!respose.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectError<SystemUserModel>>(dataRaw);
+
+            var user = JsonConvert.DeserializeObject<ResultObjectSuccess<SystemUserModel>>(dataRaw);
+            return user;
+        }
+
+        public async Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request)
+        {
+            var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             var respose = await client.GetAsync($"/api/SystemUsers/Paging?pageIndex=" + 
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
 
             var dataRaw = await respose.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<PageResultModel<SystemUserModel>>(dataRaw);
+            var users = JsonConvert.DeserializeObject<ResultObjectSuccess<PageResultModel<SystemUserModel>>>(dataRaw);
             return users;
-        }
+        } 
 
-        public async Task<bool> Signup(SignUpRequest request)
+        public async Task<ResultMessage<bool>> Signup(SignUpRequest request)
         {
             var jsonConvert = JsonConvert.SerializeObject(request);
             var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
@@ -56,8 +84,31 @@ namespace ProjectWeb.AdminApp.Services
             client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
 
             var respose = await client.PostAsync("/api/SystemUsers", httpContext);
+            var result = await respose.Content.ReadAsStringAsync();
+            if(respose.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(result);
 
-            return respose.IsSuccessStatusCode;
+            return JsonConvert.DeserializeObject<ResultObjectError<bool>>(result);
+
+        }
+
+        public async Task<ResultMessage<bool>> Update(Guid ID, UserUpdateRequest request)
+        {
+            var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+
+            var jsonConvert = JsonConvert.SerializeObject(request);
+            var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
+
+            var respose = await client.PutAsync($"/api/SystemUsers/{ID}", httpContext);
+            var result = await respose.Content.ReadAsStringAsync();
+            if (respose.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ResultObjectError<bool>>(result);
         }
     }
 }

@@ -92,6 +92,13 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("RoleId", "UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
+                            UserId = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -194,6 +201,17 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
+                            ConcurrencyStamp = "caf62d73-4ec6-45a3-babd-25321ea70efd",
+                            Description = "Administrator role",
+                            Name = "admin",
+                            NormalizedName = "admin",
+                            Sort = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>
@@ -535,7 +553,11 @@ namespace ProjectWeb.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("Sort")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("ID", "ProductID", "CategoryID");
 
@@ -600,13 +622,6 @@ namespace ProjectWeb.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Sort")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -622,6 +637,25 @@ namespace ProjectWeb.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("SystemUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1e1000ed-98a5-4cca-9533-b9dad5829a94",
+                            Email = "lethienbao3012@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "lethienbao3012@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBhdfJ0jfj56tTaNVuHE5rngEkqi6LJWrnHPFYMHuh9ZQbPOU6D1NyAn6KugmPNxYA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserInfomationID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.UserInformation", b =>
@@ -674,6 +708,16 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("UserInformations");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
+                            FirstName = "admin",
+                            LastName = "admin",
+                            PhoneNumber = "454545",
+                            Sort = 0
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Cart", b =>

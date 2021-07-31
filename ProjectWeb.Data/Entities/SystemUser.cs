@@ -9,7 +9,6 @@ namespace ProjectWeb.Data.Entities
 {
     public class SystemUser : IdentityUser<Guid>
     {
-        public int Sort { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
         public DateTime? DateDeleted { get; set; }

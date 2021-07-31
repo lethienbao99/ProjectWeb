@@ -36,13 +36,12 @@ namespace ProjectWeb.AdminApp.Controllers
 
             var request = new UserPagingRequest()
             {
-                BearerToken = TokenInSession,
                 Keyword = keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
             var data = await _systemUserBackendAPI.GetUserPaging(request);
-            return View(data);
+            return View(data.Object);
         }
 
         [HttpGet]
@@ -58,9 +57,45 @@ namespace ProjectWeb.AdminApp.Controllers
                 return View();
 
             var result = await _systemUserBackendAPI.Signup(request);
-            if (result)
+            if (result.IsSuccessed)
                 return RedirectToAction("Index","SystemUser");
+            ModelState.AddModelError("", result.Message);
             return View(request);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _systemUserBackendAPI.Update(request.ID, request);
+            if (result.IsSuccessed)
+                return RedirectToAction("Index", "SystemUser");
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var result = await _systemUserBackendAPI.GetUserByID(id);
+            if(result.IsSuccessed)
+            {
+                var user = result.Object;
+                var data = new UserUpdateRequest()
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    DateOfBirth = user.DateOfBirth,
+                    Email = user.Email,
+                    ID = user.ID
+                };
+                return View(data);
+            }    
+            return RedirectToAction("Error", "Home");
         }
 
         [HttpGet]
@@ -76,14 +111,19 @@ namespace ProjectWeb.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var token = await _systemUserBackendAPI.Authenticate(request);
-            var userPrincipal = this.ValidateToken(token);
+            var result = await _systemUserBackendAPI.Authenticate(request);
+            if(result.Message != "Success")
+            {
+                ModelState.AddModelError("", result.Message);
+                return View();
+            }
+            var userPrincipal = this.ValidateToken(result.Object);
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
-            HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString("Token", result.Object);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,

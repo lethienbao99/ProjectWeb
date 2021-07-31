@@ -10,8 +10,8 @@ using ProjectWeb.Data.EntityFamework;
 namespace ProjectWeb.Data.Migrations
 {
     [DbContext(typeof(ProjectWebDBContext))]
-    [Migration("20210723084334_Initial")]
-    partial class Initial
+    [Migration("20210731051515_seeddata")]
+    partial class seeddata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -208,7 +208,7 @@ namespace ProjectWeb.Data.Migrations
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "17aa9af8-a663-481d-a12d-412e8655b41a",
+                            ConcurrencyStamp = "caf62d73-4ec6-45a3-babd-25321ea70efd",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -312,6 +312,55 @@ namespace ProjectWeb.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Image", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Caption")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProductID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Sort")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Order", b =>
@@ -506,7 +555,11 @@ namespace ProjectWeb.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("Sort")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("ID", "ProductID", "CategoryID");
 
@@ -571,13 +624,6 @@ namespace ProjectWeb.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Sort")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -599,16 +645,15 @@ namespace ProjectWeb.Data.Migrations
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3b4b5cfe-524a-4b40-a575-d56012a5f5ef",
+                            ConcurrencyStamp = "1e1000ed-98a5-4cca-9533-b9dad5829a94",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM9aJaKPdkZptjrCGCkN8k4Kg4Sm6Hq+vG5lA73mguPP1WxKnRP8WdHcJUPJ265vug==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBhdfJ0jfj56tTaNVuHE5rngEkqi6LJWrnHPFYMHuh9ZQbPOU6D1NyAn6KugmPNxYA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
-                            Sort = 0,
                             TwoFactorEnabled = false,
                             UserInfomationID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
                             UserName = "admin"
@@ -696,6 +741,17 @@ namespace ProjectWeb.Data.Migrations
                     b.Navigation("SystemUser");
                 });
 
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Image", b =>
+                {
+                    b.HasOne("ProjectWeb.Data.Entities.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ProjectWeb.Data.Entities.Order", b =>
                 {
                     b.HasOne("ProjectWeb.Data.Entities.SystemUser", "SystemUser")
@@ -769,6 +825,8 @@ namespace ProjectWeb.Data.Migrations
             modelBuilder.Entity("ProjectWeb.Data.Entities.Product", b =>
                 {
                     b.Navigation("Carts");
+
+                    b.Navigation("Images");
 
                     b.Navigation("OrderDetails");
 
