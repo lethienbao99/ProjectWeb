@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProjectWeb.Models.CommonModels
 {
-    public class PageResultModel<T>
+    public class PageResultModel<T> : PageResultViewBase
     {
         public List<T> Items { get; set; }
-        public int TotalRecord { get; set; }
     }
 
     public class PagingRequestBase

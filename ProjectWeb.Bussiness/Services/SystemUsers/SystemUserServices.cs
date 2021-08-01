@@ -148,7 +148,9 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
 
             var pagedResult = new PageResultModel<SystemUserModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
                 Items = data
             };
 
@@ -202,7 +204,8 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 Address = userInfo.Address,
                 DateOfBirth = userInfo.DateOfBirth,
                 DateCreated = userInfo.DateCreated,
-                DateUpdated = userInfo.DateUpdated
+                DateUpdated = userInfo.DateUpdated,
+                Status = userInfo.Status
             };
             return new ResultObjectSuccess<SystemUserModel>(data);
         }

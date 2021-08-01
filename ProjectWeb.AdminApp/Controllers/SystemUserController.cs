@@ -99,6 +99,13 @@ namespace ProjectWeb.AdminApp.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var result = await _systemUserBackendAPI.GetUserByID(id);
+            return View(result.Object);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Login()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

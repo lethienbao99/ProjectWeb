@@ -142,7 +142,9 @@ namespace ProjectWeb.Bussiness.Services.Products
 
             var pagedResult = new PageResultModel<ProductModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
                 Items = data
             };
 
@@ -198,7 +200,9 @@ namespace ProjectWeb.Bussiness.Services.Products
 
             var pagedResult = new PageResultModel<ProductViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
                 Items = data
             };
 
