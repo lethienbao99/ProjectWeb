@@ -28,7 +28,7 @@ namespace ProjectWeb.AdminApp.Controllers
             _systemUserBackendAPI = systemUserBackendAPI;
             _config = config;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
         {
             var TokenInSession = HttpContext.Session.GetString("Token");
             if(TokenInSession == null)
@@ -40,6 +40,15 @@ namespace ProjectWeb.AdminApp.Controllers
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
+            ViewBag.Keyword = keyword;
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            }
+            if (TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
             var data = await _systemUserBackendAPI.GetUserPaging(request);
             return View(data.Object);
         }
@@ -53,26 +62,83 @@ namespace ProjectWeb.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SignUpRequest request)
         {
+            var ErrorString = "";
             if (!ModelState.IsValid)
+            {
+                foreach (var item in ModelState.Root.Errors)
+                {
+                    ErrorString += item.ErrorMessage;
+                }
+                if (ErrorString == "")
+                {
+                    foreach (var item in ModelState.Root.Children)
+                    {
+                        if (item.Errors.Count > 0)
+                        {
+                            ErrorString += item.Errors[0].ErrorMessage;
+                        }
+                    }
+                }
+                TempData["ErrorMessage"] = ErrorString;
+                if (TempData["ErrorMessage"] != null)
+                {
+                    ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                }
                 return View();
+            }
 
             var result = await _systemUserBackendAPI.Signup(request);
             if (result.IsSuccessed)
-                return RedirectToAction("Index","SystemUser");
+            {
+                TempData["SuccessMessage"] = "Thêm mới thành công";
+                return RedirectToAction("Index", "SystemUser");
+            }
+               
             ModelState.AddModelError("", result.Message);
+            TempData["ErrorMessage"] = result.Message;
+            if(TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
             return View(request);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(UserUpdateRequest request)
         {
+            var ErrorString = "";
             if (!ModelState.IsValid)
+            {
+                foreach (var item in ModelState.Root.Errors)
+                {
+                    ErrorString += item.ErrorMessage;
+                }
+                if(ErrorString == "")
+                {
+                    foreach (var item in ModelState.Root.Children)
+                    {
+                        if(item.Errors.Count > 0)
+                        {
+                            ErrorString += item.Errors[0].ErrorMessage;
+                        }
+                    }
+                }
+                TempData["ErrorMessage"] = ErrorString;
+                if (TempData["ErrorMessage"] != null)
+                {
+                    ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                }
                 return View();
+            }
 
             var result = await _systemUserBackendAPI.Update(request.ID, request);
             if (result.IsSuccessed)
+            {
+                TempData["SuccessMessage"] = "Cập nhật thành công";
                 return RedirectToAction("Index", "SystemUser");
+            }
             ModelState.AddModelError("", result.Message);
+            TempData["ErrorMessage"] = "Cập nhật thất bại";
             return View(request);
         }
 
@@ -119,11 +185,13 @@ namespace ProjectWeb.AdminApp.Controllers
         {
             var result = await _systemUserBackendAPI.Delete(model.ID);
             if (result.IsSuccessed)
-                return RedirectToAction("Index");
-
-            ModelState.AddModelError("", result.Message);
-
-            return RedirectToAction("Index");
+            {
+                TempData["SuccessMessage"] = "Xóa thành công";
+                return RedirectToAction("Index", "SystemUser");
+            }
+            
+            TempData["ErrorMessage"] = result.Message;
+            return RedirectToAction("Index", "SystemUser");
         }
 
         [HttpGet]

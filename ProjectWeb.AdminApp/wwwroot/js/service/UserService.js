@@ -15,11 +15,17 @@
             var form = $(this).parents('.modal').find('form');
             var actionURL = form.attr('action');
             var sendData = form.serialize();
-            $.post(actionURL, sendData).done(function (data) {
-                PlaceHolderElement.find('.modal').modal('hide');
-                location.reload();
+        $.post(actionURL, sendData).done(function (data) {
+            PlaceHolderElement.find('.modal').modal('hide');
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+                toastr.success("Xóa thành công", "Thông báo", 200)
             })
-        }
+        },
+        
     )
 
 })
+
+
