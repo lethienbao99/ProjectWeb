@@ -8,116 +8,118 @@
 
 
 
+<div id="PlaceHolderHere"></div>
+    <div class="container-fluid px-4">
 
+        <h1 class="mt-4">DS người dùng</h1>
 
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">DS người dùng</li>
+        </ol>
 
-<div class="container-fluid px-4">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <a asp-action="Create" asp-controller="SystemUser" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Tạo mới</span>
+                </a>
 
-    <h1 class="mt-4">DS người dùng</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-        <li class="breadcrumb-item active">DS người dùng</li>
-    </ol>
-
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <a asp-action="Create" asp-controller="SystemUser" class="btn btn-success btn-icon-split">
-                <span class="icon text-white-50">
-                    <i class="fas fa-check"></i>
-                </span>
-                <span class="text">Tạo mới</span>
-            </a>
-
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>
-                                Username
-                            </th>
-                            <th>
-                                FirstName
-                            </th>
-                            <th>
-                                LastName
-                            </th>
-                            <th>
-                                PhoneNumber
-                            </th>
-                            <th>
-                                DateOfBirth
-                            </th>
-                            <th>
-                                Address
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                            <th>
-                                Email
-                            </th>
-
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var item in Model.Items)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Username)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FirstName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LastName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DateOfBirth)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Address)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Email)
-                                </td>
-
-                                <td>
-                                    <a href="@Url.Action("Create", "SystemUser",  new { id = item.ID })" class="btn btn-success btn-circle btn-sm">
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </a>
-
-                                    <a href="@Url.Action("Details", "SystemUser",  new { id = item.ID })" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-info-circle"></i>
-                                    </a>
-
-                                    <a href="@Url.Action("Delete", "SystemUser",  new { id = item.ID })" class="btn btn-danger btn-circle btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
             </div>
-            @await Component.InvokeAsync("Page", Model)
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    FirstName
+                                </th>
+                                <th>
+                                    LastName
+                                </th>
+                                <th>
+                                    PhoneNumber
+                                </th>
+                                <th>
+                                    DateOfBirth
+                                </th>
+                                <th>
+                                    Address
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Email
+                                </th>
 
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Username)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FirstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DateOfBirth)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Address)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+
+                                    <td>
+                                        <a href="@Url.Action("Edit", "SystemUser",  new { id = item.ID })" class="btn btn-warning btn-circle btn-sm">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+
+                                        <a href="@Url.Action("Details", "SystemUser",  new { id = item.ID })" class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+
+                                        <button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModalCenter"
+                                                data-url="@Url.Action($"Delete/{item.ID}")">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                             }
+                        </tbody>
+                    </table>
+                </div>
+                @await Component.InvokeAsync("Page", Model)
+
+            </div>
         </div>
+
     </div>
 
-</div>
 <!-- /.container-fluid -->
+
+<script src="/js/service/UserService.js"></script>
+
 

@@ -15,7 +15,9 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            <a type="button" class="btn btn-success" asp-action="Create" asp-controller="SystemUser"> Tạo mới</a>
+            <a type="button" class="btn btn-success" href="@Url.Action("Edit", "SystemUser",  new { id = Model.ID })"> Chỉnh sửa</a>
+
+
         </div>
         <div class="card-body">
             <div class="col-md-12">

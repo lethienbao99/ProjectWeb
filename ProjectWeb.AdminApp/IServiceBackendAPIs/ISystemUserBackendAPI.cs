@@ -14,6 +14,8 @@ namespace ProjectWeb.AdminApp.IServiceBackendAPIs
         Task<ResultMessage<bool>> Signup(SignUpRequest request);
         Task<ResultMessage<bool>> Update(Guid ID, UserUpdateRequest request);
         Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID);
+        Task<ResultMessage<bool>> Delete(Guid ID);
+
 
 
     }

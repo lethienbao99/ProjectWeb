@@ -78,5 +78,12 @@ namespace ProjectWeb.API.Controllers
             var result = await _systemUserServices.GetUserByID(id);
             return Ok(result);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _systemUserServices.Delete(id);
+            return Ok(result);
+        }
     }
 }

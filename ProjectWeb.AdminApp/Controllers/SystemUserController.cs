@@ -105,6 +105,27 @@ namespace ProjectWeb.AdminApp.Controllers
             return View(result.Object);
         }
 
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _systemUserBackendAPI.GetUserByID(id);
+            return PartialView("_DeteleModalPartial", result.Object);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(SystemUserModel model)
+        {
+            var result = await _systemUserBackendAPI.Delete(model.ID);
+            if (result.IsSuccessed)
+                return RedirectToAction("Index");
+
+            ModelState.AddModelError("", result.Message);
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public async Task<IActionResult> Login()
         {

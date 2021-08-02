@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectWeb.AdminApp.Models;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ProjectWeb.AdminApp.Controllers
@@ -21,7 +23,21 @@ namespace ProjectWeb.AdminApp.Controllers
 
         public IActionResult Index()
         {
-            var user = User.Identity.Name;
+            var ID = "";
+            var listClaim = User.Identities.Select(x => x.Claims).ToList(); 
+            foreach(var claim in listClaim)
+            {
+                foreach(var item in claim)
+                {
+                    if(item.ToString().Contains("nameidentifier"))
+                    {
+                        ID = item.Value;
+                        break;
+                    }
+                }
+                break;
+            }
+            HttpContext.Session.SetString("UserID", ID);
             return View();
         }
 

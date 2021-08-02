@@ -58,6 +58,7 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 new Claim(ClaimTypes.GivenName, userInfo.FirstName),
                 new Claim(ClaimTypes.Role, string.Join(";", roles)),
                 new Claim(ClaimTypes.Name, request.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
@@ -208,6 +209,30 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 Status = userInfo.Status
             };
             return new ResultObjectSuccess<SystemUserModel>(data);
+        }
+
+        public async Task<ResultMessage<bool>> Delete(Guid ID)
+        {
+            var user = await _userManager.FindByIdAsync(ID.ToString());
+
+            if (user == null)
+                return new ResultObjectError<bool>("User không tồn tại.");
+            else if(user.UserName == "admin")
+                return new ResultObjectError<bool>("Không được xóa superadmin");
+
+            var userInfo = await _context.UserInformations.FirstOrDefaultAsync(s => s.ID == user.UserInfomationID && s.IsDelete == null);
+            if (userInfo != null)
+                _context.UserInformations.Remove(userInfo);
+
+            var result = await _userManager.DeleteAsync(user);
+            if(result.Succeeded)
+            {
+                _context.SaveChanges();
+                return new ResultObjectSuccess<bool>();
+            }
+
+            return new ResultObjectError<bool>("Fail");
+
         }
     }
 }

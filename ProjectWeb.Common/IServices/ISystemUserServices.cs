@@ -17,6 +17,7 @@ namespace ProjectWeb.Common.IServices
         Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request);
         Task<ResultMessage<bool>> Update(Guid ID, UserUpdateRequest request);
         Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID);
+        Task<ResultMessage<bool>> Delete(Guid ID);
 
     }
 

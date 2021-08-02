@@ -44,6 +44,7 @@ namespace ProjectWeb.AdminApp.Services
             return new ResultObjectError<string>(dataRaw); 
         }
 
+
         public async Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID)
         {
             var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
@@ -57,6 +58,21 @@ namespace ProjectWeb.AdminApp.Services
 
             var user = JsonConvert.DeserializeObject<ResultObjectSuccess<SystemUserModel>>(dataRaw);
             return user;
+        }
+
+        public async Task<ResultMessage<bool>> Delete(Guid ID)
+        {
+            var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            var respose = await client.DeleteAsync($"/api/SystemUsers/{ID}");
+            var dataRaw = await respose.Content.ReadAsStringAsync();
+            if (!respose.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectError<bool>>(dataRaw);
+
+            var result = JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(dataRaw);
+            return result;
         }
 
         public async Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request)
