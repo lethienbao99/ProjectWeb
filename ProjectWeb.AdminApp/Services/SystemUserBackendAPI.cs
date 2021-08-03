@@ -126,5 +126,24 @@ namespace ProjectWeb.AdminApp.Services
 
             return JsonConvert.DeserializeObject<ResultObjectError<bool>>(result);
         }
+
+        public async Task<ResultMessage<bool>> RoleAssign(Guid ID, RoleAssignRequest request)
+        {
+            var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+
+            var jsonConvert = JsonConvert.SerializeObject(request);
+            var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
+
+            var respose = await client.PutAsync($"/api/SystemUsers/{ID}/role", httpContext);
+            var result = await respose.Content.ReadAsStringAsync();
+            if (respose.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ResultObjectError<bool>>(result);
+        }
     }
 }

@@ -50,6 +50,7 @@ namespace ProjectWeb.AdminApp
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<ISystemUserBackendAPI, SystemUserBackendAPI>();
+            services.AddTransient<IRoleBackendAPI, RoleBackendAPI>();
             IMvcBuilder builder = services.AddRazorPages();
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if(env == Environments.Development)

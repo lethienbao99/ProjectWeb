@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectWeb.Bussiness.Services.AppRoles;
 using ProjectWeb.Bussiness.Services.Categories;
 using ProjectWeb.Bussiness.Services.Commons;
 using ProjectWeb.Bussiness.Services.Products;
@@ -58,6 +59,7 @@ namespace ProjectWeb.API
             services.AddTransient<IStorageServices, StorageServices>();
             services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddTransient<ISystemUserServices, SystemUserServices>();
+            services.AddTransient<IAppRoleServices, AppRoleServices>();
             services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
             services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();

@@ -192,6 +192,8 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
             if(user == null)
                 return new ResultObjectError<SystemUserModel>("User không tồn tại.");
 
+
+            var roles = await _userManager.GetRolesAsync(user);
             var userInfo = await _context.UserInformations.FirstOrDefaultAsync(s => s.ID == user.UserInfomationID && s.IsDelete == null);
 
             var data = new SystemUserModel()
@@ -206,7 +208,8 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 DateOfBirth = userInfo.DateOfBirth,
                 DateCreated = userInfo.DateCreated,
                 DateUpdated = userInfo.DateUpdated,
-                Status = userInfo.Status
+                Status = userInfo.Status,
+                Roles = roles
             };
             return new ResultObjectSuccess<SystemUserModel>(data);
         }
@@ -233,6 +236,39 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
 
             return new ResultObjectError<bool>("Fail");
 
+        }
+
+        public async Task<ResultMessage<bool>> RoleAssign(Guid ID, RoleAssignRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.ID.ToString());
+            if (user == null)
+            {
+                return new ResultObjectError<bool>("User is not exists");
+            }
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            if (request.Roles != null)
+            {
+                foreach (var role in request.Roles)
+                {
+                    //Nếu có check và chưa tồn tại role này thì add vào.
+                    if (role.Selected && !userRoles.Contains(role.Name))
+                    {
+                        await _userManager.AddToRoleAsync(user, role.Name);
+
+                    }
+                    
+                    //Bỏ check thì move role.
+                    else if (!role.Selected || userRoles.Contains(role.Name))
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, role.Name);
+                    }
+
+                }
+               
+            }
+
+            return new ResultObjectSuccess<bool>();
         }
     }
 }

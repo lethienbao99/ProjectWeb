@@ -124,6 +124,10 @@
                                             data-url="@Url.Action($"Delete/{item.ID}")">
                                         <i class="fas fa-trash"></i>
                                     </button>
+
+                                    <a href="@Url.Action("Permissions", "SystemUser",  new { id = item.ID })" class="btn btn-success btn-circle btn-sm">
+                                        <i class="bi bi-key-fill"></i>
+                                    </a>
                                 </td>
                             </tr>
                         }

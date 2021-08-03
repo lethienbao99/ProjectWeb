@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ProjectWeb.AdminApp.IServiceBackendAPIs;
+using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.SystemUsers;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,12 @@ namespace ProjectWeb.AdminApp.Controllers
     {
         private readonly ISystemUserBackendAPI _systemUserBackendAPI;
         private readonly IConfiguration _config;
-        public SystemUserController(ISystemUserBackendAPI systemUserBackendAPI, IConfiguration config)
+        private readonly IRoleBackendAPI _roleBackendAPI;
+        public SystemUserController(ISystemUserBackendAPI systemUserBackendAPI, IConfiguration config, IRoleBackendAPI roleBackendAPI)
         {
             _systemUserBackendAPI = systemUserBackendAPI;
             _config = config;
+            _roleBackendAPI = roleBackendAPI;
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
         {
@@ -233,6 +236,71 @@ namespace ProjectWeb.AdminApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "SystemUser");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Permissions(Guid id)
+        {
+            var roleAssignRequest = await GetRoleAssign(id);
+            return View(roleAssignRequest);
+        }
+        private async Task<RoleAssignRequest> GetRoleAssign(Guid id)
+        {
+            var result = await _systemUserBackendAPI.GetUserByID(id);
+            var roles = await _roleBackendAPI.GetAll();
+            var roleAssignRequest = new RoleAssignRequest();
+            foreach (var role in roles.Object)
+            {
+                roleAssignRequest.Roles.Add(new SelectItem()
+                {
+                    ID = role.ID.ToString(),
+                    Name = role.Name,
+                    Selected = result.Object.Roles.Contains(role.Name)
+                });
+            }
+            return roleAssignRequest;
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Permissions(RoleAssignRequest request)
+        {
+            var ErrorString = "";
+            if (!ModelState.IsValid)
+            {
+                foreach (var item in ModelState.Root.Errors)
+                {
+                    ErrorString += item.ErrorMessage;
+                }
+                if (ErrorString == "")
+                {
+                    foreach (var item in ModelState.Root.Children)
+                    {
+                        if (item.Errors.Count > 0)
+                        {
+                            ErrorString += item.Errors[0].ErrorMessage;
+                        }
+                    }
+                }
+                TempData["ErrorMessage"] = ErrorString;
+                if (TempData["ErrorMessage"] != null)
+                {
+                    ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                }
+                return View();
+            }
+
+            var result = await _systemUserBackendAPI.RoleAssign(request.ID, request);
+            if (result.IsSuccessed)
+            {
+                TempData["SuccessMessage"] = "Phân quyền thành công";
+                return RedirectToAction("Index", "SystemUser");
+            }
+            ModelState.AddModelError("", result.Message);
+            TempData["ErrorMessage"] = result.Message;
+            var roleAssignRequest = await GetRoleAssign(request.ID);
+            return View(roleAssignRequest);
         }
 
 

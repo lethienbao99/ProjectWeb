@@ -115,6 +115,7 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User Screens:</h6>
+                        <a class="collapse-item" href="@Url.Action("Details", "SystemUser",  new { id = @HttpContextAccessor.HttpContext.Session.GetString("UserID")})">Thông tin cá nhân</a>
                         <a class="collapse-item" asp-controller="SystemUser" asp-action="Index">DS Người dùng</a>
                         <a class="collapse-item" asp-controller="SystemUser" asp-action="Create">Tạo mới người dùng</a>
                         <div class="collapse-divider"></div>

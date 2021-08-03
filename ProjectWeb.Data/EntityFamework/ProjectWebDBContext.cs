@@ -17,9 +17,18 @@ namespace ProjectWeb.Data.EntityFamework
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // READ DATABASE FROM MSSQL SERVER
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server =.;Database=ProjectWebDB;Trusted_Connection=True;");
+            }
+
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             //Fluent API.
             modelBuilder.ApplyConfiguration(new AppConfigFluentAPI());
             modelBuilder.ApplyConfiguration(new ProductFluentAPI());
@@ -40,10 +49,9 @@ namespace ProjectWeb.Data.EntityFamework
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens").HasKey(x => x.UserId);
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
 
-
             //DataSeed.
             modelBuilder.Seed();
-            //base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Product> Products { get; set; }

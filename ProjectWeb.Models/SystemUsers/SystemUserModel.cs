@@ -28,6 +28,7 @@ namespace ProjectWeb.Models.SystemUsers
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
         public string Username { get; set; }
+        public IList<string> Roles { get; set; }
     }
 
     public class LoginRequest

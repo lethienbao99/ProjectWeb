@@ -18,6 +18,7 @@ namespace ProjectWeb.Common.IServices
         Task<ResultMessage<bool>> Update(Guid ID, UserUpdateRequest request);
         Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID);
         Task<ResultMessage<bool>> Delete(Guid ID);
+        Task<ResultMessage<bool>> RoleAssign(Guid ID, RoleAssignRequest request);
 
     }
 

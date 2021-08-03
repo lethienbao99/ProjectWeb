@@ -85,5 +85,20 @@ namespace ProjectWeb.API.Controllers
             var result = await _systemUserServices.Delete(id);
             return Ok(result);
         }
+
+
+        [HttpPut("{id}/role")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _systemUserServices.RoleAssign(id, request);
+            if (!result.IsSuccessed)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }
