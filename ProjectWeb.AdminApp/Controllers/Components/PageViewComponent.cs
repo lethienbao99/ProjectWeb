@@ -9,6 +9,7 @@ namespace ProjectWeb.AdminApp.Controllers.Components
 {
     public class PageViewComponent : ViewComponent
     { 
+        //Trả về view của phân trang.
         public Task<IViewComponentResult> InvokeAsync(PageResultViewBase result)
         {
             return Task.FromResult((IViewComponentResult)View("Default", result));

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using ProjectWeb.AdminApp.IServiceBackendAPIs;
 using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.SystemUsers;
@@ -16,6 +17,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static ProjectWeb.Common.Enums.EnumConstants;
 
 namespace ProjectWeb.AdminApp.Controllers
 {
@@ -91,6 +93,7 @@ namespace ProjectWeb.AdminApp.Controllers
             }
 
             var result = await _systemUserBackendAPI.Signup(request);
+
             if (result.IsSuccessed)
             {
                 TempData["SuccessMessage"] = "Thêm mới thành công";
@@ -222,7 +225,8 @@ namespace ProjectWeb.AdminApp.Controllers
                 ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
-            HttpContext.Session.SetString("Token", result.Object);
+            HttpContext.Session.SetString(SystemsConstants.Token, result.Object);
+            HttpContext.Session.SetString(SystemsConstants.SettingLanguage, _config[SystemsConstants.SettingLanguage]);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
@@ -250,14 +254,17 @@ namespace ProjectWeb.AdminApp.Controllers
             var result = await _systemUserBackendAPI.GetUserByID(id);
             var roles = await _roleBackendAPI.GetAll();
             var roleAssignRequest = new RoleAssignRequest();
-            foreach (var role in roles.Object)
+            if (roles != null)
             {
-                roleAssignRequest.Roles.Add(new SelectItem()
+                foreach (var role in roles.Object)
                 {
-                    ID = role.ID.ToString(),
-                    Name = role.Name,
-                    Selected = result.Object.Roles.Contains(role.Name)
-                });
+                    roleAssignRequest.Roles.Add(new SelectItem()
+                    {
+                        ID = role.ID.ToString(),
+                        Name = role.Name,
+                        Selected = result.Object.Roles.Contains(role.Name)
+                    });
+                }
             }
             return roleAssignRequest;
         }

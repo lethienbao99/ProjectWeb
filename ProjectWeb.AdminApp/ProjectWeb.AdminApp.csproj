@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjectWeb.Common\ProjectWeb.Common.csproj" />
     <ProjectReference Include="..\ProjectWeb.Models\ProjectWeb.Models.csproj" />
   </ItemGroup>
 

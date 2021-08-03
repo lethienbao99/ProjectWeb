@@ -12,7 +12,7 @@ namespace ProjectWeb.AdminApp.Controllers
     [Authorize]
     public class BaseController : Controller
     {
-        //Lưu token vô session nên để cái này rồi từ từ xử lý sau.
+        //Lưu token vô session nên để cái này rồi từ từ xử lý sau. Vì nó bị miss cái Remember me.
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var TokenInSession = context.HttpContext.Session.GetString("Token");

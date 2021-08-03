@@ -11,6 +11,9 @@ namespace ProjectWeb.Common.Enums
         public class SystemsConstants
         {
             public const string ConnectionString = "ProjectWebDB";
+            public const string Token = "Token";
+            public const string SettingLanguage = "Language";
+            public const string BaseURLApi = "BaseURLApi";
         }
         public class PublicConstants
         {

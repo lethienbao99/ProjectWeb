@@ -32,7 +32,7 @@ namespace ProjectWeb.API.Controllers
             var result = await _systemUserServices.Authenticate(request);
 
             if (result == null)
-                return BadRequest("Username or Password is incorrect");
+                return BadRequest(request);
             return Ok(result);
         }
 

@@ -43,11 +43,11 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
         public async Task<ResultMessage<string>> Authenticate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
-            if (user == null) return null;
+            if (user == null) return new ResultObjectError<string>("User không tồn tại."); 
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.IsRememberMe, true);
             if (!result.Succeeded)
-                return null;
+                return new ResultObjectError<string>("Sai mật khẩu.");
 
             var userInfo = _context.UserInformations.FirstOrDefault(x => x.ID == user.UserInfomationID);
 
