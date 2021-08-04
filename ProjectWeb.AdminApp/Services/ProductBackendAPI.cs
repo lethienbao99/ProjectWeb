@@ -71,11 +71,25 @@ namespace ProjectWeb.AdminApp.Services
 
         }
 
+        public async Task<ResultMessage<bool>> Delete(Guid ID)
+        {
+            return await DeteleAndReturnAsync<bool>($"/api/Products/{ID}");
+        }
+
+        public async Task<ResultMessage<ProductModel>> GetProductByID(Guid ID)
+        {
+            return await GetAndReturnAsync<ProductModel>($"/api/Products/{ID}"); 
+        }
+
         public async Task<ResultMessage<PageResultModel<ProductModel>>> GetProductPaging(ProductPagingRequest request)
         {
             return await GetAndReturnAsync<PageResultModel<ProductModel>>($"/api/Products/Paging?pageIndex=" +
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
         }
 
+        public Task<ResultMessage<bool>> Update(Guid ID, ProductCreateRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

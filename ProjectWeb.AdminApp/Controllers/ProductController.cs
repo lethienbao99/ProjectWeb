@@ -93,5 +93,28 @@ namespace ProjectWeb.AdminApp.Controllers
             }
             return View(request);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _productBackendAPI.GetProductByID(id);
+            return PartialView("_DeteleModalPartial", result.Object);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductModel model)
+        {
+            var result = await _productBackendAPI.Delete(model.ID);
+            if (result.IsSuccessed)
+            {
+                TempData["SuccessMessage"] = "Xóa thành công";
+                return RedirectToAction("Index", "SystemUser");
+            }
+
+            TempData["ErrorMessage"] = result.Message;
+            return RedirectToAction("Index", "SystemUser");
+        }
+
     }
 }

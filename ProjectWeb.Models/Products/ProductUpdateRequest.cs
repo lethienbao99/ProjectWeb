@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProjectWeb.Models.Products
 {
-    public class ProductCreateRequest
+    public class ProductUpdateRequest
     {
+        public Guid ID { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string Code { get; set; }

@@ -1,4 +1,5 @@
 ﻿using ProjectWeb.Data.Entities;
+using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace ProjectWeb.Common.Repositories
         Task UpdateAsync(T entity);
         Task UpdateAsync(Guid id);
         Task DeleteByModelAsync(T entity);
-        Task<string> DeleteByIDAsync(Guid id);
+        Task<ResultMessage<bool>> DeleteByIDAsync(Guid id);
         Task DeleteNotSQLByModelAsync(T entity);
         Task<string> DeleteNotSQLByIDAsync(Guid id);
 

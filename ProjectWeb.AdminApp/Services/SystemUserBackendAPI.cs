@@ -30,7 +30,7 @@ namespace ProjectWeb.AdminApp.Services
 
         public async Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID)
         {
-            return await GetAndReturnAsync<SystemUserModel>($"/api/SystemUsers/{ID}"); ;
+            return await GetAndReturnAsync<SystemUserModel>($"/api/SystemUsers/{ID}"); 
         }
 
         public async Task<ResultMessage<bool>> Delete(Guid ID)

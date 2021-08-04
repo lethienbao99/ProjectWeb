@@ -85,11 +85,8 @@ namespace ProjectWeb.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var messages = await _unitOfWork.Products.DeleteByIDAsync(id);
-            if (messages == "Fail")
-                return BadRequest("Fail");
-            else
-                return Ok();
+            var result = await _unitOfWork.Products.DeleteByIDAsync(id);
+            return Ok(result);
         }
 
         [HttpPost("hideRecord/{id}")]
@@ -142,13 +139,9 @@ namespace ProjectWeb.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var messages = await _unitOfWork.Images.DeleteByIDAsync(imageID);
-            if (messages == "Fail")
-                return BadRequest("Fail");
-            else
-                return Ok();
+            var result = await _unitOfWork.Images.DeleteByIDAsync(imageID);
+            return Ok(result);
         }
-
 
 
         [HttpGet("{productID}/images/{imageID}")]

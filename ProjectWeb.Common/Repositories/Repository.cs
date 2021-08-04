@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Data.EntityFamework;
+using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -172,20 +173,17 @@ namespace ProjectWeb.Common.Repositories
             entities.Remove(entity);
             await _context.SaveChangesAsync();
         }
-
-        public async Task<string> DeleteByIDAsync(Guid id)
+        public async Task<ResultMessage<bool>> DeleteByIDAsync(Guid id)
         {
-            var mess = "Fail";
-            var result = entities.Find(id);
+            var result = await entities.FirstOrDefaultAsync(x => x.ID == id);
             if (result != null)
             {
                 entities.Remove(result);
                 await _context.SaveChangesAsync();
-                mess = "Success";
-                return mess;
+                return new ResultObjectSuccess<bool>(); 
             }
             else
-                return mess;
+                return new ResultObjectError<bool>("Fail"); ;
         }
 
         public async Task DeleteNotSQLByModelAsync(T entity)
