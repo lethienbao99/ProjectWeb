@@ -27,7 +27,7 @@ namespace ProjectWeb.Bussiness.Services.Products
             _storageServices = storageServices;
         }
 
-        public async Task<Guid> CreateWithImages(ProductModel request)
+        public async Task<Guid> CreateWithImages(ProductCreateRequest request)
         {
             var product = new Product()
             {
@@ -57,7 +57,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                     }
                 };
             }
-               _context.Products.Add(product);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product.ID;
         }
@@ -150,8 +150,7 @@ namespace ProjectWeb.Bussiness.Services.Products
 
             return pagedResult;
         }
-
-        public async Task<PageResultModel<ProductViewModel>> GetAllPaging(ProductPagingRequest request)
+        public async Task<ResultMessage<PageResultModel<ProductViewModel>>> GetAllPaging(ProductPagingRequest request)
         {
             var query = from p in _context.Products
                         where p.IsDelete == null
@@ -193,6 +192,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                      Price = x.p.Price,
                      Stock = x.p.Stock,
                      Alias = x.p.Alias,
+                     Sort = x.p.Sort,
                      DateCreated = DateTime.Now,
                      Categories = x.categories
                      
@@ -206,7 +206,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                 Items = data
             };
 
-            return pagedResult;
+            return new ResultObjectSuccess<PageResultModel<ProductViewModel>>(pagedResult);
         }
 
         public async Task<ProductViewModel> GetProductByID(Guid ID)

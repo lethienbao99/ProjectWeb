@@ -13,9 +13,9 @@ namespace ProjectWeb.Common.IServices
 {
     public interface IProductServices : IRepository<Product>
     {
-        Task<Guid> CreateWithImages(ProductModel request);
+        Task<Guid> CreateWithImages(ProductCreateRequest request);
         Task<int> UpdateWithImages(ProductModel request);
-        Task<PageResultModel<ProductViewModel>> GetAllPaging(ProductPagingRequest request);
+        Task<ResultMessage<PageResultModel<ProductViewModel>>> GetAllPaging(ProductPagingRequest request);
         Task<PageResultModel<ProductModel>> GetAllByCategoryId(ProductByCategoryIdPagingRequest request);
         Task<ProductViewModel> GetProductByID(Guid ID);
     }

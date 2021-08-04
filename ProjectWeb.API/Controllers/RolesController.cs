@@ -22,6 +22,7 @@ namespace ProjectWeb.API.Controllers
         {
             _appRoleServices = appRoleServices;
         }
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var roles = await _appRoleServices.GetAll();

@@ -32,8 +32,8 @@ namespace ProjectWeb.API.Controllers
         [HttpGet("paging")]
         public async Task<IActionResult> GetAllPaging([FromQuery] ProductPagingRequest request)
         {
-            var products = await _unitOfWork.Products.GetAllPaging(request);
-            return Ok(products);
+            var result = await _unitOfWork.Products.GetAllPaging(request);
+            return Ok(result);
         }
 
         [HttpGet("byCategories")]
@@ -53,7 +53,8 @@ namespace ProjectWeb.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] ProductModel request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
