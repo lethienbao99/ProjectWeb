@@ -10,6 +10,6 @@ namespace ProjectWeb.AdminApp.IServiceBackendAPIs
     public interface IProductBackendAPI
     {
         Task<ResultMessage<PageResultModel<ProductModel>>> GetProductPaging(ProductPagingRequest request);
-        Task<bool> Create(ProductCreateRequest request);
+        Task<ResultMessage<bool>> Create(ProductCreateRequest request);
     }
 }

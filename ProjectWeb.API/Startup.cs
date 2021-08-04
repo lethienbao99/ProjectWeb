@@ -69,7 +69,9 @@ namespace ProjectWeb.API
             /*services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             services.AddTransient<IValidator<SignUpRequest>, SignUpRequestValidator>();*/
 
-            services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+            services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()).AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             /*services.AddControllers(options =>
             {
                 options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();

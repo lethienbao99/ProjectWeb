@@ -79,10 +79,17 @@ namespace ProjectWeb.AdminApp.Controllers
 
             var result = await _productBackendAPI.Create(request);
 
-            if (result)
+            if (result.IsSuccessed)
             {
                 TempData["SuccessMessage"] = "Thêm mới thành công";
                 return RedirectToAction("Index", "Product");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            TempData["ErrorMessage"] = result.Message;
+            if (TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
             }
             return View(request);
         }

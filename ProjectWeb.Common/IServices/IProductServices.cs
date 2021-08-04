@@ -13,7 +13,7 @@ namespace ProjectWeb.Common.IServices
 {
     public interface IProductServices : IRepository<Product>
     {
-        Task<Guid> CreateWithImages(ProductCreateRequest request);
+        Task<ResultMessage<Guid>> CreateWithImages(ProductCreateRequest request);
         Task<int> UpdateWithImages(ProductModel request);
         Task<ResultMessage<PageResultModel<ProductViewModel>>> GetAllPaging(ProductPagingRequest request);
         Task<PageResultModel<ProductModel>> GetAllByCategoryId(ProductByCategoryIdPagingRequest request);

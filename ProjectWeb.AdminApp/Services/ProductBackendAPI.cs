@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using static ProjectWeb.Common.Enums.EnumConstants;
 
 namespace ProjectWeb.AdminApp.Services
 {
@@ -26,37 +27,47 @@ namespace ProjectWeb.AdminApp.Services
 
         }
 
-        public async Task<bool> Create(ProductCreateRequest request)
+        public async Task<ResultMessage<bool>> Create(ProductCreateRequest request)
         {
-            var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var sessions = _httpContextAccessor
+                .HttpContext
+                .Session
+                .GetString(SystemsConstants.Token);
+
+
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var requestContent = new MultipartFormDataContent();
-            if(request.ThumbnailImage != null)
+
+            if (request.ThumbnailImage != null)
             {
                 byte[] data;
                 using (var br = new BinaryReader(request.ThumbnailImage.OpenReadStream()))
                 {
                     data = br.ReadBytes((int)request.ThumbnailImage.OpenReadStream().Length);
                 }
-                ByteArrayContent byteArray = new ByteArrayContent(data);
-                requestContent.Add(byteArray, "ThumbnailImage", request.ThumbnailImage.FileName);
-
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "thumbnailImage", request.ThumbnailImage.FileName);
             }
 
-            requestContent.Add(new StringContent(request.Code.ToString()), "Code");
-            requestContent.Add(new StringContent(request.ProductName.ToString()), "ProductName");
-            requestContent.Add(new StringContent(request.Description.ToString()), "Description");
-            requestContent.Add(new StringContent(request.Type.ToString()), "Type");
-            requestContent.Add(new StringContent(request.Status.ToString()), "Status");
-            requestContent.Add(new StringContent(request.Price.ToString()), "Price");
-            requestContent.Add(new StringContent(request.Stock.ToString()), "Stock");
-            requestContent.Add(new StringContent(request.Alias.ToString()), "Alias");
 
-            var response = await client.PostAsync("/api/products/", requestContent);
-            return response.IsSuccessStatusCode;
+            requestContent.Add(new StringContent(request.Code.ToString()), "code");
+            requestContent.Add(new StringContent(request.ProductName.ToString()), "productName");
+            requestContent.Add(new StringContent(request.Description.ToString()), "description");
+            requestContent.Add(new StringContent(request.Type.ToString()), "type");
+            requestContent.Add(new StringContent(request.Status.ToString()), "status");
+            requestContent.Add(new StringContent(request.Price.ToString()), "price");
+            requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
+            requestContent.Add(new StringContent(request.Alias.ToString()), "alias");
+
+            var response = await client.PostAsync($"/api/products/", requestContent);
+            var dataRaw = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(dataRaw);
+
+            return JsonConvert.DeserializeObject<ResultObjectError<bool>>(dataRaw);
 
         }
 

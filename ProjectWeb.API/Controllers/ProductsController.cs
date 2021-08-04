@@ -13,7 +13,7 @@ namespace ProjectWeb.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private IUnitOfWork _unitOfWork;
@@ -60,13 +60,13 @@ namespace ProjectWeb.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productId = await _unitOfWork.Products.CreateWithImages(request);
-            if (productId == Guid.Empty)
+            var result = await _unitOfWork.Products.CreateWithImages(request);
+            if (result.Object == Guid.Empty)
                 return BadRequest("Create Fail!!!");
 
-            var product = await _unitOfWork.Products.GetByIDAsync(productId);
+            var product = await _unitOfWork.Products.GetByIDAsync(result.Object);
 
-            return CreatedAtAction(nameof(GetById), new { ID = productId }, product);
+            return CreatedAtAction(nameof(GetById), new { ID = result.Object }, product);
         }
 
         [HttpPut]

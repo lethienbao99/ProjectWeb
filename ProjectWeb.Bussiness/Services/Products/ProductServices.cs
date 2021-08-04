@@ -27,7 +27,7 @@ namespace ProjectWeb.Bussiness.Services.Products
             _storageServices = storageServices;
         }
 
-        public async Task<Guid> CreateWithImages(ProductCreateRequest request)
+        public async Task<ResultMessage<Guid>> CreateWithImages(ProductCreateRequest request)
         {
             var product = new Product()
             {
@@ -49,6 +49,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                 {
                     new Image()
                     {
+                        ID = Guid.NewGuid(),
                         Caption = "Thumbnail Image " + request.ProductName,
                         DateCreated = DateTime.Now,
                         FileSize = request.ThumbnailImage.Length,
@@ -59,7 +60,7 @@ namespace ProjectWeb.Bussiness.Services.Products
             }
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
-            return product.ID;
+            return new ResultObjectSuccess<Guid>(product.ID);
         }
 
 
