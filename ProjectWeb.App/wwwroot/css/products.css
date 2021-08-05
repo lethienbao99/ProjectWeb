@@ -1,0 +1,310 @@
+/* info product */
+section.info-product .images-box-mobile {
+    display: none;
+}
+
+section.info-product .images-box-pc .images-big img {
+    width: 100%;
+}
+
+section.info-product .images-box-pc .images-sm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section.info-product .images-box-pc .images-sm img {
+    width: 24%;
+    margin: 5px 5px 5px 0px;
+}
+
+section.info-product .images-box-pc .images-sm img:last-child {
+    margin-right: 0px;
+}
+
+section.info-product .info-box {
+    background: #f8f8f8;
+    padding: 40px;
+    position: relative;
+}
+
+section.info-product .info-box .title h1 {
+    font-size: 24px;
+    text-transform: normal;
+    font-weight: bold;
+}
+
+section.info-product .info-box .size label,
+section.info-product .info-box .quantity label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #333;
+    margin: 20px 0 10px 0;
+    display: inline-block;
+}
+
+section.info-product .info-box .size select {
+    font-size: 14px;
+}
+
+section.info-product .info-box .size select.w-70 {
+    width: 70%;
+}
+
+section.info-product .info-box .quantity button.btn.btn-outline-secondary,
+section.info-product .info-box .quantity .form-group .input-group input {
+    background: none;
+    border: none;
+}
+
+section.info-product .info-box .quantity button.btn.btn-outline-secondary:hover {
+    color: rgb(43, 43, 43)
+}
+
+section.info-product .info-box .quantity button.btn.btn-outline-secondary:active {
+    background: none;
+    border: none;
+}
+
+section.info-product .info-box .quantity .form-group .input-group {
+    min-width: 130px;
+    max-width: 130px;
+}
+
+section.info-product .info-box .price {
+    margin: 20px 0;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+section.info-product .info-box .addcart button {
+    background: #818181;
+    color: #ffffff;
+    transition: color 0.25s ease-in-out, background 0.25s ease-in-out;
+    width: 47%;
+    border: none;
+    border-radius: 0;
+    font-weight: 400;
+    display: inline-block;
+    padding: 10px 35px;
+    text-transform: none;
+    letter-spacing: 1px;
+    font-size: 12px;
+    line-height: 1.42;
+    min-height: 44px;
+    margin: 0 10px 10px 0;
+    word-wrap: break-word;
+    white-space: normal;
+}
+section.info-product .info-box .addcart button:last-child{
+    background: #3e3e3e
+}
+section.info-product .info-box .addcart button:hover {
+    background: #4e4e4e;
+}
+
+section.info-product .info-box .trust-badge {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+section.info-product .info-box .trust-badge img {
+    width: 180px;
+}
+
+section.info-product .info-box .share {
+    margin-top: 60px;
+}
+
+section.info-product .info-box .title strong {
+    font-size: 11px
+}
+
+/* end info product */
+/* product reviews */
+main section.product-reviews .content .title h2 {
+    font-size: 28px;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    font-family: "Neuzeit Office Soft Rounded", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    margin: 0 0 0.5em;
+    line-height: 1.4;
+}
+
+main section.product-reviews .title .write a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.6;
+    font-family: "Neuzeit Office", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+main section.product-reviews .review{
+    display: none;
+}
+main section.product-reviews .review span.line {
+    display: block;
+    width: 100%;
+    padding: 24px 0 0 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+main section.product-reviews .review .title h3 {
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 0;
+    display: block;
+    font-family: "Neuzeit Office Soft Rounded", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    margin: 0 0 0.5em;
+}
+
+main section.product-reviews .review .content label {
+    font-size: 13px;
+    line-height: 20px;
+}
+
+main section.product-reviews .review .content input,
+textarea {
+    font-size: 14px;
+    border: 1px solid #b3b3b3;
+    max-width: 100%;
+    padding: 8px 10px;
+    border-radius: 0px;
+}
+
+main section.product-reviews .review .content button {
+    display: inline-block;
+    padding: 8px 10px;
+    width: auto;
+    margin: 0;
+    line-height: 1.42;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 0px;
+    background-color: #000;
+    color: #fff;
+}
+main section.product-reviews .comment .bdr {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+main section.product-reviews .comment .username {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+main section.product-reviews .comment .date {
+    font-style: italic;
+    font-size: 13px;
+    opacity: 0.5;
+    display: inline-block;
+    margin: 0 0 1em 0;
+}
+
+main section.product-reviews .comment .content {
+    margin: 0 0 24px 0;
+}
+
+main section.product-reviews .comment .report a {
+    color: #333;
+    text-decoration: none;
+    font-family: "Neuzeit Office", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+/* end product reviews */
+
+/* products detail */
+section.products.detail .product .owl-carousel .owl-nav {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    transform: translateY(-100%);
+    width: 100%;
+}
+
+section.products.detail .product .owl-carousel .owl-nav button {
+    position: absolute;
+    top: 0;
+    left: -1%;
+    opacity: 1;
+    background: #333;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    color: white;
+    transition: ease-in-out .2s;
+}
+
+section.products.detail .product .owl-carousel .owl-nav button:hover {
+    background: rgb(73, 73, 73);
+}
+
+section.products.detail .product .owl-carousel .owl-nav button.disabled {
+    background: #b3b3b3;
+}
+
+section.products.detail .product .owl-carousel .owl-nav button.owl-next {
+    right: -1%;
+    left: initial;
+}
+
+/* end products detail */
+
+/* // Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+
+    section.info-product .info-box .addcart button {
+        width: 100%;
+    }
+
+    section.products.detail .product .owl-carousel .owl-nav {
+        top: 20%;
+    }
+}
+
+
+/* // Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    section.info-product .images-box-mobile {
+        display: block;
+    }
+
+    section.info-product .images-box-pc {
+        display: none;
+    }
+
+    section.products.detail .product .owl-carousel .owl-nav {
+        top: 25%;
+    }
+}

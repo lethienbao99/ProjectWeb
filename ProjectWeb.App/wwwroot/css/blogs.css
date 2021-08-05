@@ -1,0 +1,154 @@
+/* box whatisnew */
+section.box-whatisnew .title h1 {
+    font-size: 28px;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-transform: normal;
+    font-weight: 700;
+}
+
+section.box-whatisnew .title .date {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+section.box-whatisnew .title h1 a {
+    color: #000;
+    text-decoration: none;
+    background: transparent;
+}
+
+section.box-whatisnew .title h1 a i {
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+section.box-whatisnew .body .content hr {
+    clear: both;
+    border-top: solid #b3b3b3;
+    border-width: 1px 0 0;
+    margin: 30px 0;
+    height: 0;
+}
+
+section.box-whatisnew .body .content hr:last-child {
+    border-top: none;
+}
+
+section.box-whatisnew .body .content .left .info .date {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+section.box-whatisnew .body .content .left .tags ul {
+    padding: 0;
+    margin: 0;
+}
+
+section.box-whatisnew .body .content .left .tags ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+section.box-whatisnew .body .content .left .tags ul li a {
+    color: #000;
+    text-decoration: none;
+    background: transparent;
+}
+
+section.box-whatisnew .body .content .right .title {
+    margin-top: 20px;
+}
+
+section.box-whatisnew .body .content .right .title h2 {
+    display: block;
+    font-family: "Neuzeit Office Soft Rounded", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    margin: 0 0 0.5em;
+    line-height: 1.4;
+    font-size: 2em;
+}
+
+section.box-whatisnew .body .content .right .title h2 a {
+    color: #000;
+    text-decoration: none;
+    background: transparent;
+}
+
+section.box-whatisnew .body .content .right .content {
+    margin-bottom: 15px;
+}
+
+section.box-whatisnew .body .content .right .share .title {
+    text-transform: none;
+    font-size: 12px;
+}
+
+section.box-whatisnew .body .content .right .more a {
+    color: #000;
+    text-decoration: none;
+    background: transparent;
+}
+section.box-whatisnew .body .pagination .pagination-items .prev a,
+section.box-whatisnew .body .pagination .pagination-items .page a,
+section.box-whatisnew .body .pagination .pagination-items .next a {
+    width: 42px;
+    height: 42px;
+    line-height: 42px;
+    float: left;
+    margin-left: -1px;
+    font-size: 12px;
+    box-sizing: content-box;
+    color: #000;
+    text-decoration: none;
+    background: transparent;
+}
+section.box-whatisnew .body .pagination .pagination-items .prev.active a,
+section.box-whatisnew .body .pagination .pagination-items .page.active a,
+section.box-whatisnew .body .pagination .pagination-items .next.active a{
+    color: #555;
+    background: #f5f5f5;
+}
+section.box-whatisnew .body .list .title-list {
+    font-size: 1.42857em;
+    display: block;
+    font-family: "Neuzeit Office Soft Rounded", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    margin: 0 0 0.5em;
+    line-height: 1.4;
+}
+
+section.box-whatisnew .body .list .content ul li {
+    border-top: 1px solid #e6e6e6;
+    padding-top: 15px;
+    list-style: none;
+}
+
+section.box-whatisnew .body .list .content ul li:first-child {
+    border-top: initial !important;
+}
+
+section.box-whatisnew .body .list .content .title a {
+    color: #000;
+    text-decoration: none;
+    background: transparent;
+}
+
+section.box-whatisnew .body .list .content .date {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+/* end box whatisnew */

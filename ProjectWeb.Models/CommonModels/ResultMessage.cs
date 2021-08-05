@@ -8,7 +8,6 @@ namespace ProjectWeb.Models.CommonModels
 {
     public class ResultMessage<T>
     {
-
         public bool IsSuccessed { get; set; }
         public string Message { get; set; }
         public T Object { get; set; }

@@ -1,0 +1,14 @@
+/* faqs */
+section.box-faqs .title h1 {
+    font-size: 28px;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-transform: normal;
+    font-weight: 700;
+}
+
+/* end faqs */

@@ -1,0 +1,32 @@
+/* banner */
+main section.banner .bg-banner.children {
+    height: 150px;
+    background: white;
+}
+
+/* end banner */
+/* breadcrumb */
+section.breadcrumb {
+    background: none;
+    font-size: 0.75em;
+}
+
+section.breadcrumb a:first-child,
+section.breadcrumb span:first-child {
+    padding-left: 0;
+}
+
+section.breadcrumb a {
+    text-decoration: underline;
+    color: #000;
+    background: transparent;
+}
+
+section.breadcrumb a,
+section.breadcrumb span {
+    display: inline-block;
+    padding: 0 7px 0 0;
+    margin-right: 7px;
+}
+
+/* end breadcrumb */

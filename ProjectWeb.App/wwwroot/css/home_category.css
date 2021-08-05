@@ -1,0 +1,21 @@
+/* banner */
+main section.banner .bg-banner {
+    height: 150px;
+}
+
+/* end banner */
+/* products */
+section.products .more a {
+    color: #000;
+    text-decoration: underline;
+}
+
+section.products hr {
+    clear: both;
+    border-top: solid #b3b3b3;
+    border-width: 1px 0 0;
+    margin: 30px 0;
+    height: 0;
+}
+
+/* end products */
