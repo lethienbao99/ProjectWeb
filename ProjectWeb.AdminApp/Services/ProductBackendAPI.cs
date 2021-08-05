@@ -61,6 +61,7 @@ namespace ProjectWeb.AdminApp.Services
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
             requestContent.Add(new StringContent(request.Alias.ToString()), "alias");
+            requestContent.Add(new StringContent(request.CategoryId.ToString()), "categoryId");
 
             var response = await client.PostAsync($"/api/products/", requestContent);
             var dataRaw = await response.Content.ReadAsStringAsync();
@@ -84,7 +85,7 @@ namespace ProjectWeb.AdminApp.Services
         public async Task<ResultMessage<PageResultModel<ProductModel>>> GetProductPaging(ProductPagingRequest request)
         {
             return await GetAndReturnAsync<PageResultModel<ProductModel>>($"/api/Products/Paging?pageIndex=" +
-                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
+                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&categoryId={request.CategoryId}");
         }
 
         public Task<ResultMessage<bool>> Update(Guid ID, ProductCreateRequest request)

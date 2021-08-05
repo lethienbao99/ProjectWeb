@@ -21,8 +21,8 @@ namespace ProjectWeb.Common.Repositories
         string DeleteNotSQLByID(Guid id);
 
         //Async
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetByIDAsync(Guid id);
+        Task<ResultMessage<IEnumerable<T>>> GetAllAsync();
+        Task<ResultMessage<T>> GetByIDAsync(Guid id);
         Task InsertAsync(T entity);
         Task UpdateAsync(T entity);
         Task UpdateAsync(Guid id);

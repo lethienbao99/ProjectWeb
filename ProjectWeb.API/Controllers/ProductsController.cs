@@ -47,7 +47,7 @@ namespace ProjectWeb.API.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var product = await _unitOfWork.Products.GetByIDAsync(id);
-            if (product == null)
+            if (product.Object == null)
                 return BadRequest($"Cannot find product with ID: {id}");
             return Ok(product);
         }
@@ -66,7 +66,7 @@ namespace ProjectWeb.API.Controllers
 
             var product = await _unitOfWork.Products.GetByIDAsync(result.Object);
 
-            return CreatedAtAction(nameof(GetById), new { ID = result.Object }, product);
+            return CreatedAtAction(nameof(GetById), new { ID = result.Object }, product.Object);
         }
 
         [HttpPut]
@@ -114,7 +114,7 @@ namespace ProjectWeb.API.Controllers
 
             var image = await _unitOfWork.Images.GetByIDAsync(result);
 
-            return CreatedAtAction(nameof(GetImageById), new { ID = result }, image);
+            return CreatedAtAction(nameof(GetImageById), new { ID = result }, image.Object);
         }
 
         [HttpPut("{productID}/images/{imageID}")]
@@ -148,7 +148,7 @@ namespace ProjectWeb.API.Controllers
         public async Task<IActionResult> GetImageById(Guid productID, Guid id)
         {
             var image = await _unitOfWork.Images.GetByIDAsync(id);
-            if (image == null)
+            if (image.Object == null)
                 return BadRequest($"Cannot find Images with ID: {id}");
             return Ok(image);
         }

@@ -125,20 +125,29 @@ namespace ProjectWeb.Common.Repositories
                 return mess;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<ResultMessage<IEnumerable<T>>> GetAllAsync()
         {
-            return await _context.Set<T>().OrderBy(x => x.Sort).ToListAsync();
+            var result =  await _context.Set<T>().OrderBy(x => x.Sort).ToListAsync();
+            if(result.Count > 0)
+            {
+                return new ResultObjectSuccess<IEnumerable<T>>(result);
+            }
+            return new ResultObjectError<IEnumerable<T>>("Null");
         }
 
-        public async Task<T> GetByIDAsync(Guid id)
+        public async Task<ResultMessage<T>> GetByIDAsync(Guid id)
         {
             if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("ID is null or empty");
+                return new ResultObjectError<T>("ID is null or empty");
             }
             else
             {
-                return await entities.FirstOrDefaultAsync(s => s.ID == id && s.IsDelete == null);
+                var item = await entities.FirstOrDefaultAsync(s => s.ID == id && s.IsDelete == null);
+                if(item != null)
+                    return new ResultObjectSuccess<T>(item);
+
+                return new ResultObjectError<T>("item is null");
             }
         }
 

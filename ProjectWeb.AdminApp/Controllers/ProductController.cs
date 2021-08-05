@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using ProjectWeb.AdminApp.IServiceBackendAPIs;
 using ProjectWeb.Models.Products;
@@ -13,21 +14,41 @@ namespace ProjectWeb.AdminApp.Controllers
     public class ProductController : Controller
     {
         private readonly IProductBackendAPI _productBackendAPI;
+        private readonly ICategoryBackendAPI _categoryBackendAPI;
         private readonly IConfiguration _config;
-        public ProductController(IProductBackendAPI productBackendAPI, IConfiguration config)
+        public ProductController(IProductBackendAPI productBackendAPI, IConfiguration config, ICategoryBackendAPI categoryBackendAPI)
         {
             _productBackendAPI = productBackendAPI;
+            _categoryBackendAPI = categoryBackendAPI;
             _config = config;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(string keyword, Guid? categoryId, int pageIndex = 1, int pageSize = 5)
         {
             var request = new ProductPagingRequest()
             {
                 Keyword = keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize,
+                CategoryId = categoryId
             };
             ViewBag.Keyword = keyword;
+            var data = await _productBackendAPI.GetProductPaging(request);
+
+            //Lấy líst category vào viewbag để làm dropdown tìm kiếm.
+            var categories = await _categoryBackendAPI.GetAll();
+            if(categories.Object != null)
+            {
+                ViewBag.Categories = categories.Object.Select(x =>
+                    new SelectListItem()
+                    {
+                        Text = x.CategoryName,
+                        Value = x.ID.ToString(),
+                        Selected = categoryId.HasValue && categoryId.Value == x.ID ? true : false
+                    });
+            }
+            
+
+            //Phần này để lấy thông báo ở index khi các view khác trả message.
             if (TempData["SuccessMessage"] != null)
             {
                 ViewBag.SuccessMessage = TempData["SuccessMessage"];
@@ -36,15 +57,27 @@ namespace ProjectWeb.AdminApp.Controllers
             {
                 ViewBag.ErrorMessage = TempData["ErrorMessage"];
             }
-            var data = await _productBackendAPI.GetProductPaging(request);
+            
             return View(data.Object);
 
         }
 
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            //Lấy líst category vào viewbag để làm dropdown tìm kiếm.
+            var categories = await _categoryBackendAPI.GetAll();
+            if (categories.Object != null)
+            {
+                ViewBag.Categories = categories.Object.Select(x =>
+                    new SelectListItem()
+                    {
+                        Text = x.CategoryName,
+                        Value = x.ID.ToString(),
+                    });
+            }
+
             return View();
         }
 

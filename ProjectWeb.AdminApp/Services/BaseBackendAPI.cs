@@ -44,10 +44,10 @@ namespace ProjectWeb.AdminApp.Services
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
-            var respose = await client.GetAsync(Url);
-            if (respose.IsSuccessStatusCode)
+            var response = await client.GetAsync(Url);
+            if (response.IsSuccessStatusCode)
             {
-                var dataRaw = await respose.Content.ReadAsStringAsync();
+                var dataRaw = await response.Content.ReadAsStringAsync();
                 return dataRaw;
             }
             return null;
@@ -69,9 +69,9 @@ namespace ProjectWeb.AdminApp.Services
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             
-            var respose = await client.GetAsync(Url);
-            var dataRaw = await respose.Content.ReadAsStringAsync();
-            if (!respose.IsSuccessStatusCode)
+            var response = await client.GetAsync(Url);
+            var dataRaw = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<ResultObjectError<T>>(dataRaw);
             }
@@ -92,9 +92,9 @@ namespace ProjectWeb.AdminApp.Services
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
-            var respose = await client.DeleteAsync(Url);
-            var dataRaw = await respose.Content.ReadAsStringAsync();
-            if (!respose.IsSuccessStatusCode)
+            var response = await client.DeleteAsync(Url);
+            var dataRaw = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<ResultObjectError<T>>(dataRaw);
             }
@@ -123,9 +123,9 @@ namespace ProjectWeb.AdminApp.Services
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             }
 
-            var respose = await client.PostAsync(Url, httpContext);
-            var dataRaw = await respose.Content.ReadAsStringAsync();
-            if (respose.IsSuccessStatusCode)
+            var response = await client.PostAsync(Url, httpContext);
+            var dataRaw = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ResultObjectSuccess<T>>(dataRaw);
 
             return JsonConvert.DeserializeObject<ResultObjectError<T>>(dataRaw);
@@ -150,9 +150,9 @@ namespace ProjectWeb.AdminApp.Services
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
-            var respose = await client.PutAsync(Url, httpContext);
-            var result = await respose.Content.ReadAsStringAsync();
-            if (respose.IsSuccessStatusCode)
+            var response = await client.PutAsync(Url, httpContext);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ResultObjectSuccess<T>>(result);
 
             return JsonConvert.DeserializeObject<ResultObjectError<T>>(result);

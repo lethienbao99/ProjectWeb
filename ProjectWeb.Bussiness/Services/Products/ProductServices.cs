@@ -58,6 +58,18 @@ namespace ProjectWeb.Bussiness.Services.Products
                     }
                 };
             }
+
+            if(request.CategoryId != Guid.Empty && request.CategoryId != null)
+            {
+                var productCategories = new ProductCategory()
+                {
+                    ID = Guid.NewGuid(),
+                    ProductID = product.ID,
+                    CategoryID = request.CategoryId.Value,
+                    DateCreated = DateTime.Now
+                };
+                _context.ProductCategories.Add(productCategories);
+            }
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return new ResultObjectSuccess<Guid>(product.ID);
@@ -153,16 +165,31 @@ namespace ProjectWeb.Bussiness.Services.Products
         }
         public async Task<ResultMessage<PageResultModel<ProductViewModel>>> GetAllPaging(ProductPagingRequest request)
         {
-            var query = from p in _context.Products
-                        where p.IsDelete == null
+            //Ko xài left join như dưới vì khi thêm nhiều category vào product sẽ bị double product theo category đó.
+            /*var query = from p in _context.Products
+                        join pc in _context.ProductCategories on p.ID equals pc.ProductID into ppc
+                        from pc in ppc.DefaultIfEmpty()
+                        join c in _context.Categories on pc.CategoryID equals c.ID into cc
+                        from c in cc.DefaultIfEmpty()
+                        select new { p, c, pc };*/
 
-                        //List Categories
+            var query = from p in _context.Products
+                        //Tách riêng categories ra để lấy mảng hoặc join thành chuỗi.
                         let categories = (from pc in _context.ProductCategories
                                           join c in _context.Categories on pc.CategoryID equals c.ID
                                           where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
                                           select c.CategoryName).ToList()
+                        //Phần này giành cho tìm kiếm.
+                        let categorieIDs = (from pc in _context.ProductCategories
+                                          join c in _context.Categories on pc.CategoryID equals c.ID
+                                          where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
+                                          select c.ID).ToList()
 
-                        select new { p, categories };
+                        select new { p, categories, categorieIDs };
+
+
+            //List Categories
+
 
             //Filter.
             if (!string.IsNullOrEmpty(request.Keyword))
@@ -170,13 +197,10 @@ namespace ProjectWeb.Bussiness.Services.Products
                 query = query.Where(x => x.p.ProductName.Contains(request.Keyword));
             }
 
-          /*if (request.CategoryIds != null)
+            if (request.CategoryId != Guid.Empty && request.CategoryId != null)
             {
-                if (request.CategoryIds.Count > 0)
-                {
-                    query = query.Where(x => request.CategoryIds.Contains(x.categories));
-                }
-            }*/
+                query = query.Where(x => x.categorieIDs.Contains(request.CategoryId.Value));
+            }
 
 
             int totalRow = await query.CountAsync();
@@ -195,9 +219,9 @@ namespace ProjectWeb.Bussiness.Services.Products
                      Alias = x.p.Alias,
                      Sort = x.p.Sort,
                      DateCreated = DateTime.Now,
-                     Categories = x.categories
-                     
-                 }).ToListAsync();
+                     Categories = x.categories, // Mảng categories
+                     CategoriesJoin = string.Join(",", x.categories) // Chuỗi categories 
+        }).ToListAsync();
 
             var pagedResult = new PageResultModel<ProductViewModel>()
             {

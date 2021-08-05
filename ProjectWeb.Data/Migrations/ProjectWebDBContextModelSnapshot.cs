@@ -220,7 +220,7 @@ namespace ProjectWeb.Data.Migrations
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "8b2ed0ae-453e-4787-867d-fe5488fe3e9e",
+                            ConcurrencyStamp = "7734f27e-63e8-4e75-8b10-802ea90d63e7",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -670,13 +670,13 @@ namespace ProjectWeb.Data.Migrations
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b4f24764-520a-4ec7-9a54-3fffee8a1fc7",
+                            ConcurrencyStamp = "247ade46-c5ea-417b-a347-3d44fc7e7d57",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEC1vzdxbj7Lx6wA26zjtIv+wGY0X045k3cgooCpZJv5xanWCK7CHASQWByGUMvMpWw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEeuwgr1QPgX6m69WBigC/JQlN3pWEemfjdeVVdpQyOQsIVqAwOwx8Z8vLVqjZWbvQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

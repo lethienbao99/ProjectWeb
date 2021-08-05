@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectWeb.Data.Migrations
 {
-    public partial class Initital : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -419,7 +419,7 @@ namespace ProjectWeb.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "DateCreated", "DateDeleted", "DateUpdated", "Description", "IsDelete", "Name", "NormalizedName" },
-                values: new object[] { new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"), "8b2ed0ae-453e-4787-867d-fe5488fe3e9e", null, null, null, "Administrator role", null, "admin", "admin" });
+                values: new object[] { new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"), "7734f27e-63e8-4e75-8b10-802ea90d63e7", null, null, null, "Administrator role", null, "admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "UserInformations",
@@ -429,7 +429,7 @@ namespace ProjectWeb.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateCreated", "DateDeleted", "DateUpdated", "Email", "EmailConfirmed", "IsDelete", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserInfomationID", "UserName" },
-                values: new object[] { new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"), 0, "b4f24764-520a-4ec7-9a54-3fffee8a1fc7", null, null, null, "lethienbao3012@gmail.com", true, null, false, null, "lethienbao3012@gmail.com", "admin", "AQAAAAEAACcQAAAAEC1vzdxbj7Lx6wA26zjtIv+wGY0X045k3cgooCpZJv5xanWCK7CHASQWByGUMvMpWw==", null, false, "", false, new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"), "admin" });
+                values: new object[] { new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"), 0, "247ade46-c5ea-417b-a347-3d44fc7e7d57", null, null, null, "lethienbao3012@gmail.com", true, null, false, null, "lethienbao3012@gmail.com", "admin", "AQAAAAEAACcQAAAAEEeuwgr1QPgX6m69WBigC/JQlN3pWEemfjdeVVdpQyOQsIVqAwOwx8Z8vLVqjZWbvQ==", null, false, "", false, new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"), "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

@@ -37,12 +37,13 @@ namespace ProjectWeb.Models.Products
         public string CategoryName { get; set; }
         public string CategoryCode { get; set; }
         public List<string> Categories { get; set; } = new List<string>();
+        public string CategoriesJoin { get; set; }
     }
 
     public class ProductPagingRequest : PagingRequestBase
     {
         public string Keyword { get; set; }
-        public List<Guid> CategoryIds { get; set; }
+        public Guid? CategoryId { get; set; }
     }
 
     public class ProductByCategoryIdPagingRequest : PagingRequestBase

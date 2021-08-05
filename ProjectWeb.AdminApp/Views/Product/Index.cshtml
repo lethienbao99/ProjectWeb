@@ -38,10 +38,18 @@
                         </button>
 
                     </div>
-
+                        
                 </div>
             </form>
 
+            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <select class="form-control"style="width:200px;" name="categoryId" asp-items="@ViewBag.Categories" onchange="this.form.submit()">
+                        <option>Vui lòng chọn</option>
+                        
+                    </select>
+                </div>
+            </form>
         </div>
         <div class="card-body">
             <div class="table-responsive">

@@ -10,6 +10,7 @@ namespace ProjectWeb.Models.Products
     public class ProductCreateRequest
     {
         public string ProductName { get; set; }
+        public Guid? CategoryId { get; set; }
         public string Description { get; set; }
         public string Code { get; set; }
         public string Type { get; set; }
