@@ -15,6 +15,7 @@ namespace ProjectWeb.Common.Enums
             public const string SettingLanguage = "Language";
             public const string BaseURLApi = "BaseURLApi";
         }
+
         public class PublicConstants
         {
 

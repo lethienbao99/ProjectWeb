@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>@ViewData["Title"] - Ecommerce Web</title>
@@ -32,10 +35,16 @@
                         <li>
                             <a href="http://"><i class="fab fa-instagram fa-2x"></i></a>
                         </li>
+                        <li>
+                            <language-nav language-label="NativeName"
+                                          cookie-handler-url="@(Url.Action("SetCultureCookie", "Home", new { area= "", cltr="{0}", returnUrl="{1}" }))" style="color:black">
+                            </language-nav>
+                        </li>
                     </ul>
                 </div>
                 <div class="show-notification">
-                    Receive 20% off your next order using code 'smoothielife'
+                    <localize>Receive 20% off your next order using code 'smoothielife' </localize>
+
                 </div>
             </div>
 
@@ -49,9 +58,10 @@
                                         <a class="nav-link" href="index.html">Home</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="home_category.html">
-                                            Shop <i class="fa fa-caret-down"></i>
+                                        <a href="/@culture/Home/Index" class="nav-link">
+                                            <localize>@ConstantsDisplay.ECW_Layout_Shop</localize> <i class="fa fa-caret-down"></i>
                                         </a>
+                                       
                                         <ul>
                                             <li class="w-100">
                                                 <div class="container-fluid my-3 px-5">
@@ -640,7 +650,7 @@
 
         @RenderBody()
 
-    
+
 
 
 
