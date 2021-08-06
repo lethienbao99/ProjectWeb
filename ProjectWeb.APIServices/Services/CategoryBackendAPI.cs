@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using ProjectWeb.AdminApp.IServiceBackendAPIs;
+using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.Models;
 using ProjectWeb.Models.CommonModels;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ProjectWeb.AdminApp.Services
+namespace ProjectWeb.APIServices.Services
 {
     public class CategoryBackendAPI : BaseBackendAPI, ICategoryBackendAPI
     {

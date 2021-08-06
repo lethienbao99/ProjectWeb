@@ -205,7 +205,7 @@ namespace ProjectWeb.Bussiness.Services.Products
 
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderBy(x => x.p.Sort)
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderByDescending(x => x.p.Sort)
                  .Select(x => new ProductViewModel()
                  {
                      ID = x.p.ID,
@@ -221,7 +221,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                      DateCreated = DateTime.Now,
                      Categories = x.categories, // Mảng categories
                      CategoriesJoin = string.Join(",", x.categories) // Chuỗi categories 
-        }).ToListAsync();
+                 }).ToListAsync();
 
             var pagedResult = new PageResultModel<ProductViewModel>()
             {

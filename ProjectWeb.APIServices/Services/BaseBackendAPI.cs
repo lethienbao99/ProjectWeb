@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using ProjectWeb.AdminApp.IServiceBackendAPIs;
 using ProjectWeb.Models.CommonModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using static ProjectWeb.Common.Enums.EnumConstants;
 
-namespace ProjectWeb.AdminApp.Services
+namespace ProjectWeb.APIServices.Services
 {
     public class BaseBackendAPI
     {
@@ -59,16 +56,19 @@ namespace ProjectWeb.AdminApp.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="Url"></param>
         /// <returns></returns>
-        protected async Task<ResultMessage<T>> GetAndReturnAsync<T>(string Url)
+        protected async Task<ResultMessage<T>> GetAndReturnAsync<T>(string Url, bool? IsToken = true)
         {
-            var Token = _httpContextAccessor.HttpContext
-                .Session
-                .GetString(SystemsConstants.Token);
-
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
-            
+
+            if (IsToken == true)
+            {
+                var Token = _httpContextAccessor.HttpContext
+                .Session
+                .GetString(SystemsConstants.Token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            }
+
             var response = await client.GetAsync(Url);
             var dataRaw = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
@@ -77,7 +77,7 @@ namespace ProjectWeb.AdminApp.Services
             }
             return JsonConvert.DeserializeObject<ResultObjectSuccess<T>>(dataRaw);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -117,7 +117,7 @@ namespace ProjectWeb.AdminApp.Services
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
 
-            if(IsToken == true)
+            if (IsToken == true)
             {
                 var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);

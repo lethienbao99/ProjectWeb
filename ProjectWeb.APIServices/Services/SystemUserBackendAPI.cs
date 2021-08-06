@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using ProjectWeb.AdminApp.IServiceBackendAPIs;
+using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.SystemUsers;
 using System;
@@ -12,16 +12,16 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectWeb.AdminApp.Services
+namespace ProjectWeb.APIServices.Services
 {
     public class SystemUserBackendAPI : BaseBackendAPI, ISystemUserBackendAPI
     {
         public SystemUserBackendAPI(
-            IHttpClientFactory httpClientFactory, 
+            IHttpClientFactory httpClientFactory,
             IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, configuration, httpContextAccessor)
         {
-            
+
         }
         public async Task<ResultMessage<string>> Authenticate(LoginRequest request)
         {
@@ -30,7 +30,7 @@ namespace ProjectWeb.AdminApp.Services
 
         public async Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID)
         {
-            return await GetAndReturnAsync<SystemUserModel>($"/api/SystemUsers/{ID}"); 
+            return await GetAndReturnAsync<SystemUserModel>($"/api/SystemUsers/{ID}");
         }
 
         public async Task<ResultMessage<bool>> Delete(Guid ID)
@@ -40,9 +40,9 @@ namespace ProjectWeb.AdminApp.Services
 
         public async Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request)
         {
-            return await GetAndReturnAsync<PageResultModel<SystemUserModel>> ($"/api/SystemUsers/Paging?pageIndex=" +
+            return await GetAndReturnAsync<PageResultModel<SystemUserModel>>($"/api/SystemUsers/Paging?pageIndex=" +
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
-        } 
+        }
 
         public async Task<ResultMessage<bool>> Signup(SignUpRequest request)
         {

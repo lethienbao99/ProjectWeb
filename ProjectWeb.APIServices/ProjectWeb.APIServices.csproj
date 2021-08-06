@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectWeb.Common\ProjectWeb.Common.csproj" />
+    <ProjectReference Include="..\ProjectWeb.Models\ProjectWeb.Models.csproj" />
+  </ItemGroup>
+
+</Project>

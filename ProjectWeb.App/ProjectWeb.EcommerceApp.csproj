@@ -7,9 +7,11 @@
   <ItemGroup>
     <PackageReference Include="LazZiya.ExpressLocalization" Version="4.0.4" />
     <PackageReference Include="LazZiya.TagHelpers" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjectWeb.APIServices\ProjectWeb.APIServices.csproj" />
     <ProjectReference Include="..\ProjectWeb.Common\ProjectWeb.Common.csproj" />
   </ItemGroup>
 

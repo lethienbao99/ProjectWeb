@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjectWeb.AdminApp.IServiceBackendAPIs
+namespace ProjectWeb.APIServices.IServiceBackendAPIs
 {
     public interface IProductBackendAPI
     {

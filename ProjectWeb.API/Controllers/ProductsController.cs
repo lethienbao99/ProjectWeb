@@ -29,6 +29,7 @@ namespace ProjectWeb.API.Controllers
             return Ok(products);
         }
 
+        [AllowAnonymous]
         [HttpGet("paging")]
         public async Task<IActionResult> GetAllPaging([FromQuery] ProductPagingRequest request)
         {

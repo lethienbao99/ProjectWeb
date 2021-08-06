@@ -1,4 +1,6 @@
-﻿@{
+﻿@using ProjectWeb.Models.Home
+@model HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -80,116 +82,28 @@
             </div>
         </div>
         <div class="row product">
-            <div class="col-6 col-sm-4 mt-3">
-                <a href="products.html">
-                    <div class="box-product">
-                        <div class="images">
-                            <img src="/data/ginger_pear_back_150x_default.jpg"
-                                 alt="products" />
-                            <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
+            @foreach (var item in Model.ItemProducts)
+            {
+                <div class="col-6 col-sm-4 mt-3">
+                    <a href="products.html">
+                        <div class="box-product">
+                            <div class="images">
+                                <img src="/data/ginger_pear_back_150x_default.jpg"
+                                     alt="products" />
+                                <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
+                            </div>
+                            <div class="title">
+                                <a href="http://"> @Html.DisplayFor(modelItem => item.ProductName) </a>
+                            </div>
+                            <div class="price">@Html.DisplayFor(modelItem => item.Price) $</div>
+                            <div class="star">
+                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
+                            </div>
                         </div>
-                        <div class="title">
-                            <a href="http://"> Ginger & Pear </a>
-                        </div>
-                        <div class="price">from Rs. 212.58</div>
-                        <div class="star">
-                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-sm-4 mt-3">
-                <a href="products.html">
-                    <div class="box-product">
-                        <div class="out-badge">Sold Out</div>
-                        <div class="images">
-                            <img src="/data/ginger_pear_back_150x_default.jpg"
-                                 alt="products" />
-                            <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
-                        </div>
-                        <div class="title">
-                            <a href="http://"> Ginger & Pear </a>
-                        </div>
-                        <div class="price">from Rs. 212.58</div>
-                        <div class="star">
-                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-sm-4 mt-3">
-                <a href="products.html">
-                    <div class="box-product">
-                        <div class="images">
-                            <img src="/data/ginger_pear_back_150x_default.jpg"
-                                 alt="products" />
-                            <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
-                        </div>
-                        <div class="title">
-                            <a href="http://"> Ginger & Pear </a>
-                        </div>
-                        <div class="price">from Rs. 212.58</div>
-                        <div class="star">
-                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-sm-4 mt-3">
-                <a href="products.html">
-                    <div class="box-product">
-                        <div class="images">
-                            <img src="/data/ginger_pear_back_150x_default.jpg"
-                                 alt="products" />
-                            <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
-                        </div>
-                        <div class="title">
-                            <a href="http://"> Ginger & Pear </a>
-                        </div>
-                        <div class="price">from Rs. 212.58</div>
-                        <div class="star">
-                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-sm-4 mt-3">
-                <a href="products.html">
-                    <div class="box-product">
-                        <div class="images">
-                            <img src="/data/ginger_pear_back_150x_default.jpg"
-                                 alt="products" />
-                            <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
-                        </div>
-                        <div class="title">
-                            <a href="http://"> Ginger & Pear </a>
-                        </div>
-                        <div class="price">from Rs. 212.58</div>
-                        <div class="star">
-                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-sm-4 mt-3">
-                <a href="products.html">
-                    <div class="box-product">
-                        <div class="out-badge sale">On Sale</div>
-                        <div class="images">
-                            <img src="/data/ginger_pear_back_150x_default.jpg"
-                                 alt="products" />
-                            <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
-                        </div>
-                        <div class="title">
-                            <a href="http://"> Ginger & Pear </a>
-                        </div>
-                        <div class="price">from Rs. 212.58</div>
-                        <div class="star">
-                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
-                        </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            }
+
         </div>
     </div>
 </section>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using ProjectWeb.AdminApp.IServiceBackendAPIs;
+using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.Products;
 using System;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static ProjectWeb.Common.Enums.EnumConstants;
 
-namespace ProjectWeb.AdminApp.Services
+namespace ProjectWeb.APIServices.Services
 {
     public class ProductBackendAPI : BaseBackendAPI, IProductBackendAPI
     {
@@ -79,13 +79,13 @@ namespace ProjectWeb.AdminApp.Services
 
         public async Task<ResultMessage<ProductModel>> GetProductByID(Guid ID)
         {
-            return await GetAndReturnAsync<ProductModel>($"/api/Products/{ID}"); 
+            return await GetAndReturnAsync<ProductModel>($"/api/Products/{ID}");
         }
 
         public async Task<ResultMessage<PageResultModel<ProductModel>>> GetProductPaging(ProductPagingRequest request)
         {
             return await GetAndReturnAsync<PageResultModel<ProductModel>>($"/api/Products/Paging?pageIndex=" +
-                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&categoryId={request.CategoryId}");
+                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&categoryId={request.CategoryId}", false);
         }
 
         public Task<ResultMessage<bool>> Update(Guid ID, ProductCreateRequest request)

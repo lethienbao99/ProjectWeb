@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using ProjectWeb.AdminApp.IServiceBackendAPIs;
+using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.Models.Products;
 using System;
 using System.Collections.Generic;

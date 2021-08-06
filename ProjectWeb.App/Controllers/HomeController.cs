@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.App.Models;
+using ProjectWeb.Models.Home;
+using ProjectWeb.Models.Products;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,16 +19,31 @@ namespace ProjectWeb.App.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ISharedCultureLocalizer _loc;
+        private readonly IProductBackendAPI _productBackendAPI;
 
-        public HomeController(ILogger<HomeController> logger, ISharedCultureLocalizer loc)
+        public HomeController(ILogger<HomeController> logger, ISharedCultureLocalizer loc, IProductBackendAPI productBackendAP)
         {
             _logger = logger;
             _loc = loc;
+            _productBackendAPI = productBackendAP;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var request = new ProductPagingRequest()
+            {
+                Keyword = null,
+                PageIndex = 1,
+                PageSize = 8,
+            };
+            var data = await _productBackendAPI.GetProductPaging(request);
+            var viewHome = new HomeViewModel();
+            if(data.IsSuccessed)
+            {
+                viewHome.ItemProducts = data.Object.Items;
+            }
+
+            return View(viewHome);
         }
 
         public IActionResult Privacy()

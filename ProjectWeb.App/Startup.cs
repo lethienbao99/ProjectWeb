@@ -1,11 +1,14 @@
 using LazZiya.ExpressLocalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectWeb.APIServices.IServiceBackendAPIs;
+using ProjectWeb.APIServices.Services;
 using ProjectWeb.EcommerceApp.LocalizationResources;
 using System;
 using System.Collections.Generic;
@@ -27,7 +30,7 @@ namespace ProjectWeb.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddHttpClient();
             var cultures = new[]
             {
                 new CultureInfo("en"),
@@ -65,8 +68,18 @@ namespace ProjectWeb.App
                     };
                 });
 
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
 
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IProductBackendAPI, ProductBackendAPI>();
+            IMvcBuilder builder = services.AddRazorPages();
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (env == Environments.Development)
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
             services.AddControllersWithViews();
 
         }
@@ -91,6 +104,7 @@ namespace ProjectWeb.App
 
             app.UseAuthorization();
             app.UseRequestLocalization();
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
