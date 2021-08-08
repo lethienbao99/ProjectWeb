@@ -1,6 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿@model CategoryDetailViewModel
+@inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
+@{
+    ViewData["Title"] = Model.Category.Object.CategoryName;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var culture = CultureInfo.CurrentCulture.Name;
 }
 
 
@@ -51,12 +54,11 @@
                 <div class="title-box">
                     <div class="title">
                         <h2>
-                            Detox Smoothies
+                            @Model.Category.Object.CategoryName
                         </h2>
                     </div>
                     <div class="content">
-                        Feeling under the weather? In-laws visiting? Heavy night? Whatever the need for a detox,
-                        and some quiet time, our nutritious detox smoothies should help.
+                        @Model.Category.Object.Status - mô tả này làm sau.
                     </div>
                 </div>
                 <div class="sortby mt-5">
@@ -133,137 +135,72 @@
             </div>
             <div class="col-md-8">
                 <div class="row product">
-                    <div class="col-6 mt-3 mb-5">
-                        <div class="box-product">
-                            <div class="images">
-                                <img src="/data/ginger_pear_back_150x_default.jpg" alt="products">
-                                <img src="/data/ginger_pear_back_150x.jpg" alt="products">
-                            </div>
-                            <div class="title">
-                                <a href="http://">
-                                    Ginger & Pear
-                                </a>
-                            </div>
-                            <div class="price">
-                                from Rs. 212.58
-                            </div>
-                            <div class="star">
-                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                2 reviews
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 mt-3 mb-5">
-                        <div class="box-product">
-                            <div class="out-badge">
-                                Sold Out
-                            </div>
-                            <div class="images">
-                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                            </div>
-                            <div class="title">
-                                <a href="http://">
-                                    Ginger & Pear
-                                </a>
-                            </div>
-                            <div class="price">
-                                from Rs. 212.58
-                            </div>
-                            <div class="star">
-                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                2 reviews
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 mt-3 mb-5">
-                        <div class="box-product">
-                            <div class="images">
-                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                            </div>
-                            <div class="title">
-                                <a href="http://">
-                                    Ginger & Pear
-                                </a>
-                            </div>
-                            <div class="price">
-                                from Rs. 212.58
-                            </div>
-                            <div class="star">
-                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                2 reviews
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 mt-3 mb-5">
-                        <div class="box-product">
-                            <div class="images">
-                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                            </div>
-                            <div class="title">
-                                <a href="http://">
-                                    Ginger & Pear
-                                </a>
-                            </div>
-                            <div class="price">
-                                from Rs. 212.58
-                            </div>
-                            <div class="star">
-                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                2 reviews
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 mt-3 mb-5">
-                        <div class="box-product">
-                            <div class="images">
-                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                            </div>
-                            <div class="title">
-                                <a href="http://">
-                                    Ginger & Pear
-                                </a>
-                            </div>
-                            <div class="price">
-                                from Rs. 212.58
-                            </div>
-                            <div class="star">
-                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                2 reviews
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 mt-3 mb-5">
-                        <div class="box-product">
 
-                            <div class="out-badge sale">
-                                On Sale
+                    @foreach (var item in Model.ItemProductsWithPaging.Object.Items)
+                    {
+                        var URLDetail = $"/{culture}/{_loc[ConstantsDisplay.ECW_SystemURL_Products]}/{item.ID}";
+                    <div class="col-6 mt-3 mb-5">
+                        <a href="@URLDetail">
+                            <div class="box-product">
+                                <div class="images">
+                                    <img src="@Model.BaseURLApi/user-content/@item.ImgDefaultPath" alt="@item.ProductName">
+                                    <img src="@Model.BaseURLApi/user-content/@item.ImgDefaultPath" alt="@item.ProductName">
+                                </div>
+                                <div class="title">
+                                    <a href="@URLDetail">
+                                        @item.ProductName
+                                    </a>
+                                </div>
+                                @if (culture == "vi")
+                                {
+                                    <div class="price">@item.PriceFormat VND</div>
+                                }
+                                else if (culture == "en")
+                                {
+                                    <div class="price">@item.PriceDollarFormat $</div>
+                                }
+                                <div class="star">
+
+                                    @if (@item.Views <= 5)
+                                    {
+                                        <i class="fa fa-star"></i>
+
+                                    }
+                                    else if (item.Views > 5 && item.Views <= 10)
+                                    {
+                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                    }
+                                    else if (item.Views > 10 && item.Views <= 15)
+                                    {
+                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                    }
+                                    else if (item.Views > 15 && item.Views <= 20)
+                                    {
+                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                    }
+                                    else if (item.Views > 20 && item.Views <= 25)
+                                    {
+                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                    }
+
+                                    <div>
+                                        @item.Views <localize>@ConstantsDisplay.ECW_Home_Index_ViewCountProducts</localize>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div class="images">
-                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                            </div>
-                            <div class="title">
-                                <a href="http://">
-                                    Ginger & Pear
-                                </a>
-                            </div>
-                            <div class="price">
-                                from Rs. 212.58
-                            </div>
-                            <div class="star">
-                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                2 reviews
-                            </div>
-                        </div>
+                        </a>
+                            
                     </div>
+                    }
+
+                    
                 </div>
                 <div class="row mb-5">
                     <div class="col-12">
-                        <div class="pagination">
+
+                          @await Component.InvokeAsync("Page", Model.ItemProductsWithPaging.Object)
+                        @*<div class="pagination">
                             <div class="pagination-items m-auto text-center">
                                 <span class="prev"> <a href="http://"> ← </a></span>
                                 <span class="page"> <a href="http://">1</a> </span>
@@ -271,7 +208,7 @@
                                 <span class="page"><a href="http://">3</a></span>
                                 <span class="next"> <a href="http://"> → </a></span>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>

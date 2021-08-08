@@ -30,5 +30,10 @@ namespace ProjectWeb.APIServices.Services
         {
             return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/forCreateOrUpdate/", true);
         }
+
+        public async Task<ResultMessage<CategoryViewModel>> GetCategoryByID(Guid ID)
+        {
+            return await GetAndReturnAsync<CategoryViewModel>($"/api/Categories/{ID}");
+        }
     }
 }

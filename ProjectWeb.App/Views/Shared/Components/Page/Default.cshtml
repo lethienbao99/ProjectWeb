@@ -1,0 +1,61 @@
+﻿@model ProjectWeb.Models.CommonModels.PageResultViewBase
+@{
+    var urlTemplate = Url.Action() + "?pageIndex={0}";
+    var request = ViewContext.HttpContext.Request;
+    foreach (var key in request.Query.Keys)
+    {
+        if (key == "pageIndex")
+        {
+            continue;
+        }
+        if (request.Query[key].Count > 1)
+        {
+            foreach (var item in (string[])request.Query[key])
+            {
+                urlTemplate += "&" + key + "=" + item;
+            }
+        }
+        else
+        {
+            urlTemplate += "&" + key + "=" + request.Query[key];
+        }
+    }
+
+    var startIndex = Math.Max(Model.PageIndex - 5, 1);
+    var finishIndex = Math.Min(Model.PageIndex + 5, Model.PageCount);
+}
+
+@if (Model.PageCount > 1)
+{
+
+    <div class="pagination">
+        <div class="pagination-items m-auto text-center">
+
+
+            @if (Model.PageIndex != startIndex)
+            {
+                <span class="prev"> <a title="1" href="@urlTemplate.Replace("{0}", "1")"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a></span>
+                <span class="page"> <a href="@urlTemplate.Replace("{0}", (Model.PageIndex-1).ToString())"><i class="fa fa-angle-left" aria-hidden="true"></i></a> </span>
+
+            }
+            @for (var i = startIndex; i <= finishIndex; i++)
+            {
+                if (i == Model.PageIndex)
+                {
+                    <span class="page"> <a href="#">@i</a> </span>
+
+                }
+                else
+                {
+                    <span class="page"> <a title="Trang @i.ToString()" href="@urlTemplate.Replace("{0}", i.ToString())">@i</a> </span>
+                }
+            }
+            @if (Model.PageIndex != finishIndex)
+            {
+                <span class="next"> <a title="@Model.PageCount.ToString()" href="@urlTemplate.Replace("{0}", (Model.PageIndex+1).ToString())"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a></span>
+                <span class="next"> <a href="@urlTemplate.Replace("{0}", Model.PageCount.ToString())"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a></span>
+            }
+
+        </div>
+    </div>
+}

@@ -32,5 +32,14 @@ namespace ProjectWeb.API.Controllers
             return Ok(categories);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var product = await _unitOfWork.Categories.GetByIDAsync(id);
+            if (product.Object == null)
+                return BadRequest($"Cannot find product with ID: {id}");
+            return Ok(product);
+        }
+
     }
 }
