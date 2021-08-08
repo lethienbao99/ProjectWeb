@@ -14,10 +14,10 @@ namespace ProjectWeb.Common.IServices
     public interface IProductServices : IRepository<Product>
     {
         Task<ResultMessage<Guid>> CreateWithImages(ProductCreateRequest request);
-        Task<int> UpdateWithImages(ProductModel request);
+        Task<ResultMessage<int>> UpdateWithImages(ProductModel request);
         Task<int> UpdateViewCount(Guid ID);
         Task<ResultMessage<PageResultModel<ProductViewModel>>> GetAllPaging(ProductPagingRequest request);
         Task<PageResultModel<ProductModel>> GetAllByCategoryId(ProductByCategoryIdPagingRequest request);
-        Task<ProductViewModel> GetProductByID(Guid ID);
+        Task<ResultMessage<ProductViewModel>> GetProductByID(Guid ID);
     }
 }

@@ -16,6 +16,7 @@ namespace ProjectWeb.Models.Products
         public string Type { get; set; }
         public string Status { get; set; }
         public double Price { get; set; }
+        public double PriceDollar { get; set; }
         public int Stock { get; set; }
         public string Alias { get; set; }
         public int Views { get; set; }

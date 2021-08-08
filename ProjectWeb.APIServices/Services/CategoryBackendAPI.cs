@@ -25,5 +25,10 @@ namespace ProjectWeb.APIServices.Services
         {
             return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/", false);
         }
+
+        public async Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate()
+        {
+            return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/forCreateOrUpdate/", true);
+        }
     }
 }

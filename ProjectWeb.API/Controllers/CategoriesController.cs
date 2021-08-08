@@ -25,5 +25,12 @@ namespace ProjectWeb.API.Controllers
             return Ok(categories);
         }
 
+        [HttpGet("forCreateOrUpdate")]
+        public async Task<IActionResult> GetAllByCreateOrUpdate()
+        {
+            var categories = await _unitOfWork.Categories.GetAllByCreateOrUpdate();
+            return Ok(categories);
+        }
+
     }
 }

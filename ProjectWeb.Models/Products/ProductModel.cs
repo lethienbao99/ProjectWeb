@@ -24,10 +24,12 @@ namespace ProjectWeb.Models.Products
         public IFormFile ThumbnailImage { get; set; }
         public double PriceDollar { get; set; }
         public string ImgDefaultPath { get; set; }
+        public Guid CategoryId { get; set; }
     }
 
     public class ProductViewModel : BaseModel
     {
+        public Guid CategoryId { get; set; }
         public string PriceFormat { get; set; }
         public string PriceDollarFormat { get; set; }
         public double PriceDollar { get; set; }

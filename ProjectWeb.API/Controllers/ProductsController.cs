@@ -57,6 +57,17 @@ namespace ProjectWeb.API.Controllers
             return Ok(product);
         }
 
+        [HttpGet("{id}/v2")]
+        public async Task<IActionResult> GetByIdCustome(Guid id)
+        {
+            var product = await _unitOfWork.Products.GetProductByID(id);
+            if (product.Object == null)
+                return BadRequest($"Cannot find product with ID: {id}");
+            return Ok(product);
+        }
+
+
+
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
@@ -74,17 +85,19 @@ namespace ProjectWeb.API.Controllers
             return CreatedAtAction(nameof(GetById), new { ID = result.Object }, product.Object);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromForm] ProductModel request)
+        [HttpPut("{id}")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromRoute]Guid id,[FromForm] ProductModel request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            request.ID = id;
             var affectedResult = await _unitOfWork.Products.UpdateWithImages(request);
-            if (affectedResult == 0)
+            if (affectedResult.Object == 0)
                 return BadRequest("Create Fail!!!");
-            return Ok();
+            return Ok(affectedResult);
         }
 
         [HttpDelete("{id}")]

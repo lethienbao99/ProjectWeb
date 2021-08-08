@@ -66,8 +66,7 @@ namespace ProjectWeb.AdminApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            //Lấy líst category vào viewbag để làm dropdown tìm kiếm.
-            var categories = await _categoryBackendAPI.GetAll();
+            var categories = await _categoryBackendAPI.GetAllByCreateOrUpdate();
             if (categories.Object != null)
             {
                 ViewBag.Categories = categories.Object.Select(x =>
@@ -115,6 +114,89 @@ namespace ProjectWeb.AdminApp.Controllers
             if (result.IsSuccessed)
             {
                 TempData["SuccessMessage"] = "Thêm mới thành công";
+                return RedirectToAction("Index", "Product");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            TempData["ErrorMessage"] = result.Message;
+            if (TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
+            return View(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid ID)
+        {
+            //Lấy líst category vào viewbag để làm dropdown tìm kiếm.
+            var categories = await _categoryBackendAPI.GetAllByCreateOrUpdate();
+            if (categories.Object != null)
+            {
+                ViewBag.Categories = categories.Object.Select(x =>
+                    new SelectListItem()
+                    {
+                        Text = x.CategoryName,
+                        Value = x.ID.ToString(),
+                    });
+            }
+
+            var result = await _productBackendAPI.GetProductByIDCustome(ID);
+            if (result.IsSuccessed)
+            {
+                var product = result.Object;
+                var data = new ProductUpdateRequest()
+                {
+                    ID = product.ID,
+                    ProductName = product.ProductName,
+                    Code = product.Code,
+                    CategoryId = product.CategoryId,
+                    Stock = product.Stock,
+                    Status = product.Status,
+                    Price = product.Price,
+                    PriceDollar = product.PriceDollar,
+                    Alias = product.Alias,
+                    Description = product.Description
+                };
+                return View(data);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request)
+        {
+            var ErrorString = "";
+            if (!ModelState.IsValid)
+            {
+                foreach (var item in ModelState.Root.Errors)
+                {
+                    ErrorString += item.ErrorMessage;
+                }
+                if (ErrorString == "")
+                {
+                    foreach (var item in ModelState.Root.Children)
+                    {
+                        if (item.Errors.Count > 0)
+                        {
+                            ErrorString += item.Errors[0].ErrorMessage;
+                        }
+                    }
+                }
+                TempData["ErrorMessage"] = ErrorString;
+                if (TempData["ErrorMessage"] != null)
+                {
+                    ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                }
+                return View();
+            }
+
+            var result = await _productBackendAPI.Update(request);
+
+            if (result.IsSuccessed)
+            {
+                TempData["SuccessMessage"] = "Cập nhật thành công";
                 return RedirectToAction("Index", "Product");
             }
 

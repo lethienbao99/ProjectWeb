@@ -37,6 +37,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                 Description = request.Description,
                 Type = request.Type,
                 Status = request.Status,
+                PriceDollar = request.PriceDollar,
                 Price = request.Price,
                 Stock = request.Stock,
                 Alias = request.Alias,
@@ -76,7 +77,7 @@ namespace ProjectWeb.Bussiness.Services.Products
         }
 
 
-        public async Task<int> UpdateWithImages(ProductModel request)
+        public async Task<ResultMessage<int>> UpdateWithImages(ProductModel request)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ID == request.ID && request.IsDelete == null);
 
@@ -108,8 +109,8 @@ namespace ProjectWeb.Bussiness.Services.Products
                 }
             }
 
-            return await _context.SaveChangesAsync();
-
+            var affectedResult = await _context.SaveChangesAsync();
+            return new ResultObjectSuccess<int>(affectedResult);
 
         }
 
@@ -242,8 +243,9 @@ namespace ProjectWeb.Bussiness.Services.Products
             return new ResultObjectSuccess<PageResultModel<ProductViewModel>>(pagedResult);
         }
 
-        public async Task<ProductViewModel> GetProductByID(Guid ID)
+        public async Task<ResultMessage<ProductViewModel>> GetProductByID(Guid ID)
         {
+
             var product = await _context.Products.FirstOrDefaultAsync(s => s.ID == ID && s.IsDelete == null);
             if(product != null)
             {
@@ -252,6 +254,11 @@ namespace ProjectWeb.Bussiness.Services.Products
                                    where pc.IsDelete == null
                                    where c.IsDelete == null && pc.ProductID == ID
                                    select c.CategoryName).ToListAsync();
+
+                var CategoryIDChildNode = await (from c in _context.Categories
+                                   join pc in _context.ProductCategories on c.ID equals pc.CategoryID
+                                   where c.ParentID != null && pc.ProductID == ID
+                                   select c.ID).FirstOrDefaultAsync();
 
                 var data =  new ProductViewModel()
                 {
@@ -268,11 +275,12 @@ namespace ProjectWeb.Bussiness.Services.Products
                     DateUpdated = product.DateUpdated,
                     DateDeleted = product.DateDeleted,
                     Categories = query,
+                    CategoryId = CategoryIDChildNode
                 };
-                return data;
+                return new ResultObjectSuccess<ProductViewModel>(data);
             }
 
-            return null;
+            return new ResultObjectSuccess<ProductViewModel>(null); 
         }
 
         public async Task<int> UpdateViewCount(Guid ID)

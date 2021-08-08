@@ -59,6 +59,7 @@ namespace ProjectWeb.APIServices.Services
             requestContent.Add(new StringContent(request.Type.ToString()), "type");
             requestContent.Add(new StringContent(request.Status.ToString()), "status");
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
+            requestContent.Add(new StringContent(request.PriceDollar.ToString()), "priceDollar");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
             requestContent.Add(new StringContent(request.Alias.ToString()), "alias");
             requestContent.Add(new StringContent(request.CategoryId.ToString()), "categoryId");
@@ -82,15 +83,60 @@ namespace ProjectWeb.APIServices.Services
             return await GetAndReturnAsync<ProductModel>($"/api/Products/{ID}");
         }
 
+        public async Task<ResultMessage<ProductModel>> GetProductByIDCustome(Guid ID)
+        {
+            return await GetAndReturnAsync<ProductModel>($"/api/Products/{ID}/v2");
+        }
+
         public async Task<ResultMessage<PageResultModel<ProductModel>>> GetProductPaging(ProductPagingRequest request)
         {
             return await GetAndReturnAsync<PageResultModel<ProductModel>>($"/api/Products/Paging?pageIndex=" +
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&categoryId={request.CategoryId}", false);
         }
 
-        public Task<ResultMessage<bool>> Update(Guid ID, ProductCreateRequest request)
+        public async Task<ResultMessage<bool>> Update(ProductUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var sessions = _httpContextAccessor
+               .HttpContext
+               .Session
+               .GetString(SystemsConstants.Token);
+
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var requestContent = new MultipartFormDataContent();
+
+            if (request.ThumbnailImage != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ThumbnailImage.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ThumbnailImage.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "thumbnailImage", request.ThumbnailImage.FileName);
+            }
+
+
+            requestContent.Add(new StringContent(request.Code.ToString()), "code");
+            requestContent.Add(new StringContent(request.ProductName.ToString()), "productName");
+            requestContent.Add(new StringContent(request.Description.ToString()), "description");
+            requestContent.Add(new StringContent(request.Type.ToString()), "type");
+            requestContent.Add(new StringContent(request.Status.ToString()), "status");
+            requestContent.Add(new StringContent(request.Price.ToString()), "price");
+            requestContent.Add(new StringContent(request.PriceDollar.ToString()), "priceDollar");
+            requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
+            requestContent.Add(new StringContent(request.Alias.ToString()), "alias");
+            requestContent.Add(new StringContent(request.CategoryId.ToString()), "categoryId");
+
+            var response = await client.PutAsync($"/api/products/" + request.ID, requestContent);
+            var dataRaw = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(dataRaw);
+
+            return JsonConvert.DeserializeObject<ResultObjectError<bool>>(dataRaw);
         }
     }
 }

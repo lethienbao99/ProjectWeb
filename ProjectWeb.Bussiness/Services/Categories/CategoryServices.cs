@@ -1,7 +1,9 @@
-﻿using ProjectWeb.Common.IServices;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Data.EntityFamework;
+using ProjectWeb.Models.Categories;
 using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
@@ -19,5 +21,18 @@ namespace ProjectWeb.Bussiness.Services.Categories
             _context = context;
         }
 
+        public async Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate()
+        {
+            var categories = await _context.Categories.Where(x => x.ParentID != null && x.ParentID != Guid.Empty).Select(x => new CategoryViewModel()
+            {
+                ID = x.ID,
+                CategoryName = x.CategoryName + " - " + x.Type
+            }).ToListAsync();
+
+            if (categories != null)
+                return new ResultObjectSuccess<List<CategoryViewModel>>(categories);
+            return new ResultObjectError<List<CategoryViewModel>>("List category is null");
+            
+        }
     }
 }

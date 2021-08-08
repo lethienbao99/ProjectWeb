@@ -11,5 +11,6 @@ namespace ProjectWeb.APIServices.IServiceBackendAPIs
     public interface ICategoryBackendAPI
     {
         Task<ResultMessage<List<CategoryViewModel>>> GetAll();
+        Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate();
     }
 }
