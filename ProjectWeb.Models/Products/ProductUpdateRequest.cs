@@ -18,6 +18,7 @@ namespace ProjectWeb.Models.Products
         public double Price { get; set; }
         public int Stock { get; set; }
         public string Alias { get; set; }
+        public int Views { get; set; }
         public IFormFile ThumbnailImage { get; set; }
     }
 }

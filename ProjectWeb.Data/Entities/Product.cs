@@ -14,8 +14,10 @@ namespace ProjectWeb.Data.Entities
         public string Type { get; set; }
         public string Status { get; set; }
         public double Price { get; set; }
+        public double PriceDollar { get; set; }
         public int Stock { get; set; }
         public string Alias { get; set; }
+        public int Views { get; set; }
 
         public List<ProductCategory> ProductCategories { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }

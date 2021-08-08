@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectWeb.Data.EntityFamework;
 
 namespace ProjectWeb.Data.Migrations
 {
     [DbContext(typeof(ProjectWebDBContext))]
-    partial class ProjectWebDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210806144851_AddPriceDollarCol")]
+    partial class AddPriceDollarCol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,7 +222,7 @@ namespace ProjectWeb.Data.Migrations
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "5ef9d50f-43fa-4363-9a83-43db3635b24f",
+                            ConcurrencyStamp = "a7ffd291-a2b6-4059-beab-ad7d94b74915",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -307,9 +309,6 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
-
-                    b.Property<Guid?>("ParentID")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
@@ -681,13 +680,13 @@ namespace ProjectWeb.Data.Migrations
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "88c698f9-a52f-4321-a4d6-1433b0f9e318",
+                            ConcurrencyStamp = "dc8b9ef1-54ff-4d86-be5e-dc676a48abb7",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO8e6iIoZUccM4egeXVPWTqWQlgLgGyKcdxVGK/ey73BwQ/OtcaL2x92YA8D25gDWA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBQYSuJ+lMKcLjUuNumUqcWMO+sFWTEZprhodBMIoG2Xhdug5SIjnKw1dW/CW3Eetg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

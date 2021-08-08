@@ -1,8 +1,12 @@
 ﻿@using ProjectWeb.Models.Home
 @model HomeViewModel
+@inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
 @{
     ViewData["Title"] = "Home Page";
+    var culture = CultureInfo.CurrentCulture.Name;
 }
+
+
 
 <section class="banner p-0">
     <div class="bg-banner"></div>
@@ -77,27 +81,62 @@
         <div class="row content">
             <div class="col text-center">
                 <div class="title">
-                    <h2>Our featured products</h2>
+                    <h2><localize>@ConstantsDisplay.ECW_Home_Index_OurFeaturedProducts</localize> </h2>
                 </div>
             </div>
         </div>
         <div class="row product">
             @foreach (var item in Model.ItemProducts)
             {
+                var URLDetail = $"/{culture}/{_loc[ConstantsDisplay.ECW_SystemURL_Products]}/{item.ID}";
                 <div class="col-6 col-sm-4 mt-3">
-                    <a href="products.html">
+                    <a href="@URLDetail">
                         <div class="box-product">
                             <div class="images">
-                                <img src="/data/ginger_pear_back_150x_default.jpg"
+                                <img src="@Model.BaseURLApi/user-content/@item.ImgDefaultPath"
                                      alt="products" />
-                                <img src="/data/ginger_pear_back_150x.jpg" alt="products" />
+                                <img src="@Model.BaseURLApi/user-content/@item.ImgDefaultPath" alt="@item.ProductName" />
                             </div>
                             <div class="title">
-                                <a href="http://"> @Html.DisplayFor(modelItem => item.ProductName) </a>
+                                <a href="@URLDetail"> @item.ProductName </a>
                             </div>
-                            <div class="price">@Html.DisplayFor(modelItem => item.Price) $</div>
+                            @if (culture == "vi")
+                            {
+                                <div class="price">@item.PriceFormat VND</div>
+                            }
+                            else if (culture == "en")
+                            {
+                                <div class="price">@item.PriceDollarFormat $</div>
+                            }
+
                             <div class="star">
-                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 2 reviews
+
+                                @if (@item.Views <= 5)
+                                {
+                                    <i class="fa fa-star"></i>
+
+                                }
+                                else if (item.Views > 5 && item.Views <= 10)
+                                {
+                                    <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                }
+                                else if (item.Views > 10 && item.Views <= 15)
+                                {
+                                    <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                }
+                                else if (item.Views > 15 && item.Views <= 20)
+                                {
+                                    <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                }
+                                else if (item.Views > 20 && item.Views <= 25)
+                                {
+                                    <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                }
+
+                                <div>
+                                    @item.Views <localize>@ConstantsDisplay.ECW_Home_Index_ViewCountProducts</localize>
+                                </div>
+
                             </div>
                         </div>
                     </a>

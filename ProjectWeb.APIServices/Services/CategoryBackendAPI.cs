@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.Models;
+using ProjectWeb.Models.Categories;
 using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace ProjectWeb.APIServices.Services
         {
 
         }
-        public async Task<ResultMessage<List<CategoryModel>>> GetAll()
+        public async Task<ResultMessage<List<CategoryViewModel>>> GetAll()
         {
-            return await GetAndReturnAsync<List<CategoryModel>>("/api/Categories/");
+            return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/", false);
         }
     }
 }

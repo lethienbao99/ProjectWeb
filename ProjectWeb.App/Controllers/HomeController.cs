@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.App.Models;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using static ProjectWeb.Common.Enums.EnumConstants;
 
 namespace ProjectWeb.App.Controllers
 {
@@ -20,16 +22,21 @@ namespace ProjectWeb.App.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ISharedCultureLocalizer _loc;
         private readonly IProductBackendAPI _productBackendAPI;
+        private readonly IConfiguration _config;
 
-        public HomeController(ILogger<HomeController> logger, ISharedCultureLocalizer loc, IProductBackendAPI productBackendAP)
+        public HomeController(ILogger<HomeController> logger, ISharedCultureLocalizer loc, IProductBackendAPI productBackendAP, IConfiguration config)
         {
             _logger = logger;
             _loc = loc;
             _productBackendAPI = productBackendAP;
+            _config = config;
         }
 
         public async Task<IActionResult> Index()
         {
+            var BaseURLApi = _config[SystemsConstants.BaseURLApi];
+            ViewBag.BaseURLApi = BaseURLApi;
+
             var request = new ProductPagingRequest()
             {
                 Keyword = null,
@@ -41,6 +48,7 @@ namespace ProjectWeb.App.Controllers
             if(data.IsSuccessed)
             {
                 viewHome.ItemProducts = data.Object.Items;
+                viewHome.BaseURLApi = BaseURLApi;
             }
 
             return View(viewHome);

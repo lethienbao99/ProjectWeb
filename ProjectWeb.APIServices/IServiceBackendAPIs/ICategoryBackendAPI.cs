@@ -1,4 +1,5 @@
 ﻿using ProjectWeb.Models;
+using ProjectWeb.Models.Categories;
 using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,6 @@ namespace ProjectWeb.APIServices.IServiceBackendAPIs
 {
     public interface ICategoryBackendAPI
     {
-        Task<ResultMessage<List<CategoryModel>>> GetAll();
+        Task<ResultMessage<List<CategoryViewModel>>> GetAll();
     }
 }

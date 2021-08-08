@@ -117,9 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ECW_Home_Index_OurFeaturedProducts" xml:space="preserve">
+    <value>Sản phẩm nổi bật</value>
+    <comment>/Home/Index</comment>
+  </data>
+  <data name="ECW_Home_Index_ViewCountProducts" xml:space="preserve">
+    <value>Lượt xem</value>
+    <comment>/Home/Index</comment>
+  </data>
   <data name="ECW_Layout_Shop" xml:space="preserve">
     <value>Cửa hàng</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="ECW_SystemURL_Categories" xml:space="preserve">
+    <value>danh-muc</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_SystemURL_Products" xml:space="preserve">
+    <value>san-pham</value>
+    <comment>/Home/Index</comment>
   </data>
   <data name="Receive 20% off your next order using code 'smoothielife'" xml:space="preserve">
     <value>Giảm giá 20% cho đơn hàng tiếp theo khi sử dụng code 'smoothielife'</value>

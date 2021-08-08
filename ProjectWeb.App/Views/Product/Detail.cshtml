@@ -1,0 +1,286 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@section Css {
+    <link rel="stylesheet" href="/css/utils.css">
+    <link rel="stylesheet" href="/css/products.css">
+}
+
+<style>
+    header .header nav ul li a.nav-link {
+        display: block;
+        text-decoration: none;
+        padding: 15px;
+        white-space: nowrap;
+        color: black;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<section class="breadcrumb mt-1">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/">Home</a>
+                <span>›</span>
+                <span>Spinach & Spirulina</span>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="info-product">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="images-box-pc">
+                    <div class="images-big">
+                        <img src="data/spinach_spirulina_front_900x.webp" alt="">
+                    </div>
+                    <div class="images-sm ">
+                        <img src="data/spinach_spirulina_back_900x.webp" alt="">
+                        <img src="data/spinach_spirulina_front_900x.webp" alt="">
+                        <img src="data/spinach_spirulina_back_900x.webp" alt="">
+                        <img src="data/spinach_spirulina_front_900x.webp" alt="">
+                    </div>
+                </div>
+                <div class="images-box-mobile mb-4">
+                    <div class="owl-carousel owl-theme">
+                        <div class="item">
+                            <img src="data/spinach_spirulina_back_900x.webp" class="w-100" alt="">
+                        </div>
+                        <div class="item">
+                            <img src="data/spinach_spirulina_back_900x.webp" class="w-100" alt="">
+                        </div>
+                        <div class="item">
+                            <img src="data/spinach_spirulina_back_900x.webp" class="w-100" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-box">
+                    <div class="title">
+                        <h1> Spinach & Spirulina</h1>
+                    </div>
+                    <div class="size">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">SIZE</label>
+                            <select class="form-control rounded-0 w-70" id="exampleFormControlSelect1">
+                                <option>330ml</option>
+                                <option>500ml</option>
+                                <option>1000ml</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="quantity">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">QUANTITY</label>
+                            <input type="number" value="1" min="1" max="1000" step="1" />
+                        </div>
+                    </div>
+                    <div class="price">
+                        <span>
+                            $2.99
+                        </span>
+                    </div>
+                    <div class="addcart">
+                        <button class="addtocart">Add to Cart</button> <button>Buy it now</button>
+                    </div>
+                    <div class="trust-badge">
+                        <img src="data/trust-badges_300x.png" alt="">
+                    </div>
+                    <div class="content">
+                        Made with 100% certified organic and naturally grown produce picked in Australia, plus
+                        other carefully selected superfoods and herbs sourced from around the globe.
+                        <br>
+                        <br>
+                        Queenstown is dedicated to making the finest vegan and vegetarian friendly, organically
+                        and locally sourced, flavourful smoothies and juices.
+                    </div>
+                    <div class="share">
+                        <div class="title">
+                            <strong>SHARE</strong>
+                        </div>
+                        <div class="icon">
+                            <i class="fab fa-facebook-f   ml-0 my-3 mr-3"></i>
+                            <i class="fab fa-twitter  m-3 "></i>
+                            <i class="fab fa-instagram  m-3 "></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="product-reviews mt-5">
+    <div class="container-fluid">
+        <div class="row content mb-5">
+            <div class="col text-center">
+                <div class="title">
+                    <h2>
+                        Product reviews
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row title p-4">
+            <div class="col-sm-6">
+                <span class="star">
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                </span>
+                <span class="text">
+                    &nbsp; Based on 5 reviews
+                </span>
+            </div>
+            <div class="col-sm-6 text-right">
+                <span class="write">
+                    <a href=""> Write a review </a>
+                </span>
+            </div>
+        </div>
+        <div class="row review  p-4">
+            <span class="line"></span>
+            <div class="col-12">
+                <div class="title">
+                    <h3>
+                        Write a review
+                    </h3>
+                </div>
+                <div class="content">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Name</label>
+                            <input type="text" class="form-control rounded-0" id="exampleFormControlInput1"
+                                   placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Email</label>
+                            <input type="email" class="form-control rounded-0" id="exampleFormControlInput1"
+                                   placeholder="john.smith@example.com">
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="exampleFormControlInput1">Rating</label>
+
+                            <div class="star">
+                                <div class="rating m-auto" data-rate-value=2.5></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Review Title</label>
+                            <input type="text" class="form-control rounded-0" id="exampleFormControlInput1"
+                                   placeholder="Give your review a title">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">
+                                Body of Review (1500) characters
+                                remaining
+                            </label>
+                            <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="10"
+                                      placeholder="Write your comments here"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-dark rounded-0">Submit Review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row comment p-4">
+            <div class="col-12 bdr">
+                <div class="star">
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                </div>
+                <div class="username mt-2">
+                    <strong>
+                        Vegan perfection!
+                    </strong>
+                </div>
+                <div class="date">
+                    <strong> sadas</strong> on <strong>Aug 31, 2018</strong>
+                </div>
+                <div class="content">
+                    Being vegan doesn't need to mean compromising on flavour, and thats what you get with
+                    Queenstown smoothies. Ordered on a Monday night, and the smoothies were delivered in chilled
+                    packaging on Wednesday morning, can't ask for more than that!
+                </div>
+                <div class="report text-right">
+                    <a href="">Report as Inappropriate</a>
+                </div>
+            </div>
+            <div class="col-12 bdr">
+                <div class="star">
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                </div>
+                <div class="username mt-2">
+                    <strong>
+                        Healthy!
+                    </strong>
+                </div>
+                <div class="date">
+                    <strong> sadas</strong> on <strong>Aug 31, 2018</strong>
+                </div>
+                <div class="content">
+
+                    I've tried a few other flavours of your smoothies, but this is by far the best for me. I
+                    have even added this to curries (towards the end) and it adds a beautiful
+                    sweetness/earthiness. Highly recommended!
+                </div>
+                <div class="report text-right">
+                    <a href="">Report as Inappropriate</a>
+                </div>
+            </div>
+            <div class="col-12 bdr">
+                <div class="star">
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                    <i class="fa fa-star fa-lg"></i>
+                </div>
+                <div class="username mt-2">
+                    <strong>
+                        goood
+                    </strong>
+                </div>
+                <div class="date">
+                    <strong> sadas</strong> on <strong>Aug 31, 2018</strong>
+                </div>
+                <div class="content">
+                    awesome
+                </div>
+                <div class="report text-right">
+                    <a href="">Report as Inappropriate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

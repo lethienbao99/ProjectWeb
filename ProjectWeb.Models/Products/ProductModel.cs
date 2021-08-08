@@ -16,13 +16,21 @@ namespace ProjectWeb.Models.Products
         public string Type { get; set; }
         public string Status { get; set; }
         public double Price { get; set; }
+        public string PriceFormat { get; set; }
+        public string PriceDollarFormat { get; set; }
         public int Stock { get; set; }
         public string Alias { get; set; }
+        public int Views { get; set; }
         public IFormFile ThumbnailImage { get; set; }
+        public double PriceDollar { get; set; }
+        public string ImgDefaultPath { get; set; }
     }
 
     public class ProductViewModel : BaseModel
     {
+        public string PriceFormat { get; set; }
+        public string PriceDollarFormat { get; set; }
+        public double PriceDollar { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string Code { get; set; }
@@ -31,8 +39,8 @@ namespace ProjectWeb.Models.Products
         public double Price { get; set; }
         public int Stock { get; set; }
         public string Alias { get; set; }
-        public IFormFile ThumbnailImage { get; set; }
-
+        public string ImgDefaultPath { get; set; }
+        public int Views { get; set; }
 
         public string CategoryName { get; set; }
         public string CategoryCode { get; set; }

@@ -44,9 +44,19 @@ namespace ProjectWeb.AdminApp
 
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
+                // You might want to only set the application cookies over a secure connection:
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
             });
 
-            
+           
+
+
+
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<ISystemUserBackendAPI, SystemUserBackendAPI>();

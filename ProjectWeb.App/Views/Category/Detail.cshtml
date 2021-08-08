@@ -1,0 +1,281 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@section Css {
+    <link rel="stylesheet" href="/css/utils.css">
+    <link rel="stylesheet" href="/css/category.css">
+}
+
+<style>
+    header .header nav ul li a.nav-link {
+        display: block;
+        text-decoration: none;
+        padding: 15px;
+        white-space: nowrap;
+        color: black;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<section class="breadcrumb mt-1">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/">Home</a>
+                <span>›</span>
+                <span>Spinach & Spirulina</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="category mt-5">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="title-box">
+                    <div class="title">
+                        <h2>
+                            Detox Smoothies
+                        </h2>
+                    </div>
+                    <div class="content">
+                        Feeling under the weather? In-laws visiting? Heavy night? Whatever the need for a detox,
+                        and some quiet time, our nutritious detox smoothies should help.
+                    </div>
+                </div>
+                <div class="sortby mt-5">
+                    <div class="title">
+                        Sort By
+                    </div>
+                    <div class="action-sortby">
+                        <ul class="mt-3 mb-3 p-0">
+                            <li>
+                                <input type="radio" name="sortby" id="" checked>
+                                <span>
+                                    Featured
+                                </span>
+                            </li>
+                            <li>
+                                <input type="radio" name="sortby" id="">
+                                <span>
+                                    Price, low to high
+                                </span>
+                            </li>
+                            <li>
+                                <input type="radio" name="sortby" id="">
+                                <span>
+                                    Price, high to low
+                                </span>
+                            </li>
+                            <li>
+                                <input type="radio" name="sortby" id="">
+                                <span>
+                                    Alphabetically, A-Z
+                                </span>
+                            </li>
+                            <li>
+                                <input type="radio" name="sortby" id="">
+                                <span>
+                                    Alphabetically, Z-A
+                                </span>
+                            </li>
+                            <li>
+                                <input type="radio" name="sortby" id="">
+                                <span>
+                                    Date, old to new
+                                </span>
+                            </li>
+                            <li>
+                                <input type="radio" name="sortby" id="">
+                                <span>
+                                    Date, new to old
+                                </span>
+                            </li>
+                            <li>
+                                <input type="radio" name="sortby" id="">
+                                <span>
+                                    Best Selling
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="actiton-sortby-select mt-1 mb-5">
+                        <div class="form-group">
+                            <select class="form-control w-25 rounded-0 m-auto" id="exampleFormControlSelect1">
+                                <option>Featured</option>
+                                <option>Price, low to high</option>
+                                <option>Price, high to low</option>
+                                <option>Alphabetically, A-Z </option>
+                                <option>Alphabetically, Z-A</option>
+                                <option>Date, old to new</option>
+                                <option>Date, new to old</option>
+                                <option>Best Selling</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row product">
+                    <div class="col-6 mt-3 mb-5">
+                        <div class="box-product">
+                            <div class="images">
+                                <img src="/data/ginger_pear_back_150x_default.jpg" alt="products">
+                                <img src="/data/ginger_pear_back_150x.jpg" alt="products">
+                            </div>
+                            <div class="title">
+                                <a href="http://">
+                                    Ginger & Pear
+                                </a>
+                            </div>
+                            <div class="price">
+                                from Rs. 212.58
+                            </div>
+                            <div class="star">
+                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                2 reviews
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-3 mb-5">
+                        <div class="box-product">
+                            <div class="out-badge">
+                                Sold Out
+                            </div>
+                            <div class="images">
+                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
+                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
+                            </div>
+                            <div class="title">
+                                <a href="http://">
+                                    Ginger & Pear
+                                </a>
+                            </div>
+                            <div class="price">
+                                from Rs. 212.58
+                            </div>
+                            <div class="star">
+                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                2 reviews
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-3 mb-5">
+                        <div class="box-product">
+                            <div class="images">
+                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
+                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
+                            </div>
+                            <div class="title">
+                                <a href="http://">
+                                    Ginger & Pear
+                                </a>
+                            </div>
+                            <div class="price">
+                                from Rs. 212.58
+                            </div>
+                            <div class="star">
+                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                2 reviews
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-3 mb-5">
+                        <div class="box-product">
+                            <div class="images">
+                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
+                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
+                            </div>
+                            <div class="title">
+                                <a href="http://">
+                                    Ginger & Pear
+                                </a>
+                            </div>
+                            <div class="price">
+                                from Rs. 212.58
+                            </div>
+                            <div class="star">
+                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                2 reviews
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-3 mb-5">
+                        <div class="box-product">
+                            <div class="images">
+                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
+                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
+                            </div>
+                            <div class="title">
+                                <a href="http://">
+                                    Ginger & Pear
+                                </a>
+                            </div>
+                            <div class="price">
+                                from Rs. 212.58
+                            </div>
+                            <div class="star">
+                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                2 reviews
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mt-3 mb-5">
+                        <div class="box-product">
+
+                            <div class="out-badge sale">
+                                On Sale
+                            </div>
+                            <div class="images">
+                                <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
+                                <img src="data/ginger_pear_back_150x.jpg" alt="products">
+                            </div>
+                            <div class="title">
+                                <a href="http://">
+                                    Ginger & Pear
+                                </a>
+                            </div>
+                            <div class="price">
+                                from Rs. 212.58
+                            </div>
+                            <div class="star">
+                                <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                2 reviews
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <div class="pagination">
+                            <div class="pagination-items m-auto text-center">
+                                <span class="prev"> <a href="http://"> ← </a></span>
+                                <span class="page"> <a href="http://">1</a> </span>
+                                <span class="page active"><a href="http://">2</a></span>
+                                <span class="page"><a href="http://">3</a></span>
+                                <span class="next"> <a href="http://"> → </a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

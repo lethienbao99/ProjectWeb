@@ -174,6 +174,9 @@ namespace ProjectWeb.Bussiness.Services.Products
                         select new { p, c, pc };*/
 
             var query = from p in _context.Products
+                        join i in _context.Images.Where(x => x.IsDefault == true) on p.ID equals i.ProductID into pi
+                        from i in pi.DefaultIfEmpty()
+
                         //Tách riêng categories ra để lấy mảng hoặc join thành chuỗi.
                         let categories = (from pc in _context.ProductCategories
                                           join c in _context.Categories on pc.CategoryID equals c.ID
@@ -185,7 +188,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                                           where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
                                           select c.ID).ToList()
 
-                        select new { p, categories, categorieIDs };
+                        select new { p, categories, categorieIDs, i };
 
 
             //List Categories
@@ -215,12 +218,17 @@ namespace ProjectWeb.Bussiness.Services.Products
                      Type = x.p.Type,
                      Status = x.p.Status,
                      Price = x.p.Price,
+                     PriceDollar = x.p.PriceDollar,
+                     PriceFormat = x.p.Price.ToString("#,##0"),
+                     PriceDollarFormat = x.p.PriceDollar.ToString("#,##0"),
                      Stock = x.p.Stock,
                      Alias = x.p.Alias,
                      Sort = x.p.Sort,
+                     Views = x.p.Views,
                      DateCreated = DateTime.Now,
                      Categories = x.categories, // Mảng categories
-                     CategoriesJoin = string.Join(",", x.categories) // Chuỗi categories 
+                     CategoriesJoin = string.Join(",", x.categories), // Chuỗi categories 
+                     ImgDefaultPath = x.i.ImagePath,
                  }).ToListAsync();
 
             var pagedResult = new PageResultModel<ProductViewModel>()
@@ -267,5 +275,13 @@ namespace ProjectWeb.Bussiness.Services.Products
             return null;
         }
 
+        public async Task<int> UpdateViewCount(Guid ID)
+        {
+            var product = await _context.Products.FindAsync(ID);
+            if (product != null)
+                product.Views += 1;
+
+            return await _context.SaveChangesAsync();
+        }
     }
 }

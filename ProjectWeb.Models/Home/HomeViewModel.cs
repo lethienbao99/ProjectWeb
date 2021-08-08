@@ -10,5 +10,6 @@ namespace ProjectWeb.Models.Home
     public class HomeViewModel
     {
         public List<ProductModel> ItemProducts { get; set; } = new List<ProductModel>();
+        public string BaseURLApi { get; set; }
     }
 }

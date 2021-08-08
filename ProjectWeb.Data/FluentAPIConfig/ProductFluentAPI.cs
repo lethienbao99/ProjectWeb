@@ -22,6 +22,7 @@ namespace ProjectWeb.Data.FluentAPIConfig
             builder.Property(x => x.DateDeleted).IsRequired(false);
             builder.Property(x => x.DateUpdated).IsRequired(false);
             builder.Property(x => x.IsDelete).IsRequired(false);
+            builder.Property(x => x.Views).HasDefaultValue(0);
         }
     }
 }

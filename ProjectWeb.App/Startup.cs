@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.APIServices.Services;
+using ProjectWeb.Common.Enums;
 using ProjectWeb.EcommerceApp.LocalizationResources;
 using System;
 using System.Collections.Generic;
@@ -70,10 +71,17 @@ namespace ProjectWeb.App
 
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
+                // You might want to only set the application cookies over a secure connection:
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IProductBackendAPI, ProductBackendAPI>();
+            services.AddTransient<ICategoryBackendAPI, CategoryBackendAPI>();
             IMvcBuilder builder = services.AddRazorPages();
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (env == Environments.Development)
@@ -107,9 +115,43 @@ namespace ProjectWeb.App
             app.UseSession();
             app.UseEndpoints(endpoints =>
             {
+
                 endpoints.MapControllerRoute(
-                     name: "default",
-                     pattern: "{culture=vi}/{controller=Home}/{action=Index}/{id?}");
+                     name: "Categories EN",
+                     pattern: "{culture}/categories/{id?}", new
+                     {
+                         controller = "Category",
+                         action = "Detail"
+                     });
+
+                endpoints.MapControllerRoute(
+                    name: "Categories VN",
+                    pattern: "{culture}/danh-muc/{id?}", new
+                    {
+                        controller = "Category",
+                        action = "Detail"
+                    });
+
+                endpoints.MapControllerRoute(
+                     name: "Products EN",
+                     pattern: "{culture}/products/{id?}", new
+                     {
+                         controller = "Product",
+                         action = "Detail"
+                     });
+
+                endpoints.MapControllerRoute(
+                    name: "Products VN",
+                    pattern: "{culture}/san-pham/{id?}", new
+                    {
+                        controller = "Product",
+                        action = "Detail"
+                    });
+
+
+                endpoints.MapControllerRoute(
+                 name: "default",
+                 pattern: "{culture=vi}/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -44,9 +44,13 @@ namespace ProjectWeb.API.Controllers
             return Ok(products);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
+            //Add View Count
+            await _unitOfWork.Products.UpdateViewCount(id);
+
             var product = await _unitOfWork.Products.GetByIDAsync(id);
             if (product.Object == null)
                 return BadRequest($"Cannot find product with ID: {id}");
