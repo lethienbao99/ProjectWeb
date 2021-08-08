@@ -34,12 +34,14 @@
 
             @if (Model.PageIndex != startIndex)
             {
+                //nếu không ở trang đầu thì hiện nút lùi về đầu.
                 <span class="prev"> <a title="1" href="@urlTemplate.Replace("{0}", "1")"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a></span>
                 <span class="page"> <a href="@urlTemplate.Replace("{0}", (Model.PageIndex-1).ToString())"><i class="fa fa-angle-left" aria-hidden="true"></i></a> </span>
 
             }
             @for (var i = startIndex; i <= finishIndex; i++)
             {
+                //hiện thị các trang con
                 if (i == Model.PageIndex)
                 {
                     <span class="page"> <a href="#">@i</a> </span>
@@ -52,6 +54,7 @@
             }
             @if (Model.PageIndex != finishIndex)
             {
+                //ở trang đầu thì hiện nút tiến về cuối.
                 <span class="next"> <a title="@Model.PageCount.ToString()" href="@urlTemplate.Replace("{0}", (Model.PageIndex+1).ToString())"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a></span>
                 <span class="next"> <a href="@urlTemplate.Replace("{0}", Model.PageCount.ToString())"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a></span>
             }
