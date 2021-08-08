@@ -94,6 +94,11 @@ namespace ProjectWeb.APIServices.Services
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&categoryId={request.CategoryId}", false);
         }
 
+        public async Task<ResultMessage<List<ProductViewModel>>> GetSlideProducts()
+        {
+            return await GetAndReturnAsync<List<ProductViewModel>>("/api/Products/slide", false);
+        }
+
         public async Task<ResultMessage<bool>> Update(ProductUpdateRequest request)
         {
             var sessions = _httpContextAccessor
@@ -123,7 +128,6 @@ namespace ProjectWeb.APIServices.Services
             requestContent.Add(new StringContent(request.Code.ToString()), "code");
             requestContent.Add(new StringContent(request.ProductName.ToString()), "productName");
             requestContent.Add(new StringContent(request.Description.ToString()), "description");
-            requestContent.Add(new StringContent(request.Type.ToString()), "type");
             requestContent.Add(new StringContent(request.Status.ToString()), "status");
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.PriceDollar.ToString()), "priceDollar");

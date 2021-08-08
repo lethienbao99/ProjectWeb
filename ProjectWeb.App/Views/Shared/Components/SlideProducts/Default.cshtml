@@ -1,6 +1,7 @@
 ﻿@{
     var culture = CultureInfo.CurrentCulture.Name;
 }
+@model List<ProductViewModel>
 
 @inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
 
@@ -20,112 +21,74 @@
             <div class="row product p-4">
                 <div class="col">
                     <div class="owl-carousel owl-theme">
-                        <div class="item">
-                            <div class="box-product">
-                                <div class="out-badge sale">
-                                    On Sale
-                                </div>
-                                <div class="images">
-                                    <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                    <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                                </div>
-                                <div class="title">
-                                    <a href="http://">
-                                        Ginger & Pear
-                                    </a>
-                                </div>
-                                <div class="price">
-                                    from Rs. 212.58
-                                </div>
-                                <div class="star">
-                                    <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                    2 reviews
-                                </div>
+                        @foreach (var item in Model)
+                        {
+                            var URLDetail = $"/{culture}/{_loc[ConstantsDisplay.ECW_SystemURL_Products]}/{item.ID}";
+
+                            <div class="item">
+                                <a href="@URLDetail">
+                                    <div class="box-product">
+                                        <div class="images">
+                                            <img src="@ViewBag.BaseURLApi/user-content/@item.ImgDefaultPath" alt="products">
+                                            <img src="@ViewBag.BaseURLApi/user-content/@item.ImgDefaultPath" alt="products">
+                                        </div>
+                                        <div class="title">
+                                            <a href="@URLDetail">
+                                                @item.ProductName
+                                            </a>
+                                        </div>
+
+                                        @if (culture == "vi")
+                                        {
+                                            <div class="price">
+                                                @item.PriceFormat VND
+                                            </div>
+                                        }
+                                        else if (culture == "en")
+                                        {
+                                            <div class="price">
+                                                $@item.PriceDollarFormat
+                                            </div>
+                                        }
+
+                                        <div class="star">
+
+                                            @if (item.Views <= 5)
+                                            {
+                                                <i class="fa fa-star"></i>
+
+                                            }
+                                            else if (item.Views > 5 && item.Views <= 10)
+                                            {
+                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            }
+                                            else if (item.Views > 10 && item.Views <= 15)
+                                            {
+                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                            }
+                                            else if (item.Views > 15 && item.Views <= 20)
+                                            {
+                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                            }
+                                            else if (item.Views > 20 && item.Views <= 25)
+                                            {
+                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                            }
+
+                                            <div>
+                                                @item.Views <localize>@ConstantsDisplay.ECW_Home_Index_ViewCountProducts</localize>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </a>
+                                
                             </div>
-                        </div>
-                        <div class="item">
-                            <div class="box-product">
-                                <div class="images">
-                                    <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                    <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                                </div>
-                                <div class="title">
-                                    <a href="http://">
-                                        Ginger & Pear
-                                    </a>
-                                </div>
-                                <div class="price">
-                                    from Rs. 212.58
-                                </div>
-                                <div class="star">
-                                    <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                    2 reviews
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="box-product">
-                                <div class="out-badge">
-                                    Sold Out
-                                </div>
-                                <div class="images">
-                                    <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                    <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                                </div>
-                                <div class="title">
-                                    <a href="http://">
-                                        Ginger & Pear
-                                    </a>
-                                </div>
-                                <div class="price">
-                                    from Rs. 212.58
-                                </div>
-                                <div class="star">
-                                    <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                    2 reviews
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="box-product">
-                                <div class="images">
-                                    <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                    <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                                </div>
-                                <div class="title">
-                                    <a href="http://">
-                                        Ginger & Pear
-                                    </a>
-                                </div>
-                                <div class="price">
-                                    from Rs. 212.58
-                                </div>
-                                <div class="star">
-                                    <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                    2 reviews
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="box-product">
-                                <div class="images">
-                                    <img src="data/ginger_pear_back_150x_default.jpg" alt="products">
-                                    <img src="data/ginger_pear_back_150x.jpg" alt="products">
-                                </div>
-                                <div class="title">
-                                    <a href="http://">
-                                        Ginger & Pear
-                                    </a>
-                                </div>
-                                <div class="price">
-                                    from Rs. 212.58
-                                </div>
-                                <div class="star">
-                                    <i class="fa  fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                    2 reviews
-                                </div>
-                            </div>
-                        </div>
+                        }
+
+
+
+
                     </div>
                 </div>
             </div>

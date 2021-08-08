@@ -16,9 +16,10 @@ namespace ProjectWeb.EcommerceApp.Controllers.Components
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            /*var categories = await _categoryBackendAPI.GetAll();
-            if (categories.Object != null)
-                return View(categories.Object);*/
+            var result = await _productBackendAPI.GetSlideProducts();
+            if (result.Object != null)
+                return View(result.Object);
+
             return View("Default");
         }
     }

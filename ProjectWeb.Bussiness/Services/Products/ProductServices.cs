@@ -62,14 +62,33 @@ namespace ProjectWeb.Bussiness.Services.Products
 
             if(request.CategoryId != Guid.Empty && request.CategoryId != null)
             {
-                var productCategories = new ProductCategory()
+                var category = await _context.Categories.FindAsync(request.CategoryId);
+                if(category != null)
                 {
-                    ID = Guid.NewGuid(),
-                    ProductID = product.ID,
-                    CategoryID = request.CategoryId.Value,
-                    DateCreated = DateTime.Now
-                };
-                _context.ProductCategories.Add(productCategories);
+                    //Add category con đã chọn trên view 
+                    var productCategorieChild = new ProductCategory()
+                    {
+                        ID = Guid.NewGuid(),
+                        ProductID = product.ID,
+                        CategoryID = request.CategoryId.Value,
+                        DateCreated = DateTime.Now,
+                    };
+                    _context.ProductCategories.Add(productCategorieChild);
+
+                    //Tìm category cha và add vào luôn.
+                    if(category.ParentID != null && category.ParentID != Guid.Empty)
+                    {
+                        var productCategorieParent = new ProductCategory()
+                        {
+                            ID = Guid.NewGuid(),
+                            ProductID = product.ID,
+                            CategoryID = category.ParentID.Value,
+                            DateCreated = DateTime.Now,
+                        };
+                        _context.ProductCategories.Add(productCategorieParent);
+                    }
+                }
+                
             }
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -278,7 +297,8 @@ namespace ProjectWeb.Bussiness.Services.Products
                     Description = x.p.Description,
                     Type = x.p.Type,
                     Status = x.p.Status,
-                    Price = x.p.Price,
+                    PriceFormat = x.p.Price.ToString("#,##0"),
+                    PriceDollarFormat = x.p.PriceDollar.ToString("#,##0"),
                     Stock = x.p.Stock,
                     Alias = x.p.Alias,
                     DateCreated = x.p.DateCreated,
@@ -304,6 +324,34 @@ namespace ProjectWeb.Bussiness.Services.Products
                 product.Views += 1;
 
             return await _context.SaveChangesAsync();
+        }
+
+        public async Task<ResultMessage<List<ProductViewModel>>> GetSlideProducts()
+        {
+            var query = from p in _context.Products
+                        join i in _context.Images.Where(x => x.IsDefault == true) on p.ID equals i.ProductID into pi
+                        from i in pi.DefaultIfEmpty()
+                        select new { p, i };
+
+            var data = await query.Take(8).OrderByDescending(x => x.p.Views)
+                 .Select(x => new ProductViewModel()
+                 {
+                     ID = x.p.ID,
+                     ProductName = x.p.ProductName,
+                     Description = x.p.Description,
+                     Status = x.p.Status,
+                     PriceFormat = x.p.Price.ToString("#,##0"),
+                     PriceDollarFormat = x.p.PriceDollar.ToString("#,##0"),
+                     Stock = x.p.Stock,
+                     Views = x.p.Views,
+                     DateCreated = DateTime.Now,
+                     ImgDefaultPath = x.i.ImagePath,
+                 }).ToListAsync();
+
+            if(data != null)
+                return new ResultObjectSuccess<List<ProductViewModel>>(data);
+
+            return new ResultObjectError<List<ProductViewModel>>();
         }
     }
 }

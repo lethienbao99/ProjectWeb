@@ -49,7 +49,7 @@ namespace ProjectWeb.API.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             //Add View Count
-            await _unitOfWork.Products.UpdateViewCount(id);
+            //await _unitOfWork.Products.UpdateViewCount(id);
 
             var product = await _unitOfWork.Products.GetByIDAsync(id);
             if (product.Object == null)
@@ -61,6 +61,9 @@ namespace ProjectWeb.API.Controllers
         [HttpGet("{id}/v2")]
         public async Task<IActionResult> GetByIdCustome(Guid id)
         {
+            //Add View Count
+            await _unitOfWork.Products.UpdateViewCount(id);
+
             var product = await _unitOfWork.Products.GetProductByID(id);
             if (product.Object == null)
                 return BadRequest($"Cannot find product with ID: {id}");
@@ -170,6 +173,14 @@ namespace ProjectWeb.API.Controllers
             if (image.Object == null)
                 return BadRequest($"Cannot find Images with ID: {id}");
             return Ok(image);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("slide")]
+        public async Task<IActionResult> GetSlideProducts()
+        {
+            var products = await _unitOfWork.Products.GetSlideProducts();
+            return Ok(products);
         }
 
     }
