@@ -13,7 +13,7 @@ namespace ProjectWeb.APIServices.IServiceBackendAPIs
         Task<ResultMessage<bool>> Create(ProductCreateRequest request);
         Task<ResultMessage<bool>> Update(ProductUpdateRequest request);
         Task<ResultMessage<ProductModel>> GetProductByID(Guid ID);
-        Task<ResultMessage<ProductModel>> GetProductByIDCustome(Guid ID);
+        Task<ResultMessage<ProductViewModel>> GetProductByIDCustome(Guid ID);
         Task<ResultMessage<bool>> Delete(Guid ID);
     }
 }

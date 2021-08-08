@@ -1,6 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿@model ProductViewModel
+@inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
+@{
+    ViewData["Title"] = Model.ProductName;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var culture = CultureInfo.CurrentCulture.Name;
 }
 
 
@@ -38,7 +41,7 @@
             <div class="col">
                 <a href="/">Home</a>
                 <span>›</span>
-                <span>Spinach & Spirulina</span>
+                <span>@Model.ProductName</span>
             </div>
         </div>
     </div>
@@ -49,25 +52,26 @@
             <div class="col-md-6">
                 <div class="images-box-pc">
                     <div class="images-big">
-                        <img src="data/spinach_spirulina_front_900x.webp" alt="">
+                        <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" alt="@Model.ProductName">
                     </div>
                     <div class="images-sm ">
-                        <img src="data/spinach_spirulina_back_900x.webp" alt="">
-                        <img src="data/spinach_spirulina_front_900x.webp" alt="">
-                        <img src="data/spinach_spirulina_back_900x.webp" alt="">
-                        <img src="data/spinach_spirulina_front_900x.webp" alt="">
+                        @*  Chỗ này chứa thêm 4 ảnh phụ, làm sau.*@
+                        <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" alt="@Model.ProductName">
+                        <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" alt="@Model.ProductName">
+                        <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" alt="@Model.ProductName">
+                        <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" alt="@Model.ProductName">
                     </div>
                 </div>
                 <div class="images-box-mobile mb-4">
                     <div class="owl-carousel owl-theme">
                         <div class="item">
-                            <img src="data/spinach_spirulina_back_900x.webp" class="w-100" alt="">
+                            <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" class="w-100" alt="@Model.ProductName">
                         </div>
                         <div class="item">
-                            <img src="data/spinach_spirulina_back_900x.webp" class="w-100" alt="">
+                            <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" class="w-100" alt="@Model.ProductName">
                         </div>
                         <div class="item">
-                            <img src="data/spinach_spirulina_back_900x.webp" class="w-100" alt="">
+                            <img src="@ViewBag.BaseURLApi/user-content/@Model.ImgDefaultPath" class="w-100" alt="@Model.ProductName">
                         </div>
                     </div>
                 </div>
@@ -75,18 +79,19 @@
             <div class="col-md-6">
                 <div class="info-box">
                     <div class="title">
-                        <h1> Spinach & Spirulina</h1>
+                        <h1> @Model.ProductName</h1>
                     </div>
-                    <div class="size">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">SIZE</label>
-                            <select class="form-control rounded-0 w-70" id="exampleFormControlSelect1">
-                                <option>330ml</option>
-                                <option>500ml</option>
-                                <option>1000ml</option>
-                            </select>
-                        </div>
-                    </div>
+                    @*Tạm thời chưa cần size*@
+                    @*<div class="size">
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">SIZE</label>
+                                <select class="form-control rounded-0 w-70" id="exampleFormControlSelect1">
+                                    <option>330ml</option>
+                                    <option>500ml</option>
+                                    <option>1000ml</option>
+                                </select>
+                            </div>
+                        </div>*@
                     <div class="quantity">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">QUANTITY</label>
@@ -94,9 +99,20 @@
                         </div>
                     </div>
                     <div class="price">
-                        <span>
-                            $2.99
-                        </span>
+
+                        @if (culture == "vi")
+                        {
+                            <span>
+                                @Model.PriceFormat VND
+                            </span>
+                        }
+                        else if (culture == "en")
+                        {
+                            <span>
+                                $@Model.PriceDollarFormat
+                            </span>
+                        }
+
                     </div>
                     <div class="addcart">
                         <button class="addtocart">Add to Cart</button> <button>Buy it now</button>
@@ -105,12 +121,7 @@
                         <img src="data/trust-badges_300x.png" alt="">
                     </div>
                     <div class="content">
-                        Made with 100% certified organic and naturally grown produce picked in Australia, plus
-                        other carefully selected superfoods and herbs sourced from around the globe.
-                        <br>
-                        <br>
-                        Queenstown is dedicated to making the finest vegan and vegetarian friendly, organically
-                        and locally sourced, flavourful smoothies and juices.
+                        @Html.Raw(Model.Description)
                     </div>
                     <div class="share">
                         <div class="title">
@@ -282,5 +293,10 @@
         </div>
     </div>
 </section>
+
+
+@await Component.InvokeAsync("SlideProducts")
+
+
 
 

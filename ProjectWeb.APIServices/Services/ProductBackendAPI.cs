@@ -83,9 +83,9 @@ namespace ProjectWeb.APIServices.Services
             return await GetAndReturnAsync<ProductModel>($"/api/Products/{ID}");
         }
 
-        public async Task<ResultMessage<ProductModel>> GetProductByIDCustome(Guid ID)
+        public async Task<ResultMessage<ProductViewModel>> GetProductByIDCustome(Guid ID)
         {
-            return await GetAndReturnAsync<ProductModel>($"/api/Products/{ID}/v2");
+            return await GetAndReturnAsync<ProductViewModel>($"/api/Products/{ID}/v2");
         }
 
         public async Task<ResultMessage<PageResultModel<ProductModel>>> GetProductPaging(ProductPagingRequest request)

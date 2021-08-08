@@ -10,9 +10,9 @@ namespace ProjectWeb.EcommerceApp.Controllers.Components
     public class NavigationViewComponent: ViewComponent
     {
         private readonly ICategoryBackendAPI _categoryBackendAPI;
-        public NavigationViewComponent(ICategoryBackendAPI ICategoryBackendAPI)
+        public NavigationViewComponent(ICategoryBackendAPI categoryBackendAPI)
         {
-            _categoryBackendAPI = ICategoryBackendAPI;
+            _categoryBackendAPI = categoryBackendAPI;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {

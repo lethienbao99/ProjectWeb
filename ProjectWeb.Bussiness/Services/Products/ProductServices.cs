@@ -246,8 +246,13 @@ namespace ProjectWeb.Bussiness.Services.Products
         public async Task<ResultMessage<ProductViewModel>> GetProductByID(Guid ID)
         {
 
-            var product = await _context.Products.FirstOrDefaultAsync(s => s.ID == ID && s.IsDelete == null);
-            if(product != null)
+            var product = from p in _context.Products
+                          join i in _context.Images.Where(x => x.IsDefault == true) on p.ID equals i.ProductID into pi
+                          from i in pi.DefaultIfEmpty()
+                          where p.ID == ID
+                          select new { p, i };
+
+            if (product != null)
             {
                 var query = await (from c in _context.Categories
                                    join pc in _context.ProductCategories on c.ID equals pc.CategoryID
@@ -260,23 +265,32 @@ namespace ProjectWeb.Bussiness.Services.Products
                                    where c.ParentID != null && pc.ProductID == ID
                                    select c.ID).FirstOrDefaultAsync();
 
-                var data =  new ProductViewModel()
+                var CategoryNameChildNode = await (from c in _context.Categories
+                                                 join pc in _context.ProductCategories on c.ID equals pc.CategoryID
+                                                 where c.ParentID != null && pc.ProductID == ID
+                                                 select c.CategoryName).FirstOrDefaultAsync();
+
+                var data = await product.Select(x => new ProductViewModel()
                 {
-                    ID = product.ID,
-                    ProductName = product.ProductName,
-                    Code = product.Code,
-                    Description = product.Description,
-                    Type = product.Type,
-                    Status = product.Status,
-                    Price = product.Price,
-                    Stock = product.Stock,
-                    Alias = product.Alias,
-                    DateCreated = product.DateCreated,
-                    DateUpdated = product.DateUpdated,
-                    DateDeleted = product.DateDeleted,
+                    ID = x.p.ID,
+                    ProductName = x.p.ProductName,
+                    Code = x.p.Code,
+                    Description = x.p.Description,
+                    Type = x.p.Type,
+                    Status = x.p.Status,
+                    Price = x.p.Price,
+                    Stock = x.p.Stock,
+                    Alias = x.p.Alias,
+                    DateCreated = x.p.DateCreated,
+                    DateUpdated = x.p.DateUpdated,
+                    DateDeleted = x.p.DateDeleted,
                     Categories = query,
-                    CategoryId = CategoryIDChildNode
-                };
+                    CategoryId = CategoryIDChildNode,
+                    CategoryName = CategoryNameChildNode,
+                    ImgDefaultPath = x.i.ImagePath
+                }
+                ).FirstOrDefaultAsync();
+
                 return new ResultObjectSuccess<ProductViewModel>(data);
             }
 

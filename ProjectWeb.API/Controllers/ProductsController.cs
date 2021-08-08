@@ -57,6 +57,7 @@ namespace ProjectWeb.API.Controllers
             return Ok(product);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}/v2")]
         public async Task<IActionResult> GetByIdCustome(Guid id)
         {
