@@ -43,7 +43,7 @@ namespace ProjectWeb.EcommerceApp.Controllers
         public async Task<IActionResult> Login(LoginRequest request)
         {
             if (!ModelState.IsValid)
-                return View(ModelState);
+                return View();
 
             var result = await _systemUserBackendAPI.Authenticate(request);
             if (result.Message != "Success")

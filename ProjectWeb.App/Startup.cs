@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using LazZiya.ExpressLocalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +13,7 @@ using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.APIServices.Services;
 using ProjectWeb.Common.Enums;
 using ProjectWeb.EcommerceApp.LocalizationResources;
+using ProjectWeb.Models.FluentValidations.SystemUsers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -97,7 +99,8 @@ namespace ProjectWeb.App
             {
                 builder.AddRazorRuntimeCompilation();
             }
-            services.AddControllersWithViews();
+
+            services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
 
         }
 
