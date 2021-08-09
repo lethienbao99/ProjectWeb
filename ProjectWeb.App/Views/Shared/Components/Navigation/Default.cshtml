@@ -98,17 +98,7 @@
                         </ul>
                         <div class="menu-right mt-2 mt-lg-0">
                             <ul class="pl-0">
-                                <li class="nav-item">
-                                    <select class="nav-link" name="currencies">
-                                        <option value="USD" selected>USD</option>
-                                        <option value="INR">INR</option>
-                                        <option value="GBP">GBP</option>
-                                        <option value="CAD">CAD</option>
-                                        <option value="AUD">AUD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="JPY">JPY</option>
-                                    </select>
-                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link search-pc" href="#">
                                         <i class="fa fa-search fa-lg"></i> Search
@@ -266,9 +256,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fa fa-user fa-lg"></i> Account</a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link cart-pc" href="#">
                                         <i class="fa fa-shopping-cart fa-lg"></i> Cart - 0
@@ -358,6 +346,30 @@
                                         </div>
                                     </div>
                                 </li>
+
+
+                                <li class="nav-item">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a class="nav-link" href="/@culture/Account/Profile"><i class="fa fa-user fa-lg"></i> @User.Identity.Name</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link" href="/@culture/Account/Login"><i class="fa fa-user fa-lg"></i> Login</a>
+                                    }
+                                </li>
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/@culture/Account/Logout">Logout</a>  
+                                    </li>
+
+                                }
+
+
+
+
                             </ul>
                         </div>
                     </div>

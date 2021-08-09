@@ -26,7 +26,7 @@ namespace ProjectWeb.Bussiness.Services.Categories
             var categories = await _context.Categories.Where(x => x.ParentID != null && x.ParentID != Guid.Empty).Select(x => new CategoryViewModel()
             {
                 ID = x.ID,
-                CategoryName = x.CategoryName + " - " + x.Type
+                CategoryName = x.CategoryName + " - " + x.Code
             }).ToListAsync();
 
             if (categories != null)

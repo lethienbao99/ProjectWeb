@@ -220,7 +220,7 @@ namespace ProjectWeb.Data.Migrations
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "5ef9d50f-43fa-4363-9a83-43db3635b24f",
+                            ConcurrencyStamp = "679eab72-241d-4507-b7de-ea101948ffbd",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -304,6 +304,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
@@ -681,13 +684,13 @@ namespace ProjectWeb.Data.Migrations
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "88c698f9-a52f-4321-a4d6-1433b0f9e318",
+                            ConcurrencyStamp = "8f0951ba-389f-4471-bf24-74b79e08dfaa",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO8e6iIoZUccM4egeXVPWTqWQlgLgGyKcdxVGK/ey73BwQ/OtcaL2x92YA8D25gDWA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENGm1vUAX5zhwcxVOtc0lGhZZTzQkP5TS00zCudHuuxGDCw53pIgG/QayAZhj+nLPg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

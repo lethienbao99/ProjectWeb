@@ -41,7 +41,7 @@ namespace ProjectWeb.App.Controllers
             {
                 Keyword = null,
                 PageIndex = 1,
-                PageSize = 8,
+                PageSize = 6,
             };
             var data = await _productBackendAPI.GetProductPaging(request);
             var viewHome = new HomeViewModel();

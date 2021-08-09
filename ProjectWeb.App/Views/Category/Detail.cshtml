@@ -40,7 +40,7 @@
             <div class="col">
                 <a href="/">Home</a>
                 <span>›</span>
-                <span>Spinach & Spirulina</span>
+                <span>@Model.Category.Object.CategoryName</span>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                         </h2>
                     </div>
                     <div class="content">
-                        @Model.Category.Object.Status - mô tả này làm sau.
+                        @Model.Category.Object.Description
                     </div>
                 </div>
                 <div class="sortby mt-5">
@@ -200,15 +200,7 @@
                     <div class="col-12">
 
                           @await Component.InvokeAsync("Page", Model.ItemProductsWithPaging.Object)
-                        @*<div class="pagination">
-                            <div class="pagination-items m-auto text-center">
-                                <span class="prev"> <a href="http://"> ← </a></span>
-                                <span class="page"> <a href="http://">1</a> </span>
-                                <span class="page active"><a href="http://">2</a></span>
-                                <span class="page"><a href="http://">3</a></span>
-                                <span class="next"> <a href="http://"> → </a></span>
-                            </div>
-                        </div>*@
+                       
                     </div>
                 </div>
             </div>

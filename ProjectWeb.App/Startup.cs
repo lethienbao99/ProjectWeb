@@ -1,4 +1,5 @@
 using LazZiya.ExpressLocalization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +38,13 @@ namespace ProjectWeb.App
                 new CultureInfo("en"),
                 new CultureInfo("vi"),
             };
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login/";
+                    options.AccessDeniedPath = "/Account/Forbidden";
+                });
 
             services.AddControllersWithViews()
                 .AddExpressLocalization<ExpressLocalizationResource, ViewLocalizationResource>(ops =>
@@ -80,6 +88,7 @@ namespace ProjectWeb.App
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ISystemUserBackendAPI, SystemUserBackendAPI>();
             services.AddTransient<IProductBackendAPI, ProductBackendAPI>();
             services.AddTransient<ICategoryBackendAPI, CategoryBackendAPI>();
             IMvcBuilder builder = services.AddRazorPages();
@@ -107,12 +116,11 @@ namespace ProjectWeb.App
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
-            app.UseRequestLocalization();
             app.UseSession();
+            app.UseRequestLocalization();
             app.UseEndpoints(endpoints =>
             {
 
