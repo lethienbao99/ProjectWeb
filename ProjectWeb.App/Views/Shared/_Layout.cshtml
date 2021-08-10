@@ -1,6 +1,8 @@
 ﻿@{
     var culture = CultureInfo.CurrentCulture.Name;
 }
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +23,9 @@
 </head>
 
 <body>
+    <input type="hidden" id="currentCulture" value="@culture" />
+    <input type="hidden" id="urlItem" value="/@culture/@_loc[ConstantsDisplay.ECW_SystemURL_Products]/" />
+    <input type="hidden" id="urlImage" value="@Configuration["BaseURLApi"]/user-content/" />
     <header>
         <div class="header">
             <div class="notification">
@@ -56,7 +61,7 @@
             <div class="bg-menu-mobile-box"></div>
             <ul class="big-menu">
                 <li class="text-center">
-                    <img class="logo" src="/data/logo_master_black_300x.png" alt="" />
+                    Logo
                 </li>
                 <li class="search">
                     <input class="form-control rounded-0"
@@ -286,5 +291,12 @@
     <script src="/plugins/bootstrap-input-spinner/bootstrap-input-spinner.js"></script>
     <script src="/plugins/rater/rater.min.js"></script>
     <script src="/js/main.js"></script>
+    <script src="/JsServices/CartServices.js"></script>
+
+
+    <script>
+        var cartJs = new CartServices();
+            cartJs.initialize();
+    </script>
 </body>
 </html>

@@ -95,9 +95,32 @@ namespace ProjectWeb.EcommerceApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+
+
+        [HttpGet]
         public IActionResult Signup()
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Signup(SignUpRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(request);
+            }
+
+            var result = await _systemUserBackendAPI.Signup(request);
+
+            if (result.IsSuccessed)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
+
     }
 }

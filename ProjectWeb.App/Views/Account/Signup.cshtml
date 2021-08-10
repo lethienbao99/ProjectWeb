@@ -1,6 +1,10 @@
 ﻿@{
     Layout = null;
+   
+    var culture = CultureInfo.CurrentCulture.Name;
 }
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,27 +29,32 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST" class="register-form" id="register-form">
+                        <form method="POST" class="register-form" id="register-form" asp-action="Signup">
                             <div class="form-group">
-                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="name" id="name" placeholder="Your Name" />
+                                <label for="Username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="Username" id="Username" placeholder="Username" />
                             </div>
                             <div class="form-group">
-                                <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="email" id="email" placeholder="Your Email" />
+                                <label for="FirstName"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="FirstName" id="FirstName" placeholder="FirstName" />
                             </div>
                             <div class="form-group">
-                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="pass" id="pass" placeholder="Password" />
+                                <label for="LastName"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="LastName" id="LastName" placeholder="LastName" />
                             </div>
                             <div class="form-group">
-                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" />
+                                <label for="Email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="Email" name="Email" id="Email" placeholder="Your Email" />
                             </div>
                             <div class="form-group">
-                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                                <label for="Password"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="Password" id="Password" placeholder="Password" />
                             </div>
+                            <div class="form-group">
+                                <label for="ConfirmPassword"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="Confirm Password" />
+                            </div>
+
                             <div class="form-group form-button">
                                 <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
                             </div>
@@ -53,7 +62,7 @@
                     </div>
                     <div class="signup-image">
                         <figure><img src="https://localhost:5003/Account-css/images/signup-image.jpg" alt="sing up image"></figure>
-                        <a href="#" class="signup-image-link">I am already member</a>
+                        <a href="/@culture/Account/Login" class="signup-image-link">I am already member</a>
                     </div>
                 </div>
             </div>

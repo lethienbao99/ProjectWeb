@@ -301,6 +301,8 @@ namespace ProjectWeb.Bussiness.Services.Products
                     PriceDollarFormat = x.p.PriceDollar.ToString("#,##0"),
                     Stock = x.p.Stock,
                     Alias = x.p.Alias,
+                    Price = x.p.Price,
+                    PriceDollar = x.p.PriceDollar,
                     DateCreated = x.p.DateCreated,
                     DateUpdated = x.p.DateUpdated,
                     DateDeleted = x.p.DateDeleted,
