@@ -1,6 +1,10 @@
 ﻿
 
-<div class="form-modal">
+@section Css{ 
+    <link rel="stylesheet" href="css/contact.css">
+}
+
+<div class="form-modal" id="cart-modal">
     <div class="bg-modal"></div>
     <div class="box-cart">
         <div class="title text-center">
@@ -9,21 +13,57 @@
             </h3>
         </div>
         <div class="content">
+            <div class="container-fluid" id="confirmCheckout">
+                <div class="row">
+                    <div class="col-md-9">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control rounded-0" id="inputShipEmail"
+                                       placeholder="Email"> 
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control rounded-0" id="inputShipAddress"
+                                       placeholder="Ship Address">
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="button">
+                            <button class="btn btn-dark rounded-0" id="btnOrder">
+                                Order
+                            </button>
+
+                            <button class="btn btn-dark rounded-0" id="btnBackCart">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+
+
+
             <div class="container-fluid" id="cart-body">
 
-              
-               
+
+
 
             </div>
+
+
+
         </div>
-        <div class="total text-center">
+        <div class="total text-center" id="CheckoutDiv">
             <p>SUBTOTAL</p>
             <span class="price" id="totalPrice"> $0</span>
             <div class="content">
                 Tax included and shipping calculated at checkout
             </div>
             <div class="button">
-                <button class="btn btn-dark rounded-0">
+                <button class="btn btn-dark rounded-0" id="btnCheckout">
                     Check Out
                 </button>
             </div>

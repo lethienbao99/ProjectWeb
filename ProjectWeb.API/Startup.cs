@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using ProjectWeb.Bussiness.Services.AppRoles;
 using ProjectWeb.Bussiness.Services.Categories;
 using ProjectWeb.Bussiness.Services.Commons;
+using ProjectWeb.Bussiness.Services.Orders;
 using ProjectWeb.Bussiness.Services.Products;
 using ProjectWeb.Bussiness.Services.SystemUsers;
 using ProjectWeb.Common.Enums;
@@ -60,6 +61,7 @@ namespace ProjectWeb.API
             services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddTransient<ISystemUserServices, SystemUserServices>();
             services.AddTransient<IAppRoleServices, AppRoleServices>();
+            services.AddTransient<IOrderServices, OrderServices>();
             services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
             services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();

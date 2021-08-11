@@ -69,6 +69,7 @@ namespace ProjectWeb.EcommerceApp.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
                         authProperties);
+
             return RedirectToAction("Index", "Home");
 
         }

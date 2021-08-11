@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.Common.Enums;
 using ProjectWeb.Models.Carts;
+using ProjectWeb.Models.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace ProjectWeb.EcommerceApp.Controllers
     public class CartController : Controller
     {
         private readonly IProductBackendAPI _productBackendAPI;
+        private readonly IOrderBackendAPI _orderBackendAPI;
         private readonly IConfiguration _config;
-        public CartController(IProductBackendAPI productBackendAP, IConfiguration config)
+        public CartController(IProductBackendAPI productBackendAP, IOrderBackendAPI orderBackendAPI, IConfiguration config)
         {
             _config = config;
             _productBackendAPI = productBackendAP;
+            _orderBackendAPI = orderBackendAPI;
         }
         public IActionResult Index()
         {
@@ -35,6 +38,32 @@ namespace ProjectWeb.EcommerceApp.Controllers
                 carts = JsonConvert.DeserializeObject<List<CartViewModel>>(currentCartInSession);
             return Ok(carts);
         }
+
+
+        public async Task<IActionResult> CheckoutOrder(string email, string shipAddress, string userID)
+        {
+            var order = new OrderViewModel();
+            var currentCartInSession = HttpContext.Session.GetString(EnumConstants.SystemsConstants.CartSession);
+            if(currentCartInSession != null)
+            {
+                order.UserID = Guid.Parse(userID);
+                order.ShipAddress = shipAddress;
+                order.ShipEmail = email;
+                order.ListItems = JsonConvert.DeserializeObject<List<CartViewModel>>(currentCartInSession);
+            }
+            var result = await _orderBackendAPI.CreateOrder(order);
+            if (result.IsSuccessed)
+            {
+                //Taọ Order thành công thì xóa giỏ hàng.
+                HttpContext.Session.Remove(EnumConstants.SystemsConstants.CartSession);
+                return Json("Success");
+            }
+            else
+                return Json("Error");
+
+            
+        }
+
 
 
         public async Task<IActionResult> AddToCart(Guid id)

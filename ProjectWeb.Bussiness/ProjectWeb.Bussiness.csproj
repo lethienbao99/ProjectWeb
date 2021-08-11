@@ -9,6 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProjectWeb.Common\ProjectWeb.Common.csproj" />
     <ProjectReference Include="..\ProjectWeb.Data\ProjectWeb.Data.csproj" />
     <ProjectReference Include="..\ProjectWeb.Models\ProjectWeb.Models.csproj" />

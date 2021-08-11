@@ -1,8 +1,10 @@
 ﻿@{
     var culture = CultureInfo.CurrentCulture.Name;
 }
+@using Microsoft.AspNetCore.Http
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
 @inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +21,7 @@
     <link rel="stylesheet" href="/plugins/owl.carousel/owl.carousel.min.css" />
     <link rel="stylesheet" href="/plugins/owl.carousel/owl.theme.default.min.css" />
     <link rel="stylesheet" href="/css/style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     @RenderSection("Css", required: false)
 </head>
 
@@ -26,6 +29,7 @@
     <input type="hidden" id="currentCulture" value="@culture" />
     <input type="hidden" id="urlItem" value="/@culture/@_loc[ConstantsDisplay.ECW_SystemURL_Products]/" />
     <input type="hidden" id="urlImage" value="@Configuration["BaseURLApi"]/user-content/" />
+    <input type="hidden" id="UserID" value="@HttpContextAccessor.HttpContext.Session.GetString("UserID")" />
     <header>
         <div class="header">
             <div class="notification">
@@ -290,13 +294,14 @@
     <script src="/plugins/owl.carousel/owl.carousel.min.js"></script>
     <script src="/plugins/bootstrap-input-spinner/bootstrap-input-spinner.js"></script>
     <script src="/plugins/rater/rater.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="/js/main.js"></script>
     <script src="/JsServices/CartServices.js"></script>
 
 
     <script>
         var cartJs = new CartServices();
-            cartJs.initialize();
+        cartJs.initialize();
     </script>
 </body>
 </html>

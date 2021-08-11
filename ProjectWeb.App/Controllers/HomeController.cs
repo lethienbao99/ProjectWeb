@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static ProjectWeb.Common.Enums.EnumConstants;
 
@@ -34,6 +35,12 @@ namespace ProjectWeb.App.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            var ID = "";
+            ID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(ID != null)
+                HttpContext.Session.SetString("UserID", ID);
+            
             var BaseURLApi = _config[SystemsConstants.BaseURLApi];
             ViewBag.BaseURLApi = BaseURLApi;
 

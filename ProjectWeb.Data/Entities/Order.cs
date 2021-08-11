@@ -14,6 +14,7 @@ namespace ProjectWeb.Data.Entities
         public string ShipEmail { get; set; }
         public string ShipNumberPhone { get; set; }
         public string Status { get; set; }
+        public double TotalPrice { get; set; }
         public DateTime? DateOrderd { get; set; }
         public DateTime? DateRejected { get; set; }
 

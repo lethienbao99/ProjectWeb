@@ -133,7 +133,7 @@ namespace ProjectWeb.APIServices.Services
             requestContent.Add(new StringContent(request.PriceDollar.ToString()), "priceDollar");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Alias) ? null : request.Alias.ToString()), "alias");
-            requestContent.Add(new StringContent((request.CategoryId == null || request.CategoryId == Guid.Empty) ? null : request.CategoryId.ToString()), "categoryId");
+            requestContent.Add(new StringContent((request.CategoryId == Guid.Empty) ? null : request.CategoryId.ToString()), "categoryId");
 
             var response = await client.PutAsync($"/api/products/" + request.ID, requestContent);
             var dataRaw = await response.Content.ReadAsStringAsync();
