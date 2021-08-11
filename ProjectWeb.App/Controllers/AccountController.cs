@@ -55,12 +55,13 @@ namespace ProjectWeb.EcommerceApp.Controllers
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                IsPersistent = false
             };
 
-            if (request.IsRememberMe == true)
+            /*if (request.IsRememberMe == true)
                 authProperties.IsPersistent = true;
             else
-                authProperties.IsPersistent = false;
+                authProperties.IsPersistent = false;*/
 
 
             HttpContext.Session.SetString(SystemsConstants.Token, result.Object);

@@ -16,9 +16,11 @@ namespace ProjectWeb.Bussiness.Services.Orders
     public class OrderServices: Repository<Order>, IOrderServices
     {
         private readonly ProjectWebDBContext _context;
-        public OrderServices(ProjectWebDBContext context) : base(context)
+        private readonly ISendMailServices _sendMailServices;
+        public OrderServices(ProjectWebDBContext context, ISendMailServices sendMailServices) : base(context)
         {
             _context = context;
+            _sendMailServices = sendMailServices;
         }
 
         public async Task<ResultMessage<bool>> CreateOrder(OrderViewModel request)
@@ -58,13 +60,13 @@ namespace ProjectWeb.Bussiness.Services.Orders
                 }
             }
             Order.TotalPrice = TotalPriceFinal;
-
-            var SendMailService = new SendMailServices();
-
-            await SendMailService.SendMailGoogleSmtp("mailgui@mail.com", "mailnhan@mail.com", "Chủ đề", "Nội dung",
-                                              "yourgmail@gmail.com", "yourgmailpassword");
-
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            if(result > 0)
+            {
+                //Tạo đơn hàng thành công thì gửi mail.
+                var mailBody = "<h1> Xin chào, " + userinfo.FirstName + " " + userinfo.LastName + "</h1> <br/> Đơn hàng của bản đang được xử lý!! <br/> Xin cảm ơn!!";
+                await _sendMailServices.SendMailGoogleSmtp(request.ShipEmail, "Xác nhân đơn đặt hàng", mailBody);
+            }
             return new ResultObjectSuccess<bool>(true);
         }
     }

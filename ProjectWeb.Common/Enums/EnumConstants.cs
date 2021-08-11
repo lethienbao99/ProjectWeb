@@ -15,6 +15,9 @@ namespace ProjectWeb.Common.Enums
             public const string SettingLanguage = "Language";
             public const string BaseURLApi = "BaseURLApi";
             public const string CartSession = "CartSession";
+            public const string MailSettings_Mail = "MailSettings:Mail";
+            public const string MailSettings_Password = "MailSettings:Password";
+            public const string MailSettings_SmtpClient = "MailSettings:SmtpClient";
         }
 
         public class PublicConstants
