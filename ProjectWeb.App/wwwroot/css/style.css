@@ -677,11 +677,11 @@ main section.banner {
 
 }
 
-main section.banner .bg-banner {
-    background: url(http://cdn.shopify.com/s/files/1/1367/6069/files/hero_image_1500x.jpg?v=1505898049) no-repeat center;
-    background-size: cover;
-    height: 50vw;
-}
+    main section.banner .bg-banner {
+        background: url(../data/mimix4.jpg) no-repeat center;
+        background-size: cover;
+        height: 50vw;
+    }
 
 main section.banner .content-box {
     text-align: center;
@@ -756,7 +756,7 @@ main section.whatwedo .content-box-big .content-box {
 
 main section.whatwedo .content-box-big .content-box-bg {
     height: 40vw;
-    background: url(../data/joanie-simon-353427_1500x.jpg) no-repeat center;
+    background: url(../data/samsung-note20.jpg) no-repeat center;
     background-size: cover;
     width: 75%;
 }

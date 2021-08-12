@@ -23,6 +23,6 @@ namespace ProjectWeb.Data.Entities
         public List<OrderDetail> OrderDetails { get; set; }
         public List<Cart> Carts { get; set; }
         public List<Image> Images { get; set; }
-
+        public List<Message> Messages { get; set; }
     }
 }

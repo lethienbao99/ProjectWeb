@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectWeb.Data.EntityFamework;
 
 namespace ProjectWeb.Data.Migrations
 {
     [DbContext(typeof(ProjectWebDBContext))]
-    partial class ProjectWebDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210812115418_AddColMessage")]
+    partial class AddColMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,7 +222,7 @@ namespace ProjectWeb.Data.Migrations
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "556c5aa4-0cc2-4ee7-825d-1f059f3a5524",
+                            ConcurrencyStamp = "f8e8f7c5-fef4-4167-918f-2adeb21e3b3a",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -417,10 +419,6 @@ namespace ProjectWeb.Data.Migrations
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("TitleText")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid>("UserID")
                         .HasColumnType("uniqueidentifier");
@@ -738,13 +736,13 @@ namespace ProjectWeb.Data.Migrations
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "804ba01f-d1d7-4fef-9d59-9340eb1cd711",
+                            ConcurrencyStamp = "909cc991-2ae3-46c0-9f8c-3cafc21b1ce4",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIHi2xJcpoYI82uTUTXGFTEhEudVfWXLgkF1pJY9zmIMqYvlsC/dmx4OFdxhi+Ssqw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF/pCc7nN/ZPc3NfUn9OW8WwEZRIzKsfoZrEMVy9+yz+6h3LhSJnsfdAGCLz9QMcmQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
