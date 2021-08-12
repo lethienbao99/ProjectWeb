@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
+using ProjectWeb.Models.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,5 +29,18 @@ namespace ProjectWeb.EcommerceApp.Controllers
             return View(result.Object);
         }
 
+
+        public async Task<IActionResult> GetListProductForSearch(string keyword)
+        {
+            var request = new ProductPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = 1,
+                PageSize = 10,
+             
+            };
+            var data = await _productBackendAPI.GetProductPaging(request);
+            return Json(data.Object.Items);
+        }
     }
 }

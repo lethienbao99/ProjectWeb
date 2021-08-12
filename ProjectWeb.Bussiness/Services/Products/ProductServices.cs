@@ -217,7 +217,7 @@ namespace ProjectWeb.Bussiness.Services.Products
             //Filter.
             if (!string.IsNullOrEmpty(request.Keyword))
             {
-                query = query.Where(x => x.p.ProductName.Contains(request.Keyword));
+                query = query.Where(x => x.p.ProductName.Contains(request.Keyword) || x.p.Description.Contains(request.Keyword));
             }
 
             if (request.CategoryId != Guid.Empty && request.CategoryId != null)
