@@ -43,6 +43,7 @@ namespace ProjectWeb.Data.EntityFamework
             modelBuilder.ApplyConfiguration(new UserInformationFluentAPI());
             modelBuilder.ApplyConfiguration(new SystemUserFluentAPI());
             modelBuilder.ApplyConfiguration(new AppRoleFluentAPI());
+            modelBuilder.ApplyConfiguration(new MessageFluentAPI());
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(x => new { x.RoleId, x.UserId });
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins").HasKey(x => x.UserId);
@@ -63,6 +64,7 @@ namespace ProjectWeb.Data.EntityFamework
         public DbSet<AppConfig> AppConfigs { get; set; }
         public DbSet<UserInformation> UserInformations { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
     }
 }
