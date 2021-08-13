@@ -94,6 +94,7 @@ namespace ProjectWeb.App
             services.AddTransient<IProductBackendAPI, ProductBackendAPI>();
             services.AddTransient<ICategoryBackendAPI, CategoryBackendAPI>();
             services.AddTransient<IOrderBackendAPI, OrderBackendAPI>();
+            services.AddTransient<IMessageBackendAPI, MessageBackendAPI>();
             IMvcBuilder builder = services.AddRazorPages();
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (env == Environments.Development)

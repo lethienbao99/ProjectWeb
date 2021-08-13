@@ -94,6 +94,7 @@ namespace ProjectWeb.EcommerceApp.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
+            HttpContext.Session.Remove("UserID");
             return RedirectToAction("Index", "Home");
         }
 

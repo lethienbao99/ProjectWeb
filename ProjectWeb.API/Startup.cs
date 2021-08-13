@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using ProjectWeb.Bussiness.Services.AppRoles;
 using ProjectWeb.Bussiness.Services.Categories;
 using ProjectWeb.Bussiness.Services.Commons;
+using ProjectWeb.Bussiness.Services.Messages;
 using ProjectWeb.Bussiness.Services.Orders;
 using ProjectWeb.Bussiness.Services.Products;
 using ProjectWeb.Bussiness.Services.SystemUsers;
@@ -63,6 +64,7 @@ namespace ProjectWeb.API
             services.AddTransient<IAppRoleServices, AppRoleServices>();
             services.AddTransient<IOrderServices, OrderServices>();
             services.AddTransient<ISendMailServices, SendMailServices>();
+            services.AddTransient<IMessageServices, MessageServices>();
             services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
             services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
