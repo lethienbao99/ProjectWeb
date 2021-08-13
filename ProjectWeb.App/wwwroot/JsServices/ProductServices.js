@@ -135,7 +135,7 @@ function loadDataReviewProduct() {
                                     </strong>
                                 </div>
                                 <div class="date">
-                                    <strong> ${item.username}</strong> on <strong>Aug 31, 2018</strong>
+                                    <strong> ${item.username}</strong> on <strong>${moment(item.dateCreated).format('MM/DD/YYYY h:mm a')}</strong>
                                 </div>
                                 <div class="content">
                                     ${item.messageText}
