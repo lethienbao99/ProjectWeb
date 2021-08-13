@@ -1,4 +1,11 @@
-﻿$("#inputValueSearch").keyup(function (event) {
+﻿var ProductServices = function () {
+    this.initialize = loadDataReviewProduct();
+}
+
+const UserID = $('#UserID').val();
+const ProductID = $('#productID').val();
+
+$("#inputValueSearch").keyup(function (event) {
         $("#btnSearchItems").click();
 });
 
@@ -58,3 +65,94 @@ $("#btnSearchItems").click(function () {
         }
     });
 });
+
+
+$("#btnSubmitReview").click(function (event) {
+    debugger
+    event.preventDefault();
+
+    if ($('#txtTitleReview').val() == "" || $('#txtDetailReview').val() == "" )  {
+        toastr.info("Tiêu đề hoặc nội dung đánh giá không được để trống!", "Cảnh báo", 200);
+        return false;
+    }
+
+    const currentCulture = $('#currentCulture').val();
+    const URL = '/' + currentCulture + '/Message/PostMessage';
+    if (UserID != null && ProductID != null && UserID != "" && ProductID != "") {
+        $.ajax({
+            type: 'POST',
+            url: URL,
+            data: {
+                TitleText: $('#txtTitleReview').val(),
+                MessageText: $('#txtDetailReview').val(),
+                UserID: UserID,
+                ProductID: ProductID
+            },
+            async: false,
+            success: function (res) {
+                //$('#divReview').hide();
+                $("main section.product-reviews .title .write a").parents("section.product-reviews").find(".review").toggle();
+                loadDataReviewProduct();
+                toastr.success("Binh luận thành công!", "Thông báo", 200)
+                return false;
+            }
+        });
+    }
+    else {
+        toastr.info("Vui lòng đăng nhập!", "Cảnh báo", 200);
+        return false;
+    }
+    
+
+   
+});
+
+function loadDataReviewProduct() {
+    debugger
+ 
+    const URL = `/${currentCulture}/Message/GetListReviewProduct?ProductID=${ProductID}`;
+    $.ajax({
+        type: 'GET',
+        url: URL,
+        success: function (res) {
+            debugger
+            var html = "";
+            $.each(res, function (i, item) {
+                debugger
+                html +=
+                        `
+                            <div class="col-12 bdr">
+                                <div class="star">
+                                    <i class="fa fa-star fa-lg"></i>
+                                    <i class="fa fa-star fa-lg"></i>
+                                    <i class="fa fa-star fa-lg"></i>
+                                    <i class="fa fa-star fa-lg"></i>
+                                    <i class="fa fa-star fa-lg"></i>
+                                </div>
+                                <div class="username mt-2">
+                                    <strong>
+                                        ${item.titleText}
+                                    </strong>
+                                </div>
+                                <div class="date">
+                                    <strong> ${item.username}</strong> on <strong>Aug 31, 2018</strong>
+                                </div>
+                                <div class="content">
+                                    ${item.messageText}
+                                </div>
+                                <div class="report text-right">
+                                   
+                                </div>
+                            </div>
+                        `
+
+            });
+            $('#DivParentReview').html(html);
+
+        },
+        error: function () {
+        }
+
+    });
+
+}

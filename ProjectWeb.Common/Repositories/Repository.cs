@@ -127,7 +127,7 @@ namespace ProjectWeb.Common.Repositories
 
         public async Task<ResultMessage<IEnumerable<T>>> GetAllAsync()
         {
-            var result =  await _context.Set<T>().OrderBy(x => x.Sort).ToListAsync();
+            var result =  await _context.Set<T>().OrderByDescending(x => x.DateCreated).ToListAsync();
             if(result.Count > 0)
             {
                 return new ResultObjectSuccess<IEnumerable<T>>(result);

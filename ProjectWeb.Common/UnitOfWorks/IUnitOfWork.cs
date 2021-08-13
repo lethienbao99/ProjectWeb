@@ -13,6 +13,7 @@ namespace ProjectWeb.Common.UnitOfWorks
         IStorageServices Images { get; }
         ICategoryServices Categories { get; }
         IOrderServices Orders { get; }
+        IMessageServices Message { get; }
         int Complete();
         Task<int> CompleteAsync();
     }
