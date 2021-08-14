@@ -115,7 +115,7 @@ namespace ProjectWeb.APIServices.Services
             var jsonConvert = JsonConvert.SerializeObject(request);
             var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
+            client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
 
             if (IsToken == true)
             {
@@ -151,7 +151,7 @@ namespace ProjectWeb.APIServices.Services
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             }
         
-            client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
+            client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
             var response = await client.PutAsync(Url, httpContext);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
