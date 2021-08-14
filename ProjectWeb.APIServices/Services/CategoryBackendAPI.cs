@@ -21,6 +21,12 @@ namespace ProjectWeb.APIServices.Services
         {
 
         }
+
+        public async Task<ResultMessage<int>> Create(CategoryCreateOrUpdateRequest request)
+        {
+            return await PostAndReturnAsync<int, CategoryCreateOrUpdateRequest>("/api/Categories/Login", request, true);
+        }
+
         public async Task<ResultMessage<List<CategoryViewModel>>> GetAll()
         {
             return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/", false);
@@ -31,9 +37,20 @@ namespace ProjectWeb.APIServices.Services
             return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/forCreateOrUpdate/", true);
         }
 
+        public async Task<ResultMessage<PageResultModel<CategoryViewModel>>> GetAllPaging(CategoryPagingRequest request)
+        {
+            return await GetAndReturnAsync<PageResultModel<CategoryViewModel>>($"/api/Categories/Paging?pageIndex=" +
+                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}", true);
+        }
+
         public async Task<ResultMessage<CategoryViewModel>> GetCategoryByID(Guid ID)
         {
             return await GetAndReturnAsync<CategoryViewModel>($"/api/Categories/{ID}");
+        }
+
+        public async Task<ResultMessage<int>> Update(Guid ID, CategoryCreateOrUpdateRequest request)
+        {
+            return await PutAndReturnAsync<int, CategoryCreateOrUpdateRequest>($"/api/Categories/{ID}", request);
         }
     }
 }

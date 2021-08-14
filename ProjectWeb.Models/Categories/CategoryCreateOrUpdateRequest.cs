@@ -1,5 +1,4 @@
-﻿using ProjectWeb.Models.CommonModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectWeb.Models.Categories
 {
-    public class CategoryViewModel
+    public class CategoryCreateOrUpdateRequest
     {
         public Guid ID { get; set; }
         public Guid? ParentID { get; set; }
@@ -17,10 +16,8 @@ namespace ProjectWeb.Models.Categories
         public string Status { get; set; }
         public string Description { get; set; }
         public string Alias { get; set; }
-        public DateTime? DateCreated { get; set; }
-    }
-    public class CategoryPagingRequest : PagingRequestBase
-    {
-        public string Keyword { get; set; }
+        public string Sort { get; set; }
+        public bool? IsParent { get; set; }
+        public DateTime? DateUpdated { get; set; }
     }
 }

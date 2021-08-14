@@ -139,17 +139,19 @@ namespace ProjectWeb.APIServices.Services
         /// <param name="Url"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        protected async Task<ResultMessage<T>> PutAndReturnAsync<T, TModelRequest>(string Url, TModelRequest request)
+        protected async Task<ResultMessage<T>> PutAndReturnAsync<T, TModelRequest>(string Url, TModelRequest request, bool? IsToken = true)
         {
             var jsonConvert = JsonConvert.SerializeObject(request);
             var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
-
-            var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
+
+            if (IsToken == true)
+            {
+                var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            }
+        
             client.BaseAddress = new Uri(_configuration["BaseURLApi"]);
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
-
             var response = await client.PutAsync(Url, httpContext);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)

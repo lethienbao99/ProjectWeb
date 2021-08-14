@@ -13,5 +13,8 @@ namespace ProjectWeb.APIServices.IServiceBackendAPIs
         Task<ResultMessage<List<CategoryViewModel>>> GetAll();
         Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate();
         Task<ResultMessage<CategoryViewModel>> GetCategoryByID(Guid ID);
+        Task<ResultMessage<PageResultModel<CategoryViewModel>>> GetAllPaging(CategoryPagingRequest request);
+        Task<ResultMessage<int>> Create(CategoryCreateOrUpdateRequest request);
+        Task<ResultMessage<int>> Update(Guid ID, CategoryCreateOrUpdateRequest request);
     }
 }

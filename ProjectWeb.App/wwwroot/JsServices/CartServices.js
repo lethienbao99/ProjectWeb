@@ -118,7 +118,7 @@ $("#btnBackCart").click(function () {
 });
 
 $("#btnOrder").click(function () {
-    debugger
+    
     var userID = $('#UserID').val();
     var inputEmail = $('#inputShipEmail').val();
     var inputAddress = $('#inputShipAddress').val();
@@ -133,6 +133,7 @@ $("#btnOrder").click(function () {
     }
 
     if (userID != null && userID != "" && inputEmail != "" && inputAddress != "") {
+        SlickLoader.enable();
         const currentCulture = $('#currentCulture').val();
         const URL = '/' + currentCulture + '/Cart/CheckoutOrder';
         $.ajax({
@@ -144,12 +145,13 @@ $("#btnOrder").click(function () {
                 userID: userID,
 
             },
-            async: false,
+            async: true,
             success: function (res) {
                 debugger
                 console.log("success");
                 $('#confirmCheckout').hide();
                 loadData();
+                SlickLoader.disable();
                 toastr.success("Đặt hàng thành công, vui lòng kiểm tra email!", "Thông báo", 200)
             }
         });

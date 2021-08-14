@@ -23,9 +23,9 @@ namespace ProjectWeb.Common.Repositories
         //Async
         Task<ResultMessage<IEnumerable<T>>> GetAllAsync();
         Task<ResultMessage<T>> GetByIDAsync(Guid id);
-        Task InsertAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task UpdateAsync(Guid id);
+        Task<ResultMessage<int>> InsertAsync(T entity);
+        Task<ResultMessage<int>> UpdateAsync(T entity);
+        Task<ResultMessage<int>> UpdateAsync(Guid id);
         Task DeleteByModelAsync(T entity);
         Task<ResultMessage<bool>> DeleteByIDAsync(Guid id);
         Task DeleteNotSQLByModelAsync(T entity);

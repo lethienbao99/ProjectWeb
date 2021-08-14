@@ -151,7 +151,7 @@ namespace ProjectWeb.Common.Repositories
             }
         }
 
-        public async Task InsertAsync(T entity)
+        public async Task<ResultMessage<int>> InsertAsync(T entity)
         {
             if (entity == null)
             {
@@ -160,17 +160,23 @@ namespace ProjectWeb.Common.Repositories
             entity.ID = Guid.NewGuid();
             entity.DateCreated = DateTime.Now;
             await entities.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return new ResultObjectSuccess<int>(result);
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<ResultMessage<int>> UpdateAsync(T entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException("entity");
             }
+
+            _context.Entry(entity).State = EntityState.Modified;
+            entities.Attach(entity);
+
             entity.DateUpdated = DateTime.Now;
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return new ResultObjectSuccess<int>(result);
         }
 
         public async Task DeleteByModelAsync(T entity)
@@ -222,14 +228,16 @@ namespace ProjectWeb.Common.Repositories
                 return mess;
         }
 
-        public async Task UpdateAsync(Guid id)
+        public async Task<ResultMessage<int>> UpdateAsync(Guid id)
         {
-            var result = await entities.FirstOrDefaultAsync(x => x.ID == id && x.IsDelete == null);
-            if (result != null)
+            var entity = await entities.FirstOrDefaultAsync(x => x.ID == id && x.IsDelete == null);
+            if (entity != null)
             {
-                result.DateUpdated = DateTime.Now;
-                await _context.SaveChangesAsync();
+                entity.DateUpdated = DateTime.Now;
+                var result = await _context.SaveChangesAsync();
+                return new ResultObjectSuccess<int>(result);
             }
+            return new ResultObjectError<int>();
         }
     }
 }
