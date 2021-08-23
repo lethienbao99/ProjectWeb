@@ -26,8 +26,14 @@ namespace ProjectWeb.Bussiness.Services.Orders
         public async Task<ResultMessage<bool>> CreateOrder(OrderViewModel request)
         {
             double TotalPriceFinal = 0;
+
             var user = _context.Users.FirstOrDefault(x => x.Id == request.UserID);
+            if(user == null)
+                return new ResultObjectError<bool>("Fail");
+
             var userinfo = _context.UserInformations.FirstOrDefault(x => x.ID == user.UserInfomationID);
+            if(userinfo == null)
+                return new ResultObjectError<bool>("Fail");
 
             var Order = new Order()
             {
