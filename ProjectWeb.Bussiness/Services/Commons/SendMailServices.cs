@@ -39,6 +39,7 @@ namespace ProjectWeb.Bussiness.Services.Commons
             using (SmtpClient client = new SmtpClient(_config[SystemsConstants.MailSettings_SmtpClient]))
             {
                 client.Port = 587;
+                client.UseDefaultCredentials = false;
                 client.Credentials = new NetworkCredential(_config[SystemsConstants.MailSettings_Mail], _config[SystemsConstants.MailSettings_Password]);
                 client.EnableSsl = true;
                 var result =  await SendMail(_config[SystemsConstants.MailSettings_Mail], _to, _subject, _body, client);
