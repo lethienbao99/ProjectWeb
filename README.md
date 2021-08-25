@@ -4,8 +4,9 @@
 # ProjectWeb 
 - E-commerce site demo: https://ecommercewebapplication.azurewebsites.net/
 ## Technologies
-- ASP.NET 5.0
+- C#, ASP.NET 5.0
 - Entity Framework Core 5.0
+- Javascript
 ## Design pattern
 - Repository and Unit of Work Pattern
 - Inversion of Control (Dependency Injection)
