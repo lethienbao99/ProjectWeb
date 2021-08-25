@@ -2,6 +2,7 @@
 ![website](https://user-images.githubusercontent.com/62789796/129213519-4004c525-9601-403b-9dca-91883c50fedf.jpg)
 
 # ProjectWeb 
+- Web API: https://apiservicesecommerce.azurewebsites.net/swagger/
 - E-commerce site demo: https://ecommercewebapplication.azurewebsites.net/
 ## Technologies
 - C#, ASP.NET 5.0
