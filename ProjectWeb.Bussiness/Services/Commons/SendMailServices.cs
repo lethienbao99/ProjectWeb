@@ -38,6 +38,7 @@ namespace ProjectWeb.Bussiness.Services.Commons
             // Tạo SmtpClient kết nối đến smtp.gmail.com
             using (SmtpClient client = new SmtpClient(_config[SystemsConstants.MailSettings_SmtpClient]))
             {
+                client.TargetName = "STARTTLS/smtp.gmail.com";
                 client.Port = 587;
                 client.UseDefaultCredentials = false;
                 client.Credentials = new NetworkCredential(_config[SystemsConstants.MailSettings_Mail], _config[SystemsConstants.MailSettings_Password]);
