@@ -40,7 +40,8 @@ namespace ProjectWeb.Bussiness.Services.Commons
                 client.Port = 587;
                 client.Credentials = new NetworkCredential(_config[SystemsConstants.MailSettings_Mail], _config[SystemsConstants.MailSettings_Password]);
                 client.EnableSsl = true;
-                return await SendMail(_config[SystemsConstants.MailSettings_Mail], _to, _subject, _body, client);
+                var result =  await SendMail(_config[SystemsConstants.MailSettings_Mail], _to, _subject, _body, client);
+                return result;
             }
 
         }
