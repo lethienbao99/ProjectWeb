@@ -31,7 +31,7 @@ namespace ProjectWeb.API.Controllers
             }
             var result = await _unitOfWork.Orders.CreateOrder(request);
             if (result.Object == false)
-                return BadRequest("Create Fail!!!");
+                return BadRequest(result.Message);
 
             return Ok(result);
         }

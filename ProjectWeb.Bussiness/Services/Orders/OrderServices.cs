@@ -72,10 +72,10 @@ namespace ProjectWeb.Bussiness.Services.Orders
                 //Tạo đơn hàng thành công thì gửi mail.
                 var mailBody = "<h1> Xin chào, " + userinfo.FirstName + " " + userinfo.LastName + "</h1> <br/> Đơn hàng của bản đang được xử lý!! <br/> Xin cảm ơn!!";
                 var isSendMail = await _sendMailServices.SendMailGoogleSmtp(request.ShipEmail, "Xác nhân đơn đặt hàng", mailBody);
-                if(isSendMail == true)
+                if(isSendMail.Object == true)
                     return new ResultObjectSuccess<bool>(true);
                 else
-                    return new ResultObjectError<bool>("Fail");
+                    return new ResultObjectError<bool>(isSendMail.Message);
             }
             return new ResultObjectSuccess<bool>(true);
         }
