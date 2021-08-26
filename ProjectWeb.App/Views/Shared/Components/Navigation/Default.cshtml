@@ -13,7 +13,7 @@
                     <div class="collapse navbar-collapse" id="collapsibleNavId">
                         <ul class="pl-0 mr-auto mt-2 mt-lg-0 m-mb">
                             <li class="nav-item">
-                                <a class="nav-link" href="/@culture">Home</a>
+                                <a class="nav-link" href="/@culture"><localize>@ConstantsDisplay.ECW_Layout_Home</localize></a>
                             </li>
                             <li class="nav-item">
                                 <a href="/@culture" class="nav-link">
@@ -53,7 +53,7 @@
                                                     </div>
                                                 }
 
-                                                <div class="col-sm-3">
+                                                @*<div class="col-sm-3">
                                                     <a href="products.html">
                                                         <div class="images">
                                                             <img class="w-100"
@@ -69,24 +69,20 @@
                                                             50% off until midnight Sunday
                                                         </div>
                                                     </a>
-                                                </div>
+                                                </div>*@
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="blogs.html">Blog</a>
+                                <a class="nav-link" href="#"><localize>@ConstantsDisplay.ECW_Layout_Blog</localize></a>
                             </li>
+                           
                             <li class="nav-item">
-                                <a class="nav-link" href="faqs.html">FAQs</a>
+                                <a class="nav-link" href="#"><localize>@ConstantsDisplay.ECW_Layout_Contact</localize></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="contact.html">Contact</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Theme Features</a>
-                            </li>
+                            
                         </ul>
                         @*<ul class="pl-0 mr-auto mt-2 mt-lg-0 w-25">
                             <li class="nav-item">
@@ -98,7 +94,7 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link search-pc" href="#" id="btnSearchNavbar">
-                                        <i class="fa fa-search fa-lg"></i> Search
+                                        <i class="fa fa-search fa-lg"></i> <localize>@ConstantsDisplay.ECW_Layout_Search</localize>
                                     </a>
 
 
@@ -110,7 +106,7 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link cart-pc" href="javascript:void(0)" id="showcart">
-                                        <i class="fa fa-shopping-cart fa-lg"></i> Cart - <span id="totalInCart"></span>
+                                        <i class="fa fa-shopping-cart fa-lg"></i> - <span id="totalInCart"></span>
                                     </a>
 
                                     
@@ -128,14 +124,14 @@
                                     }
                                     else
                                     {
-                                        <a class="nav-link" href="/@culture/Account/Login"><i class="fa fa-user fa-lg"></i> Login</a>
+                                        <a class="nav-link" href="/@culture/Account/Login"><i class="fa fa-user fa-lg"></i> <localize>@ConstantsDisplay.ECW_Layout_Login</localize></a>
                                     }
                                 </li>
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/@culture/Account/Logout">Logout</a>  
+                                        <a class="nav-link" href="/@culture/Account/Logout"><localize>@ConstantsDisplay.ECW_Layout_Logout</localize></a>  
                                     </li>
 
                                 }
@@ -161,7 +157,7 @@
                             <li class="nav-item">
                                 <a href="" class="nav-link cart-mobile">
                                     <i class="fa fa-shopping-cart fa-2x">
-                                        <span>2</span>
+                                        <span id="totalInCart"></span>
                                     </i>
                                 </a>
                                 <div class="form-modal">

@@ -125,6 +125,30 @@
     <value>Views</value>
     <comment>/Home/Index</comment>
   </data>
+  <data name="ECW_Layout_Blog" xml:space="preserve">
+    <value>BLog</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Contact" xml:space="preserve">
+    <value>Contact</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Home" xml:space="preserve">
+    <value>Home</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Login" xml:space="preserve">
+    <value>Login</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Logout" xml:space="preserve">
+    <value>Logout</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Search" xml:space="preserve">
+    <value>Search</value>
+    <comment>Navbar Component</comment>
+  </data>
   <data name="ECW_Layout_Shop" xml:space="preserve">
     <value>Shop</value>
     <comment>Layouts</comment>
