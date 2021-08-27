@@ -12,7 +12,7 @@ namespace ProjectWeb.Common.IServices
 {
     public interface ICategoryServices : IRepository<Category>
     {
-        Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate(bool isParent);
+        Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate();
         Task<ResultMessage<PageResultModel<CategoryViewModel>>> GetAllPaging(CategoryPagingRequest request);
         Task<ResultMessage<int>> Create(CategoryCreateOrUpdateRequest request);
         Task<ResultMessage<int>> Update(CategoryCreateOrUpdateRequest request);

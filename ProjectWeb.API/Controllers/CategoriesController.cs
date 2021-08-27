@@ -32,9 +32,9 @@ namespace ProjectWeb.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("forCreateOrUpdate")]
-        public async Task<IActionResult> GetAllByCreateOrUpdate(bool isParent)
+        public async Task<IActionResult> GetAllByCreateOrUpdate()
         {
-            var categories = await _unitOfWork.Categories.GetAllByCreateOrUpdate(isParent);
+            var categories = await _unitOfWork.Categories.GetAllByCreateOrUpdate();
             return Ok(categories);
         }
 
