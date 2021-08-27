@@ -66,7 +66,7 @@ namespace ProjectWeb.AdminApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var categories = await _categoryBackendAPI.GetAllByCreateOrUpdate();
+            var categories = await _categoryBackendAPI.GetAllByCreateOrUpdate(false);
             if (categories.Object != null)
             {
                 ViewBag.Categories = categories.Object.Select(x =>
@@ -130,7 +130,7 @@ namespace ProjectWeb.AdminApp.Controllers
         public async Task<IActionResult> Edit(Guid ID)
         {
             //Lấy líst category vào viewbag để làm dropdown tìm kiếm.
-            var categories = await _categoryBackendAPI.GetAllByCreateOrUpdate();
+            var categories = await _categoryBackendAPI.GetAllByCreateOrUpdate(false);
             if (categories.Object != null)
             {
                 ViewBag.Categories = categories.Object.Select(x =>

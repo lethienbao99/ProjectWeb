@@ -1,0 +1,66 @@
+﻿@model CategoryCreateOrUpdateRequest
+
+@{
+    ViewData["Title"] = "Create - Loại sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Tạo mới loại sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item active">Tạo mới loại sản phẩm</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <form asp-action="Create" method="post">
+
+                        <div class="form-group">
+                            <label asp-for="CategoryName" class="control-label"></label>
+                            <input asp-for="CategoryName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Code" class="control-label"></label>
+                            <input asp-for="Code" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <input asp-for="Description" type="number" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ParentID" class="control-label"></label>
+                            <select class="form-control" asp-for="ParentID" asp-items="@ViewBag.Categories">
+                                <option selected>Vui lòng chọn</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="IsParent" class="control-label"></label>
+                            <input asp-for="IsParent" type="checkbox" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
