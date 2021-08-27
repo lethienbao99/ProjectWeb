@@ -24,7 +24,7 @@ namespace ProjectWeb.APIServices.Services
 
         public async Task<ResultMessage<int>> Create(CategoryCreateOrUpdateRequest request)
         {
-            return await PostAndReturnAsync<int, CategoryCreateOrUpdateRequest>("/api/Categories/Login", request, true);
+            return await PostAndReturnAsync<int, CategoryCreateOrUpdateRequest>("/api/Categories/", request, true);
         }
 
         public async Task<ResultMessage<List<CategoryViewModel>>> GetAll()
@@ -32,9 +32,9 @@ namespace ProjectWeb.APIServices.Services
             return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/", false);
         }
 
-        public async Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate()
+        public async Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate(bool isParent)
         {
-            return await GetAndReturnAsync<List<CategoryViewModel>>("/api/Categories/forCreateOrUpdate/", true);
+            return await GetAndReturnAsync<List<CategoryViewModel>>($"/api/Categories/forCreateOrUpdate?isParent={isParent}", true);
         }
 
         public async Task<ResultMessage<PageResultModel<CategoryViewModel>>> GetAllPaging(CategoryPagingRequest request)
