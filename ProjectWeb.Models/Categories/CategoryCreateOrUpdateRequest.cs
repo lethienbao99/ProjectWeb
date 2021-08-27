@@ -17,7 +17,7 @@ namespace ProjectWeb.Models.Categories
         public string Description { get; set; }
         public string Alias { get; set; }
         public string Sort { get; set; }
-        public bool IsParent { get; set; }
+        public bool? IsParent { get; set; }
         public DateTime? DateUpdated { get; set; }
     }
 }
