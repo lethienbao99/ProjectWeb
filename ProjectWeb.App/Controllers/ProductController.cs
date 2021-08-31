@@ -39,7 +39,7 @@ namespace ProjectWeb.EcommerceApp.Controllers
                 PageSize = 10,
              
             };
-            var data = await _productBackendAPI.GetProductPaging(request);
+            var data = await _productBackendAPI.GetProductPagingV2(request);
             return Json(data.Object.Items);
         }
     }
