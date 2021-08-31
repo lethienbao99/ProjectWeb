@@ -37,6 +37,14 @@ namespace ProjectWeb.API.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
+        [HttpGet("pagingV2")]
+        public IActionResult GetAllPagingV2([FromQuery] ProductPagingRequest request)
+        {
+            var result = _unitOfWork.Products.GetAllPagingUsingStored(request);
+            return Ok(result);
+        }
+
         [HttpGet("byCategories")]
         public async Task<IActionResult> GetAllByCategoryId([FromQuery] ProductByCategoryIdPagingRequest request)
         {
@@ -52,6 +60,19 @@ namespace ProjectWeb.API.Controllers
             //await _unitOfWork.Products.UpdateViewCount(id);
 
             var product = await _unitOfWork.Products.GetByIDAsync(id);
+            if (product.Object == null)
+                return BadRequest($"Cannot find product with ID: {id}");
+            return Ok(product);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("stored/{id}")]
+        public IActionResult GetByIdUsingStored(Guid id)
+        {
+            //Add View Count
+            //await _unitOfWork.Products.UpdateViewCount(id);
+
+            var product = _unitOfWork.Products.GetProductByIDUsingStored(id);
             if (product.Object == null)
                 return BadRequest($"Cannot find product with ID: {id}");
             return Ok(product);
