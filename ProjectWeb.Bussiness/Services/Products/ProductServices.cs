@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProjectWeb.Common.Exceptions;
 using ProjectWeb.Common.IServices;
@@ -9,6 +10,7 @@ using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.Products;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -354,6 +356,100 @@ namespace ProjectWeb.Bussiness.Services.Products
                 return new ResultObjectSuccess<List<ProductViewModel>>(data);
 
             return new ResultObjectError<List<ProductViewModel>>();
+        }
+
+        public ResultMessage<ProductViewModel> GetProductByIDUsingStored(Guid ID)
+        {
+            var cmn = (SqlConnection)_context.Database.GetDbConnection();
+            if (cmn.State == ConnectionState.Closed)
+                cmn.Open();
+            try
+            {
+                SqlDataAdapter da = new SqlDataAdapter();
+                DataSet ds = new DataSet();
+                var cmt = cmn.CreateCommand();
+                cmt.CommandText = "Sp_GetProductByID";
+                cmt.CommandType = CommandType.StoredProcedure;
+                cmt.Parameters.AddWithValue("@id", ID);
+
+                da.SelectCommand = cmt;
+                da.Fill(ds);
+
+                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    var result = new ProductViewModel
+                    {
+                        ID = (Guid)ds.Tables[0].Rows[0]["ID"],
+                        ProductName = (string)ds.Tables[0].Rows[0]["ProductName"]
+                    };
+                    return new ResultObjectSuccess<ProductViewModel>(result);
+                }
+                return new ResultObjectError<ProductViewModel>("Fail");
+            }
+            catch (Exception e)
+            {
+                return new ResultObjectError<ProductViewModel>(e.Message);
+            }
+        }
+
+        public ResultMessage<PageResultModel<ProductViewModel>> GetAllPagingUsingStored(ProductPagingRequest request)
+        {
+            List<ProductViewModel> result = new List<ProductViewModel>();
+            var cmn = (SqlConnection)_context.Database.GetDbConnection();
+            if (cmn.State == ConnectionState.Closed)
+                cmn.Open();
+            try
+            {
+                SqlDataAdapter da = new SqlDataAdapter();
+                DataSet ds = new DataSet();
+                var cmt = cmn.CreateCommand();
+                cmt.CommandText = "Sp_GetListProducts";
+                cmt.CommandType = CommandType.StoredProcedure;
+                cmt.Parameters.AddWithValue("@keyword", request.Keyword);
+                cmt.Parameters.AddWithValue("@categoryID", request.CategoryId);
+                cmt.Parameters.AddWithValue("@pageIndex", request.PageIndex);
+                cmt.Parameters.AddWithValue("@pageSize", request.PageSize);
+
+                da.SelectCommand = cmt;
+                da.Fill(ds);
+
+                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        var product = new ProductViewModel()
+                        {
+                            ID = (Guid)row["ID"],
+                            ProductName = (string)row["ProductName"],
+                            Code = (string)row["Code"],
+                            Description = (string)row["Description"],
+                            Price = (double)row["Price"],
+                            PriceDollar = (double)row["PriceDollar"],
+                            Stock = (int)row["Stock"],
+                            Sort = (int)row["Sort"],
+                            Views = (int)row["Views"],
+                            DateCreated = DateTime.Now,
+                            CategoriesJoin = (string)row["Categories"], // Chuỗi categories 
+                            ImgDefaultPath = (string)row["ImagePath"],
+
+                        };
+                        result.Add(product);
+                    }
+
+                }
+                var pagedResult = new PageResultModel<ProductViewModel>()
+                {
+                    TotalRecords = result.Count,
+                    PageIndex = request.PageIndex,
+                    PageSize = request.PageSize,
+                    Items = result != null ? result : null
+                };
+                return new ResultObjectSuccess<PageResultModel<ProductViewModel>>(pagedResult);
+            }
+            catch (Exception e)
+            {
+                return new ResultObjectError<PageResultModel<ProductViewModel>>(e.Message);
+            }
         }
     }
 }
