@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ProjectWeb.Common.IServices;
+using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace ProjectWeb.Bussiness.Services.Commons
             _config = config;
         }
      
-        public async Task<bool> SendMailGoogleSmtp(string _to, string _subject, string _body)
+        public async Task<ResultMessage<bool>> SendMailGoogleSmtp(string _to, string _subject, string _body)
         {
            
             MailMessage message = new MailMessage(
@@ -37,10 +38,13 @@ namespace ProjectWeb.Bussiness.Services.Commons
             // Tạo SmtpClient kết nối đến smtp.gmail.com
             using (SmtpClient client = new SmtpClient(_config[SystemsConstants.MailSettings_SmtpClient]))
             {
+                client.TargetName = "STARTTLS/smtp.gmail.com";
                 client.Port = 587;
+                client.UseDefaultCredentials = false;
                 client.Credentials = new NetworkCredential(_config[SystemsConstants.MailSettings_Mail], _config[SystemsConstants.MailSettings_Password]);
                 client.EnableSsl = true;
-                return await SendMail(_config[SystemsConstants.MailSettings_Mail], _to, _subject, _body, client);
+                var result =  await SendMail(_config[SystemsConstants.MailSettings_Mail], _to, _subject, _body, client);
+                return result;
             }
 
         }
@@ -50,11 +54,12 @@ namespace ProjectWeb.Bussiness.Services.Commons
         {
             using (SmtpClient client = new SmtpClient("localhost"))
             {
-                return await SendMail(_from, _to, _subject, _body, client);
+                var result =  await SendMail(_from, _to, _subject, _body, client);
+                return result.Object;
             }
         }
 
-        public async Task<bool> SendMail(string _from, string _to, string _subject, string _body, SmtpClient client)
+        public async Task<ResultMessage<bool>> SendMail(string _from, string _to, string _subject, string _body, SmtpClient client)
         {
             // Tạo nội dung Email
             MailMessage message = new MailMessage(
@@ -73,12 +78,12 @@ namespace ProjectWeb.Bussiness.Services.Commons
             try
             {
                 await client.SendMailAsync(message);
-                return true;
+                return new ResultObjectSuccess<bool>(true);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return new ResultObjectError<bool>(ex.Message);
             }
         }
 

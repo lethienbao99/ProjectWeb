@@ -26,8 +26,14 @@ namespace ProjectWeb.Bussiness.Services.Orders
         public async Task<ResultMessage<bool>> CreateOrder(OrderViewModel request)
         {
             double TotalPriceFinal = 0;
+
             var user = _context.Users.FirstOrDefault(x => x.Id == request.UserID);
+            if(user == null)
+                return new ResultObjectError<bool>("Fail");
+
             var userinfo = _context.UserInformations.FirstOrDefault(x => x.ID == user.UserInfomationID);
+            if(userinfo == null)
+                return new ResultObjectError<bool>("Fail");
 
             var Order = new Order()
             {
@@ -65,7 +71,11 @@ namespace ProjectWeb.Bussiness.Services.Orders
             {
                 //Tạo đơn hàng thành công thì gửi mail.
                 var mailBody = "<h1> Xin chào, " + userinfo.FirstName + " " + userinfo.LastName + "</h1> <br/> Đơn hàng của bản đang được xử lý!! <br/> Xin cảm ơn!!";
-                await _sendMailServices.SendMailGoogleSmtp(request.ShipEmail, "Xác nhân đơn đặt hàng", mailBody);
+                var isSendMail = await _sendMailServices.SendMailGoogleSmtp(request.ShipEmail, "Xác nhân đơn đặt hàng", mailBody);
+                if(isSendMail.Object == true)
+                    return new ResultObjectSuccess<bool>(true);
+                else
+                    return new ResultObjectError<bool>(isSendMail.Message);
             }
             return new ResultObjectSuccess<bool>(true);
         }
