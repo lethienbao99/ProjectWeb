@@ -37,6 +37,15 @@ namespace ProjectWeb.API.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
+        [HttpGet("pagingV2")]
+        public IActionResult GetAllPagingV2([FromQuery] ProductPagingRequest request)
+        {
+            var result = _unitOfWork.Products.GetAllPagingUsingStored(request);
+            return Ok(result);
+        }
+
+
         [HttpGet("byCategories")]
         public async Task<IActionResult> GetAllByCategoryId([FromQuery] ProductByCategoryIdPagingRequest request)
         {
