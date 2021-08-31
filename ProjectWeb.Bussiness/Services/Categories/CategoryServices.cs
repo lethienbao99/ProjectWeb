@@ -90,6 +90,8 @@ namespace ProjectWeb.Bussiness.Services.Categories
         public async Task<ResultMessage<List<CategoryViewModel>>> GetAllByCreateOrUpdate(bool isParent)
         {
             var categories = new List<CategoryViewModel>();
+            
+
             if(isParent == true)
             {
                 categories = await _context.Categories.Where(x => x.ParentID == null).Select(x => new CategoryViewModel()
@@ -100,13 +102,12 @@ namespace ProjectWeb.Bussiness.Services.Categories
             }
             else
             {
-                categories = await _context.Categories.Where(x => x.ParentID != null).Select(x => new CategoryViewModel()
+                categories = await _context.Categories.Where(x => x.ParentID != null && x.ParentID != Guid.Empty).Select(x => new CategoryViewModel()
                 {
                     ID = x.ID,
                     CategoryName = x.CategoryName + " - " + x.Code
                 }).ToListAsync();
             }
-            
 
             if (categories != null)
                 return new ResultObjectSuccess<List<CategoryViewModel>>(categories);

@@ -1,0 +1,88 @@
+﻿@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+@model List<ProjectWeb.Models.Categories.CategoryViewModel>
+@inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
+
+<div class="menu-mobile-box">
+    <div class="bg-menu-mobile-box"></div>
+    <ul class="big-menu">
+        <li class="text-center">
+            Logo
+        </li>
+        <li class="search">
+            <input class="form-control rounded-0"
+                   type="text"
+                   name=""
+                   placeholder="Search our store" />
+        </li>
+        <li>
+            <a href="/@culture">Home</a>
+        </li>
+        <li class="dropdown clearfix">
+            <a class="float-left">Shop </a><i class="fa fa-caret-right fa-lg float-left"></i>
+            <ul class="p-0 m-0">
+
+
+                @{
+                    var CategoryParentNode = Model.Where(x => x.ParentID == null);
+                }
+
+                @foreach (var parentNode in CategoryParentNode)
+                {
+
+                    var categoryChildNode = Model.Where(x => x.ParentID == parentNode.ID);
+                    if (categoryChildNode.Any())
+                    {
+                        <li class="dropdown clearfix">
+                            <a href="/@culture/@_loc[ConstantsDisplay.ECW_SystemURL_Categories]/@parentNode.ID" class="float-left">@parentNode.CategoryName </a><i class="fa fa-caret-right fa-lg float-left"></i>
+                            <ul class="p-0 m-0">
+
+
+                                @foreach (var childNode in categoryChildNode)
+                                {
+                                    <li>
+                                        <a href="/@culture/@_loc[ConstantsDisplay.ECW_SystemURL_Categories]/@childNode.ID"> @childNode.CategoryName</a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </li>
+                    }
+
+                }
+
+            </ul>
+        </li>
+        <li>
+            <a href="#">Blog</a>
+        </li>
+
+        <li>
+            <a href="#"> Contact</a>
+        </li>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li>
+                <a href="/@culture/Account/Profile">Account: @User.Identity.Name</a>
+            </li>
+            <li>
+                <a href="/@culture/Account/Logout">Logout</a>
+            </li>
+
+        }
+        else
+        {
+            <li>
+                <a href="/@culture/Account/Login">Login</a>
+            </li>
+            <li>
+                <a href="/@culture/Account/Signup">Create account</a>
+            </li>
+        }
+
+    </ul>
+</div>
+
+

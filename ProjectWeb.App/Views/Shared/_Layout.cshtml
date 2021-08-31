@@ -63,119 +63,14 @@
 
         </div>
 
-        <div class="menu-mobile-box">
-            <div class="bg-menu-mobile-box"></div>
-            <ul class="big-menu">
-                <li class="text-center">
-                    Logo
-                </li>
-                <li class="search">
-                    <input class="form-control rounded-0"
-                           type="text"
-                           name=""
-                           placeholder="Search our store" />
-                </li>
-                <li>
-                    <a href="http://">Home</a>
-                </li>
-                <li class="dropdown clearfix">
-                    <a href="http://" class="float-left">Shop </a><i class="fa fa-caret-right fa-lg float-left"></i>
-                    <ul class="p-0 m-0">
-                        <li class="dropdown clearfix">
-                            <a href="http://" class="float-left">Detox Smoothies </a><i class="fa fa-caret-right fa-lg float-left"></i>
-                            <ul class="p-0 m-0">
-                                <li>
-                                    <a href="http://"> Spinach & Spirulina</a>
-                                </li>
-                                <li>
-                                    <a href="http://"> Strawberries & Cream </a>
-                                </li>
-                                <li>
-                                    <a href="http://"> Beetroot & Berry</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown clearfix">
-                            <a href="http://" class="float-left">Energy Boosting Smoothies </a><i class="fa fa-caret-right fa-lg float-left"></i>
-                            <ul class="p-0 m-0">
-                                <li>
-                                    <a href="http://"> Spinach & Spirulina</a>
-                                </li>
-                                <li>
-                                    <a href="http://"> Strawberries & Cream </a>
-                                </li>
-                                <li>
-                                    <a href="http://"> Beetroot & Berry</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown clearfix">
-                            <a href="http://" class="float-left">Super Green Smoothies </a><i class="fa fa-caret-right fa-lg float-left"></i>
-                            <ul class="p-0 m-0">
-                                <li>
-                                    <a href="http://"> Spinach & Spirulina</a>
-                                </li>
-                                <li>
-                                    <a href="http://"> Strawberries & Cream </a>
-                                </li>
-                                <li>
-                                    <a href="http://"> Beetroot & Berry</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="http://">Blog</a>
-                </li>
-                <li>
-                    <a href="http://">FAQs</a>
-                </li>
-                <li>
-                    <a href="http://"> Contact</a>
-                </li>
-                <li>
-                    <a href="http://">Theme Features</a>
-                </li>
-                <li>
-                    <a href="http://">Currency</a>
-                </li>
-                <li>
-                    <a href="http://">Account</a>
-                </li>
-                <li>
-                    <a href="http://">Log in</a>
-                </li>
-                <li>
-                    <a href="http://">Create account</a>
-                </li>
-                <li>
-                    <a href="http://">Theme Features</a>
-                </li>
-                <li>
-                    <a href="http://">Currency</a>
-                </li>
-                <li>
-                    <a href="http://">Account</a>
-                </li>
-                <li>
-                    <a href="http://">Log in</a>
-                </li>
-                <li>
-                    <a href="http://">Create account</a>
-                </li>
-            </ul>
-        </div>
+
+        @await Component.InvokeAsync("NavigationForMobile")
+
+
+        
     </header>
     <main>
-
         @RenderBody()
-
-
-
-
-
-
     </main>
     <footer class="footer mt-5">
         <section class="search justify-content-center text-center d-flex wow slideInUp">

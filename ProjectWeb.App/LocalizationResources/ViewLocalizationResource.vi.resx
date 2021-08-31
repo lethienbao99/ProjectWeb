@@ -125,6 +125,30 @@
     <value>Lượt xem</value>
     <comment>/Home/Index</comment>
   </data>
+  <data name="ECW_Layout_Blog" xml:space="preserve">
+    <value>Tin tức</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Contact" xml:space="preserve">
+    <value>Liên hệ</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Home" xml:space="preserve">
+    <value>Trang chủ</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Login" xml:space="preserve">
+    <value>Đăng nhập</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Logout" xml:space="preserve">
+    <value>Đăng xuất</value>
+    <comment>Navbar Component</comment>
+  </data>
+  <data name="ECW_Layout_Search" xml:space="preserve">
+    <value>Tìm kiếm</value>
+    <comment>Navbar Component</comment>
+  </data>
   <data name="ECW_Layout_Shop" xml:space="preserve">
     <value>Cửa hàng</value>
     <comment>Layouts</comment>

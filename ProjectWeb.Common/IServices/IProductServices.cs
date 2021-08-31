@@ -17,8 +17,10 @@ namespace ProjectWeb.Common.IServices
         Task<ResultMessage<int>> UpdateWithImages(ProductModel request);
         Task<int> UpdateViewCount(Guid ID);
         Task<ResultMessage<PageResultModel<ProductViewModel>>> GetAllPaging(ProductPagingRequest request);
+        ResultMessage<PageResultModel<ProductViewModel>> GetAllPagingUsingStored(ProductPagingRequest request);
         Task<ResultMessage<List<ProductViewModel>>> GetSlideProducts();
         Task<PageResultModel<ProductModel>> GetAllByCategoryId(ProductByCategoryIdPagingRequest request);
         Task<ResultMessage<ProductViewModel>> GetProductByID(Guid ID);
+        ResultMessage<ProductViewModel> GetProductByIDUsingStored(Guid ID);
     }
 }
