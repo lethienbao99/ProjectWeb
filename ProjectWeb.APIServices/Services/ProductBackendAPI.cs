@@ -94,6 +94,12 @@ namespace ProjectWeb.APIServices.Services
                 $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&categoryId={request.CategoryId}", false);
         }
 
+        public async Task<ResultMessage<PageResultModel<ProductModel>>> GetProductPagingV2(ProductPagingRequest request)
+        {
+            return await GetAndReturnAsync<PageResultModel<ProductModel>>($"/api/Products/PagingV2?pageIndex=" +
+                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&categoryId={request.CategoryId}", false);
+        }
+
         public async Task<ResultMessage<List<ProductViewModel>>> GetSlideProducts()
         {
             return await GetAndReturnAsync<List<ProductViewModel>>("/api/Products/slide", false);
