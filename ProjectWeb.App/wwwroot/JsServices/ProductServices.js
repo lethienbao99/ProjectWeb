@@ -5,8 +5,11 @@
 const UserID = $('#UserID').val();
 const ProductID = $('#productID').val();
 
-$("#inputValueSearch").keyup(function (event) {
+$('#inputValueSearch').keypress(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode == '13') {
         $("#btnSearchItems").click();
+    }
 });
 
 $("#btnSearchNavbar").click(function (event) {
