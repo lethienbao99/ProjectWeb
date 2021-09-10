@@ -92,7 +92,7 @@ namespace ProjectWeb.AdminApp.Controllers
             if (result.IsSuccessed)
             {
                 TempData["SuccessMessage"] = "Thêm mới thành công";
-                return RedirectToAction("Index", "SystemUser");
+                return RedirectToAction("Index", "Category");
             }
 
             ModelState.AddModelError("", result.Message);
