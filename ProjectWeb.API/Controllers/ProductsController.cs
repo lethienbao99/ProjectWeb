@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectWeb.Common.UnitOfWorks;
+using ProjectWeb.Data.Entities;
 using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.Products;
 using System;
@@ -101,13 +102,77 @@ namespace ProjectWeb.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var result = await _unitOfWork.Products.CreateWithImages(request);
-            if (result.Object == Guid.Empty)
+            var product = new Product()
+            {
+                Code = request.Code,
+                ProductName = request.ProductName,
+                Description = request.Description,
+                Type = request.Type,
+                Status = request.Status,
+                PriceDollar = request.PriceDollar,
+                Price = request.Price,
+                Stock = request.Stock,
+                Alias = request.Alias,
+                DateCreated = DateTime.Now
+
+            };
+            _unitOfWork.Products.Insert(product);
+
+            if (request.ThumbnailImage != null)
+            {
+
+                var image = new Image()
+                {
+                    ProductID = product.ID,
+                    Caption = "Thumbnail Image " + request.ProductName,
+                    DateCreated = DateTime.Now,
+                    FileSize = request.ThumbnailImage.Length,
+                    ImagePath = await _unitOfWork.Products.SaveFile(request.ThumbnailImage),
+                    IsDefault = true
+                };
+                _unitOfWork.Images.Insert(image);
+
+            }
+
+            if (request.CategoryId != Guid.Empty && request.CategoryId != null)
+            {
+                var category = await _unitOfWork.Categories.GetByIDAsync(request.CategoryId.Value);
+                if (category.Object != null)
+                {
+                    //Add category con đã chọn trên view 
+                    var productCategorieChild = new ProductCategory()
+                    {
+                        ProductID = product.ID,
+                        CategoryID = request.CategoryId.Value,
+                        DateCreated = DateTime.Now,
+                    };
+                    _unitOfWork.ProductCategories.Insert(productCategorieChild);
+
+                    //Tìm category cha và add vào luôn.
+                    if (category.Object.ParentID != null && category.Object.ParentID != Guid.Empty)
+                    {
+                        var productCategorieParent = new ProductCategory()
+                        {
+                            ProductID = product.ID,
+                            CategoryID = category.Object.ParentID.Value,
+                            DateCreated = DateTime.Now,
+                        };
+                        _unitOfWork.ProductCategories.Insert(productCategorieParent);
+                  
+                    }
+                  
+                }
+
+            }
+           
+            if (_unitOfWork.Complete() == 0)
+            {
                 return BadRequest("Create Fail!!!");
+            }
+                
+            var productById = await _unitOfWork.Products.GetByIDAsync(product.ID);
 
-            var product = await _unitOfWork.Products.GetByIDAsync(result.Object);
-
-            return CreatedAtAction(nameof(GetById), new { ID = result.Object }, product.Object);
+            return CreatedAtAction(nameof(GetById), new { ID = product.ID }, productById.Object);
         }
 
         [HttpPut("{id}")]

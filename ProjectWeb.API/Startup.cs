@@ -65,6 +65,7 @@ namespace ProjectWeb.API
             services.AddTransient<IOrderServices, OrderServices>();
             services.AddTransient<ISendMailServices, SendMailServices>();
             services.AddTransient<IMessageServices, MessageServices>();
+            services.AddTransient<IProductCategoriesServices, ProductCategoriesServices>();
             services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
             services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();

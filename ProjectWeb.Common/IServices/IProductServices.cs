@@ -22,5 +22,6 @@ namespace ProjectWeb.Common.IServices
         Task<PageResultModel<ProductModel>> GetAllByCategoryId(ProductByCategoryIdPagingRequest request);
         Task<ResultMessage<ProductViewModel>> GetProductByID(Guid ID);
         ResultMessage<ProductViewModel> GetProductByIDUsingStored(Guid ID);
+        Task<string> SaveFile(IFormFile file);
     }
 }

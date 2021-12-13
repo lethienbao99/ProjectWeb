@@ -20,13 +20,18 @@ namespace ProjectWeb.Common.UnitOfWorks
         public IOrderServices Orders { get; }
         public IMessageServices Message { get; }
 
+        public IProductCategoriesServices ProductCategories { get; }
+
+
         public UnitOfWork(
             ProjectWebDBContext context,
             IProductServices productServices,
             IStorageServices storageServices,
             ICategoryServices categoryServices,
             IOrderServices orderServices,
-            IMessageServices messageServices)
+            IMessageServices messageServices,
+            IProductCategoriesServices productCategoryServices
+            )
         {
             //DBContext.
             _context = context;
@@ -37,6 +42,7 @@ namespace ProjectWeb.Common.UnitOfWorks
             Categories = categoryServices;
             Orders = orderServices;
             Message = messageServices;
+            ProductCategories = productCategoryServices;
         }
         public int Complete()
         {

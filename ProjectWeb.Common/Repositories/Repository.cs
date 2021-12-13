@@ -86,7 +86,7 @@ namespace ProjectWeb.Common.Repositories
             entity.ID = Guid.NewGuid();
             entity.DateCreated = DateTime.Now;
             entities.Add(entity);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public void Update(T entity)

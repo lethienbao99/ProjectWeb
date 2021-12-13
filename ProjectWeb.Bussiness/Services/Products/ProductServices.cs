@@ -135,7 +135,7 @@ namespace ProjectWeb.Bussiness.Services.Products
 
         }
 
-        private async Task<string> SaveFile(IFormFile file)
+        public async Task<string> SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
