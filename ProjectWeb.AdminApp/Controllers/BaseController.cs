@@ -15,8 +15,9 @@ namespace ProjectWeb.AdminApp.Controllers
         //Lưu token vô session nên để cái này rồi từ từ xử lý sau. Vì nó bị miss cái Remember me.
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var TokenInSession = context.HttpContext.Session.GetString("Token");
-            if (TokenInSession == null)
+            var Token = context.HttpContext.Request.Cookies["access_token"];
+
+            if (Token == null)
             {
                 context.Result = new RedirectToActionResult("Login", "SystemUser", null);
             }

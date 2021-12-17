@@ -64,7 +64,9 @@ namespace ProjectWeb.EcommerceApp.Controllers
                 authProperties.IsPersistent = false;*/
 
 
-            HttpContext.Session.SetString(SystemsConstants.Token, result.Object);
+
+            HttpContext.Response.Cookies.Append("access_token", result.Object, new CookieOptions { HttpOnly = true });
+
             HttpContext.Session.SetString(SystemsConstants.SettingLanguage, _config[SystemsConstants.SettingLanguage]);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,

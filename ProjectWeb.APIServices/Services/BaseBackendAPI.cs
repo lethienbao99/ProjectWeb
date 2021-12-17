@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ProjectWeb.Models.CommonModels;
+using ProjectWeb.Models.SystemUsers;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -63,13 +64,23 @@ namespace ProjectWeb.APIServices.Services
 
             if (IsToken == true)
             {
-                var Token = _httpContextAccessor.HttpContext
+                /*var Token = _httpContextAccessor.HttpContext
                 .Session
-                .GetString(SystemsConstants.Token);
+                .GetString(SystemsConstants.Token);*/
+
+                var Token = _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
+
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             }
 
             var response = await client.GetAsync(Url);
+
+            if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                response = await AccessTokenRefreshWrapper(
+                    () => SecuredMethodRequest(Url, null, "GET", null));
+            }
+
             var dataRaw = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -86,13 +97,18 @@ namespace ProjectWeb.APIServices.Services
         /// <returns></returns>
         protected async Task<ResultMessage<T>> DeteleAndReturnAsync<T>(string Url)
         {
-            var Token = _httpContextAccessor.HttpContext
-                .Session
-                .GetString("Token");
+            var Token = _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             var response = await client.DeleteAsync(Url);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                response = await AccessTokenRefreshWrapper(
+                    () => SecuredMethodRequest(Url, null, "DELETE", null));
+            }
+
             var dataRaw = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -113,17 +129,24 @@ namespace ProjectWeb.APIServices.Services
         protected async Task<ResultMessage<T>> PostAndReturnAsync<T, TModelRequest>(string Url, TModelRequest request, bool? IsToken)
         {
             var jsonConvert = JsonConvert.SerializeObject(request);
-            var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
+            var httpContent = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
 
             if (IsToken == true)
             {
-                var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+                var Token = _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             }
 
-            var response = await client.PostAsync(Url, httpContext);
+            var response = await client.PostAsync(Url, httpContent);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                response = await AccessTokenRefreshWrapper(
+                    () => SecuredMethodRequest(Url, httpContent, "POST", null));
+            }
+
             var dataRaw = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ResultObjectSuccess<T>>(dataRaw);
@@ -147,12 +170,19 @@ namespace ProjectWeb.APIServices.Services
 
             if (IsToken == true)
             {
-                var Token = _httpContextAccessor.HttpContext.Session.GetString("Token");
+                var Token = _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
             }
         
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
             var response = await client.PutAsync(Url, httpContext);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                response = await AccessTokenRefreshWrapper(
+                    () => SecuredMethodRequest(Url, httpContext, "PUT", null));
+            }
+
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ResultObjectSuccess<T>>(result);
@@ -160,6 +190,72 @@ namespace ProjectWeb.APIServices.Services
             return JsonConvert.DeserializeObject<ResultObjectError<T>>(result);
         }
 
+        public async Task<HttpResponseMessage> AccessTokenRefreshWrapper(Func<Task<HttpResponseMessage>> initialRequest)
+        {
+            var response = await initialRequest();
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                var tokenObject = new TokenRequest();
+                tokenObject.access_token = _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
+                tokenObject.refresh_token = _httpContextAccessor.HttpContext.Request.Cookies["refresh_token"];
+
+                //Kiểm tra còn token cũ thì xóa đi trong session.
+                if (tokenObject.access_token != null)
+                    _httpContextAccessor.HttpContext.Session.SetString("access_token", "null");
+
+                if (tokenObject.refresh_token != null)
+                    _httpContextAccessor.HttpContext.Session.SetString("refresh_token", "null");
+
+                var jsonConvert = JsonConvert.SerializeObject(tokenObject);
+
+                var httpContext = new StringContent(jsonConvert, Encoding.UTF8, "application/json");
+
+                var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
+
+                var responseToken = await client.PostAsync("/api/SystemUsers/RefreshToken", httpContext);
+                var dataRaw = await responseToken.Content.ReadAsStringAsync();
+                var dataObject = JsonConvert.DeserializeObject<TokenRequest>(dataRaw);
+
+                //Set lại giá trị token mới trong session
+                if (dataObject.access_token != null)
+                    _httpContextAccessor.HttpContext.Session.SetString("access_token", dataObject.access_token);
+                if (tokenObject.refresh_token != null)
+                    _httpContextAccessor.HttpContext.Session.SetString("refresh_token", dataObject.refresh_token);
+
+                response = await initialRequest();
+            }
+
+            return response;
+
+        }
+
+        public async Task<HttpResponseMessage> SecuredMethodRequest(string url, StringContent content, string method, MultipartFormDataContent multiContent)
+        {
+            var token = _httpContextAccessor.HttpContext.Session.GetString("access_token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            if(multiContent != null)
+                return await client.PostAsync(url, multiContent);
+
+            if (method == "GET")
+                return await client.GetAsync(url);
+            else if (method == "POST")
+                return await client.PostAsync(url, content);
+            else if (method == "POST" && multiContent != null)
+                return await client.PostAsync(url, content);
+            else if (method == "PUT")
+                return await client.PutAsync(url, content);
+            else if (method == "PUT" && multiContent != null)
+                return await client.PutAsync(url, multiContent);
+            else if (method == "DELETE")
+                return await client.DeleteAsync(url);
+            else
+                return null;
+        }
 
     }
 }

@@ -25,19 +25,22 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
         private readonly UserManager<SystemUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IConfiguration _config;
+        private TokenValidationParameters _tokenValidationParameters;
 
         private readonly SignInManager<SystemUser> _signInManager;
         public SystemUserServices(ProjectWebDBContext context, 
             UserManager<SystemUser> userManager, 
             SignInManager<SystemUser> signInManager,
             RoleManager<AppRole> roleManager,
-            IConfiguration config) 
+            IConfiguration config,
+            TokenValidationParameters tokenValidationParameters) 
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+            _tokenValidationParameters = tokenValidationParameters;
         }
 
         public async Task<ResultMessage<string>> Authenticate(LoginRequest request)
@@ -269,6 +272,164 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
             }
 
             return new ResultObjectSuccess<bool>();
+        }
+
+        public async Task<AuthenticationResult> GenerateToken(SystemUser user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var userInfo = await _context.UserInformations.FirstOrDefaultAsync(s => s.ID == user.UserInfomationID && s.IsDelete == null);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GivenName, userInfo.FirstName),
+                new Claim(ClaimTypes.Role, string.Join(";", roles)),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("ID", user.Id.ToString()),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(null,
+                null,
+                claims,
+                expires: DateTime.Now.AddMinutes(1),
+                signingCredentials: creds);
+
+            var JwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            TokenModel refreshToken = await GenerateRefreshToken(user.Id);
+            return new AuthenticationResult()
+            {
+                access_token = JwtToken,
+                refresh_token = refreshToken.Value
+            };
+        }
+
+        public async Task<TokenModel> GenerateRefreshToken(Guid userId)
+        {
+            var refreshToken = await _context.Tokens.Where(x => x.UserId == userId).OrderByDescending(x => x.DateCreated).FirstOrDefaultAsync();
+
+            if (refreshToken != null)
+            {
+                if (refreshToken.ExpiryTime < DateTime.Now)
+                {
+                    var token = new Token()
+                    {
+                        ID = Guid.NewGuid(),
+                        UserId = userId,
+                        Type = "Refresh_Token",
+                        Value = Guid.NewGuid().ToString() + "RandomValue",
+                        ExpiryTime = DateTime.Now.AddDays(2),
+                        DateCreated = DateTime.Now
+                    };
+                    _context.Tokens.Add(token);
+                    _context.SaveChanges();
+
+                    var tokenResult = new TokenModel()
+                    {
+                        ID = token.ID,
+                        UserId = token.UserId,
+                        Type = token.Type,
+                        Value = token.Value,
+                        ExpiryTime = token.ExpiryTime,
+                        DateCreated = DateTime.Now
+                    };
+
+                    return tokenResult;
+                }
+                else
+                {
+                    var refreshTokenResult = new TokenModel()
+                    {
+                        ID = refreshToken.ID,
+                        UserId = refreshToken.UserId,
+                        Type = refreshToken.Type,
+                        Value = refreshToken.Value,
+                        ExpiryTime = refreshToken.ExpiryTime,
+                        DateCreated = DateTime.Now
+                    };
+
+                    return refreshTokenResult;
+                }
+
+            }
+            else
+            {
+                var token = new Token()
+                {
+                    ID = Guid.NewGuid(),
+                    UserId = userId,
+                    Type = "Refresh_Token",
+                    Value = Guid.NewGuid().ToString() + "RandomValue",
+                    ExpiryTime = DateTime.Now.AddDays(2),
+                    DateCreated = DateTime.Now
+                };
+                _context.Tokens.Add(token);
+                _context.SaveChanges();
+
+                var tokenResult = new TokenModel()
+                {
+                    ID = token.ID,
+                    UserId = token.UserId,
+                    Type = token.Type,
+                    Value = token.Value,
+                    ExpiryTime = token.ExpiryTime,
+                    DateCreated = DateTime.Now
+                };
+
+                return tokenResult;
+            }
+        }
+
+        public async Task<AuthenticationResult> RefreshTokenAsync(string access_token, string refresh_token)
+        {
+            var validatedToken = GetPrincipalFromToken(access_token);
+            if (validatedToken == null)
+                return null;
+
+            var storedRefreshToken = await _context.Tokens.SingleOrDefaultAsync(x => x.Value == refresh_token);
+            if (storedRefreshToken == null)
+            {
+                return new AuthenticationResult() { ErrorString = "Refresh Token k ton tai" };
+            }
+            if (DateTime.Now > storedRefreshToken.ExpiryTime)
+            {
+                return new AuthenticationResult() { ErrorString = "Refresh Token het han" };
+            }
+
+            var user = await _userManager.FindByIdAsync(validatedToken.Claims.Single(x => x.Type == "ID").Value);
+            return await GenerateToken(user);
+        }
+
+        public ClaimsPrincipal GetPrincipalFromToken(string access_token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                _tokenValidationParameters.ValidateLifetime = false;
+                var pricipal = tokenHandler.ValidateToken(access_token, _tokenValidationParameters, out var validatedToken);
+                _tokenValidationParameters.ValidateLifetime = true;
+                if (!isJwtValidated(validatedToken))
+                {
+                    return null;
+                }
+                return pricipal;
+            }
+            catch (Exception e)
+            {
+                var mess = e.Message;
+                return null;
+            }
+        }
+
+        public bool isJwtValidated(SecurityToken securityToken)
+        {
+            return (securityToken is JwtSecurityToken jwtSecurityToken)
+                    && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

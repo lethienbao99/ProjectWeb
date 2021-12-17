@@ -30,14 +30,15 @@ namespace ProjectWeb.AdminApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-           
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/SystemUser/Login/";
                     options.AccessDeniedPath = "/SystemUser/Forbidden";
-
+                    options.Cookie.IsEssential = true;
+                    options.Cookie.HttpOnly = true;
+                    
                 });
 
             services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
@@ -52,9 +53,8 @@ namespace ProjectWeb.AdminApp
                 options.Cookie.IsEssential = true;
             });
 
-           
 
-
+         
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -90,6 +90,7 @@ namespace ProjectWeb.AdminApp
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseCookiePolicy();
             app.UseSession();
             app.UseEndpoints(endpoints =>
             {

@@ -11,6 +11,7 @@ namespace ProjectWeb.APIServices.IServiceBackendAPIs
     {
         //Đăng nhập.
         Task<ResultMessage<string>> Authenticate(LoginRequest request);
+        Task<ResultMessage<TokenRequest>> AuthenticateWithTwoToken(LoginRequest request);
         //DS User
         Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request);
         //Tạo User

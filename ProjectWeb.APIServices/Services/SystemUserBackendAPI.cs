@@ -28,6 +28,11 @@ namespace ProjectWeb.APIServices.Services
             return await PostAndReturnAsync<string, LoginRequest>("/api/SystemUsers/Login", request, false);
         }
 
+        public async Task<ResultMessage<TokenRequest>> AuthenticateWithTwoToken(LoginRequest request)
+        {
+            return await PostAndReturnAsync<TokenRequest, LoginRequest>("/api/SystemUsers/Login", request, false);
+        }
+
         public async Task<ResultMessage<SystemUserModel>> GetUserByID(Guid ID)
         {
             return await GetAndReturnAsync<SystemUserModel>($"/api/SystemUsers/{ID}");

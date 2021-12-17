@@ -55,21 +55,7 @@ namespace ProjectWeb.API
 
             services.AddIdentity<SystemUser, AppRole>()
                 .AddEntityFrameworkStores<ProjectWebDBContext>().AddDefaultTokenProviders();
-            //DI
-            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<IProductServices, ProductServices>();
-            services.AddTransient<IStorageServices, StorageServices>();
-            services.AddTransient<ICategoryServices, CategoryServices>();
-            services.AddTransient<ISystemUserServices, SystemUserServices>();
-            services.AddTransient<IAppRoleServices, AppRoleServices>();
-            services.AddTransient<IOrderServices, OrderServices>();
-            services.AddTransient<ISendMailServices, SendMailServices>();
-            services.AddTransient<IMessageServices, MessageServices>();
-            services.AddTransient<IProductCategoriesServices, ProductCategoriesServices>();
-            services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
-            services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
-            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+         
 
             //Validation Fluent Models.
             /*services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
@@ -130,6 +116,19 @@ namespace ProjectWeb.API
             string signingKey = Configuration.GetValue<string>("Tokens:Key");
             byte[] signingKeyBytes = System.Text.Encoding.UTF8.GetBytes(signingKey);
 
+
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ClockSkew = System.TimeSpan.Zero,
+                IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes),
+                RequireExpirationTime = false,
+            };
+
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -139,18 +138,25 @@ namespace ProjectWeb.API
             {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = issuer,
-                    ValidateAudience = true,
-                    ValidAudience = issuer,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = System.TimeSpan.Zero,
-                    IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
-                };
+                options.TokenValidationParameters = tokenValidationParameters;
             });
+
+            //DI
+            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IProductServices, ProductServices>();
+            services.AddTransient<IStorageServices, StorageServices>();
+            services.AddTransient<ICategoryServices, CategoryServices>();
+            services.AddTransient<ISystemUserServices, SystemUserServices>();
+            services.AddTransient<IAppRoleServices, AppRoleServices>();
+            services.AddTransient<IOrderServices, OrderServices>();
+            services.AddTransient<ISendMailServices, SendMailServices>();
+            services.AddTransient<IMessageServices, MessageServices>();
+            services.AddTransient<IProductCategoriesServices, ProductCategoriesServices>();
+            services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
+            services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton(tokenValidationParameters);
 
         }
 

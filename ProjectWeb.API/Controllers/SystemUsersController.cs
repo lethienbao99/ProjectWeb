@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjectWeb.Common.IServices;
+using ProjectWeb.Data.Entities;
+using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.SystemUsers;
 using System;
 using System.Collections.Generic;
@@ -17,23 +20,74 @@ namespace ProjectWeb.API.Controllers
     public class SystemUsersController : ControllerBase
     {
         private readonly ISystemUserServices _systemUserServices;
-        public SystemUsersController(ISystemUserServices systemUserServices)
+        private readonly UserManager<SystemUser> _userManager;
+        private readonly SignInManager<SystemUser> _signInManager;
+        public SystemUsersController(
+            ISystemUserServices systemUserServices,
+            UserManager<SystemUser> userManager,
+            SignInManager<SystemUser> signInManager
+            )
         {
             _systemUserServices = systemUserServices;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost("Login")]
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var user = await _userManager.FindByNameAsync(request.Username);
+            if (user == null)
+                return BadRequest("User not exit");
 
-            var result = await _systemUserServices.Authenticate(request);
+            var checkPassword = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
+            if (!checkPassword.Succeeded)
+            {
+                return BadRequest("Password incorect");
+            };
 
-            if (result == null)
-                return BadRequest(request);
-            return Ok(result);
+            AuthenticationResult token = await _systemUserServices.GenerateToken(user);
+            /*  var obj = new
+              {
+                  access_token = token.access_token,
+                  refresh_token = token.refresh_token
+              };*/
+            if(token != null)
+            {
+                var obj = new ResultObjectSuccess<TokenRequest>()
+                {
+                    IsSuccessed = true,
+                    Message = "Success",
+                    Object = new TokenRequest()
+                    {
+                        access_token = token.access_token,
+                        refresh_token = token.refresh_token
+                    }
+                };
+
+
+                return Ok(obj);
+            }
+            else
+            {
+                var obj = new ResultObjectError<TokenRequest>()
+                {
+                    IsSuccessed = false,
+                    Message = "Fail on server!!!"
+                };
+                return Ok(obj);
+            }
+            
+        }
+
+
+        [HttpPost("RefreshToken")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RefreshToken(TokenRequest request)
+        {
+            var authResponse = await _systemUserServices.RefreshTokenAsync(request.access_token, request.refresh_token);
+            return Ok(authResponse);
         }
 
         [HttpPost]

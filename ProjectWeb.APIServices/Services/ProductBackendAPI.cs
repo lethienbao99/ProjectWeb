@@ -29,15 +29,11 @@ namespace ProjectWeb.APIServices.Services
 
         public async Task<ResultMessage<bool>> Create(ProductCreateRequest request)
         {
-            var sessions = _httpContextAccessor
-                .HttpContext
-                .Session
-                .GetString(SystemsConstants.Token);
-
+            var Token = _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
             var requestContent = new MultipartFormDataContent();
 
@@ -65,6 +61,11 @@ namespace ProjectWeb.APIServices.Services
             requestContent.Add(new StringContent((request.CategoryId == null || request.CategoryId == Guid.Empty ) ? null : request.CategoryId.ToString()), "categoryId");
 
             var response = await client.PostAsync($"/api/products/", requestContent);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                response = await AccessTokenRefreshWrapper(
+                    () => SecuredMethodRequest($"/api/products/", null, "POST", requestContent));
+            }
             var dataRaw = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(dataRaw);
@@ -107,15 +108,11 @@ namespace ProjectWeb.APIServices.Services
 
         public async Task<ResultMessage<bool>> Update(ProductUpdateRequest request)
         {
-            var sessions = _httpContextAccessor
-               .HttpContext
-               .Session
-               .GetString(SystemsConstants.Token);
-
+            var Token = _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
 
             var requestContent = new MultipartFormDataContent();
 
@@ -142,6 +139,11 @@ namespace ProjectWeb.APIServices.Services
             requestContent.Add(new StringContent((request.CategoryId == Guid.Empty) ? null : request.CategoryId.ToString()), "categoryId");
 
             var response = await client.PutAsync($"/api/products/" + request.ID, requestContent);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                response = await AccessTokenRefreshWrapper(
+                    () => SecuredMethodRequest($"/api/products/" + request.ID, null, "PUT", requestContent));
+            }
             var dataRaw = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<ResultObjectSuccess<bool>>(dataRaw);

@@ -18,6 +18,7 @@ namespace ProjectWeb.Data.Entities
         public UserInformation UserInfomation { get; set; }
         public List<Order> Orders { get; set; }
         public List<Cart> Carts { get; set; }
+        public List<Token> Tokens { get; set; }
 
     }
 }

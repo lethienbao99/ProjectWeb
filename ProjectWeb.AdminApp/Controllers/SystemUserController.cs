@@ -35,8 +35,9 @@ namespace ProjectWeb.AdminApp.Controllers
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
         {
-            var TokenInSession = HttpContext.Session.GetString("Token");
-            if(TokenInSession == null)
+            var Token = HttpContext.Request.Cookies["access_token"];
+
+            if (Token == null)
                 return RedirectToAction("Login", "SystemUser");
 
             var request = new UserPagingRequest()
@@ -213,19 +214,32 @@ namespace ProjectWeb.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var result = await _systemUserBackendAPI.Authenticate(request);
+            var result = await _systemUserBackendAPI.AuthenticateWithTwoToken(request);
             if(result.Message != "Success")
             {
                 ModelState.AddModelError("", result.Message);
                 return View();
             }
-            var userPrincipal = this.ValidateToken(result.Object);
+            var userPrincipal = this.ValidateToken(result.Object.access_token);
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
-            HttpContext.Session.SetString(SystemsConstants.Token, result.Object);
+
+            var options = new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(2),
+                IsEssential = true,
+                HttpOnly = true
+            };
+
+            HttpContext.Response.Cookies.Append("access_token", result.Object.access_token, options);
+            HttpContext.Response.Cookies.Append("refresh_token", result.Object.refresh_token, options);
+
+            HttpContext.Session.SetString("access_token", result.Object.access_token);
+            HttpContext.Session.SetString("refresh_token", result.Object.refresh_token);
+
             HttpContext.Session.SetString(SystemsConstants.SettingLanguage, _config[SystemsConstants.SettingLanguage]);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
@@ -319,8 +333,8 @@ namespace ProjectWeb.AdminApp.Controllers
             TokenValidationParameters validationParameters = new TokenValidationParameters();
 
             validationParameters.ValidateLifetime = true;
-            validationParameters.ValidAudience = _config["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _config["Tokens:Issuer"];
+            validationParameters.ValidateIssuer = false;
+            validationParameters.ValidateAudience = false;
             validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
             return principal;

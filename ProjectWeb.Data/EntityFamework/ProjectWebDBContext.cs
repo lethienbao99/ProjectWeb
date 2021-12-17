@@ -42,6 +42,7 @@ namespace ProjectWeb.Data.EntityFamework
             //Authen
             modelBuilder.ApplyConfiguration(new UserInformationFluentAPI());
             modelBuilder.ApplyConfiguration(new SystemUserFluentAPI());
+            modelBuilder.ApplyConfiguration(new TokensFluentAPI());
             modelBuilder.ApplyConfiguration(new AppRoleFluentAPI());
             modelBuilder.ApplyConfiguration(new MessageFluentAPI());
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
@@ -65,6 +66,7 @@ namespace ProjectWeb.Data.EntityFamework
         public DbSet<UserInformation> UserInformations { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Token> Tokens { get; set; }
 
     }
 }
