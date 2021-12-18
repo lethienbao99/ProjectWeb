@@ -94,6 +94,25 @@ namespace ProjectWeb.API.Controllers
 
 
 
+        [AllowAnonymous]
+        [HttpPost("V2")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateV2([FromForm] ProductCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _unitOfWork.Products.CreateWithImages(request);
+            if (result.Object == Guid.Empty)
+                return BadRequest("Create Fail!!!");
+
+            var product = await _unitOfWork.Products.GetByIDAsync(result.Object);
+
+            return CreatedAtAction(nameof(GetById), new { ID = result.Object }, product.Object);
+        }
+
+
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)

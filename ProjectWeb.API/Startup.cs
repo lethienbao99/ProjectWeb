@@ -20,6 +20,7 @@ using ProjectWeb.Bussiness.Services.Orders;
 using ProjectWeb.Bussiness.Services.Products;
 using ProjectWeb.Bussiness.Services.SystemUsers;
 using ProjectWeb.Common.Enums;
+using ProjectWeb.Common.Extensions;
 using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
 using ProjectWeb.Common.UnitOfWorks;
@@ -143,6 +144,10 @@ namespace ProjectWeb.API
 
             //DI
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            services.AddLazyResolution();
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IStorageServices, StorageServices>();
             services.AddTransient<ICategoryServices, CategoryServices>();
@@ -155,7 +160,6 @@ namespace ProjectWeb.API
             services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
             services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddSingleton(tokenValidationParameters);
 
         }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjectWeb.Common.Exceptions;
 using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
+using ProjectWeb.Common.UnitOfWorks;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Data.EntityFamework;
 using ProjectWeb.Models.CommonModels;
@@ -23,10 +24,13 @@ namespace ProjectWeb.Bussiness.Services.Products
     {
         private readonly ProjectWebDBContext _context;
         private readonly IStorageServices _storageServices;
-        public ProductServices(ProjectWebDBContext context, IStorageServices storageServices) : base(context)
+        private readonly Lazy<IUnitOfWork> _unitOfWork;
+
+        public ProductServices(ProjectWebDBContext context, IStorageServices storageServices, Lazy<IUnitOfWork> unitOfWork) : base(context)
         {
             _context = context;
             _storageServices = storageServices;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ResultMessage<Guid>> CreateWithImages(ProductCreateRequest request)
@@ -75,7 +79,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                         CategoryID = request.CategoryId.Value,
                         DateCreated = DateTime.Now,
                     };
-                    _context.ProductCategories.Add(productCategorieChild);
+                    _unitOfWork.Value.ProductCategories.Insert(productCategorieChild);
 
                     //Tìm category cha và add vào luôn.
                     if(category.ParentID != null && category.ParentID != Guid.Empty)
@@ -87,13 +91,13 @@ namespace ProjectWeb.Bussiness.Services.Products
                             CategoryID = category.ParentID.Value,
                             DateCreated = DateTime.Now,
                         };
-                        _context.ProductCategories.Add(productCategorieParent);
+                        _unitOfWork.Value.ProductCategories.Insert(productCategorieParent);
                     }
                 }
                 
             }
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Value.Products.Insert(product);
+            await _unitOfWork.Value.CompleteAsync();
             return new ResultObjectSuccess<Guid>(product.ID);
         }
 

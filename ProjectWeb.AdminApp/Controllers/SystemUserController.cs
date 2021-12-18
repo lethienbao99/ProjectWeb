@@ -238,7 +238,6 @@ namespace ProjectWeb.AdminApp.Controllers
             HttpContext.Response.Cookies.Append("refresh_token", result.Object.refresh_token, options);
 
             HttpContext.Session.SetString("access_token", result.Object.access_token);
-            HttpContext.Session.SetString("refresh_token", result.Object.refresh_token);
 
             HttpContext.Session.SetString(SystemsConstants.SettingLanguage, _config[SystemsConstants.SettingLanguage]);
             await HttpContext.SignInAsync(

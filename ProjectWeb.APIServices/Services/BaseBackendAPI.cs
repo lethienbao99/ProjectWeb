@@ -202,10 +202,7 @@ namespace ProjectWeb.APIServices.Services
 
                 //Kiểm tra còn token cũ thì xóa đi trong session.
                 if (tokenObject.access_token != null)
-                    _httpContextAccessor.HttpContext.Session.SetString("access_token", "null");
-
-                if (tokenObject.refresh_token != null)
-                    _httpContextAccessor.HttpContext.Session.SetString("refresh_token", "null");
+                    _httpContextAccessor.HttpContext.Session.Remove("access_token");
 
                 var jsonConvert = JsonConvert.SerializeObject(tokenObject);
 
@@ -221,8 +218,6 @@ namespace ProjectWeb.APIServices.Services
                 //Set lại giá trị token mới trong session
                 if (dataObject.access_token != null)
                     _httpContextAccessor.HttpContext.Session.SetString("access_token", dataObject.access_token);
-                if (tokenObject.refresh_token != null)
-                    _httpContextAccessor.HttpContext.Session.SetString("refresh_token", dataObject.refresh_token);
 
                 response = await initialRequest();
             }
