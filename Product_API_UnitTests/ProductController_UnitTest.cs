@@ -15,7 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ProductApi.Moq
+namespace Product_API_UnitTests
 {
     public class ProductController_UnitTest
     {
