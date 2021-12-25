@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ProjectWeb.Common.UnitOfWorks;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Models.CommonModels;
@@ -18,14 +19,18 @@ namespace ProjectWeb.API.Controllers
     public class ProductsController : ControllerBase
     {
         private IUnitOfWork _unitOfWork;
-        public ProductsController(IUnitOfWork unitOfWork)
+        private readonly ILogger<ProductsController> _logger;
+        public ProductsController(IUnitOfWork unitOfWork, ILogger<ProductsController> logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
+            _logger.LogInformation("test log");
             var products = await _unitOfWork.Products.GetAllAsync();
             return Ok(products);
         }

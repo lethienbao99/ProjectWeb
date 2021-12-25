@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using ProjectWeb.API.Controllers;
 using ProjectWeb.Bussiness.Services.Products;
@@ -20,13 +21,14 @@ namespace Product_API_UnitTests
     public class ProductController_UnitTest
     {
         private readonly Mock<IUnitOfWork> _mockRepo;
+        private readonly ILogger<ProductsController> _logger;
         private readonly ProductsController _controller;
 
 
         public ProductController_UnitTest()
         {
             _mockRepo = new Mock<IUnitOfWork>();
-            _controller = new ProductsController(_mockRepo.Object);
+            _controller = new ProductsController(_mockRepo.Object, _logger);
         }
 
         [Fact]

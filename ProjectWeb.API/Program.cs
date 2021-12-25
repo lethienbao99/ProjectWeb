@@ -28,8 +28,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Formatting.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+//Read Configuration from appSettings
+var config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .Build();
+//Initialize Logger
+//Cấu hình = file
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(config).CreateLogger();
+
+//Cấu hình = tay
+/*Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File(new JsonFormatter(),"logs/log.txt", 
+        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+        rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/errorLog.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning)
+    .CreateLogger();*/
+
+builder.Host.UseSerilog();
+
 // Add services to the container.
 builder.Services.AddDbContext<ProjectWebDBContext>(options =>
                options.UseSqlServer(builder.Configuration.GetConnectionString(EnumConstants.SystemsConstants.ConnectionString)));
@@ -170,4 +194,20 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 
-app.Run();
+
+try
+{
+    Log.Information("Starting our service....");
+    app.Run();
+}
+catch (Exception ex)
+{
+
+    Log.Fatal(ex, "Exception in application");
+}
+finally
+{
+    Log.Information("Exiting service");
+    Log.CloseAndFlush();
+}
+

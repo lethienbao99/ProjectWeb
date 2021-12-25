@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ProjectWeb.Common.Exceptions;
 using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
@@ -25,12 +26,15 @@ namespace ProjectWeb.Bussiness.Services.Products
         private readonly ProjectWebDBContext _context;
         private readonly IStorageServices _storageServices;
         private readonly Lazy<IUnitOfWork> _unitOfWork;
+        private readonly ILogger<ProductServices> _logger;
 
-        public ProductServices(ProjectWebDBContext context, IStorageServices storageServices, Lazy<IUnitOfWork> unitOfWork) : base(context)
+
+        public ProductServices(ProjectWebDBContext context, IStorageServices storageServices, Lazy<IUnitOfWork> unitOfWork, ILogger<ProductServices> logger) : base(context)
         {
             _context = context;
             _storageServices = storageServices;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public async Task<ResultMessage<Guid>> CreateWithImages(ProductCreateRequest request)
@@ -164,7 +168,7 @@ namespace ProjectWeb.Bussiness.Services.Products
 
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderBy(x => x.p.Sort)
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
                  .Select(x => new ProductModel()
                  {
                      ID = x.p.ID,
@@ -177,7 +181,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                      Stock = x.p.Stock,
                      Alias = x.p.Alias,
                      DateCreated = DateTime.Now,
-                 }).Distinct().ToListAsync();
+                 }).Distinct().OrderByDescending(x => x.Sort).ToListAsync();
 
             var pagedResult = new PageResultModel<ProductModel>()
             {
@@ -199,73 +203,81 @@ namespace ProjectWeb.Bussiness.Services.Products
                         from c in cc.DefaultIfEmpty()
                         select new { p, c, pc };*/
 
-            var query = from p in _context.Products
-                        join i in _context.Images.Where(x => x.IsDefault == true) on p.ID equals i.ProductID into pi
-                        from i in pi.DefaultIfEmpty()
-
-                        //Tách riêng categories ra để lấy mảng hoặc join thành chuỗi.
-                        let categories = (from pc in _context.ProductCategories
-                                          join c in _context.Categories on pc.CategoryID equals c.ID
-                                          where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
-                                          select c.CategoryName).ToList()
-                        //Phần này giành cho tìm kiếm.
-                        let categorieIDs = (from pc in _context.ProductCategories
-                                          join c in _context.Categories on pc.CategoryID equals c.ID
-                                          where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
-                                          select c.ID).ToList()
-
-                        select new { p, categories, categorieIDs, i };
-
-
-            //List Categories
-
-
-            //Filter.
-            if (!string.IsNullOrEmpty(request.Keyword))
+            try
             {
-                query = query.Where(x => x.p.ProductName.Contains(request.Keyword) || x.p.Description.Contains(request.Keyword));
-            }
+                var query = from p in _context.Products
+                            join i in _context.Images.Where(x => x.IsDefault == true) on p.ID equals i.ProductID into pi
+                            from i in pi.DefaultIfEmpty()
 
-            if (request.CategoryId != Guid.Empty && request.CategoryId != null)
-            {
-                query = query.Where(x => x.categorieIDs.Contains(request.CategoryId.Value));
-            }
+                                //Tách riêng categories ra để lấy mảng hoặc join thành chuỗi.
+                            let categories = (from pc in _context.ProductCategories
+                                              join c in _context.Categories on pc.CategoryID equals c.ID
+                                              where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
+                                              select c.CategoryName).ToList()
+                            //Phần này giành cho tìm kiếm.
+                            let categorieIDs = (from pc in _context.ProductCategories
+                                                join c in _context.Categories on pc.CategoryID equals c.ID
+                                                where p.ID == pc.ProductID && pc.IsDelete == null && c.IsDelete == null
+                                                select c.ID).ToList()
+
+                            select new { p, categories, categorieIDs, i };
 
 
-            int totalRow = await query.CountAsync();
+                //List Categories
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderByDescending(x => x.p.Sort)
-                 .Select(x => new ProductViewModel()
-                 {
-                     ID = x.p.ID,
-                     ProductName = x.p.ProductName,
-                     Code = x.p.Code,
-                     Description = x.p.Description,
-                     Type = x.p.Type,
-                     Status = x.p.Status,
-                     Price = x.p.Price,
-                     PriceDollar = x.p.PriceDollar,
-                     PriceFormat = x.p.Price.ToString("#,##0"),
-                     PriceDollarFormat = x.p.PriceDollar.ToString("#,##0"),
-                     Stock = x.p.Stock,
-                     Alias = x.p.Alias,
-                     Sort = x.p.Sort,
-                     Views = x.p.Views,
-                     DateCreated = DateTime.Now,
-                     Categories = x.categories, // Mảng categories
+
+                //Filter.
+                if (!string.IsNullOrEmpty(request.Keyword))
+                {
+                    query = query.Where(x => x.p.ProductName.Contains(request.Keyword) || x.p.Description.Contains(request.Keyword));
+                }
+
+                if (request.CategoryId != Guid.Empty && request.CategoryId != null)
+                {
+                    query = query.Where(x => x.categorieIDs.Contains(request.CategoryId.Value));
+                }
+
+                int totalRow = await query.CountAsync();
+
+                var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+                     .Select(x => new ProductViewModel()
+                     {
+                         ID = x.p.ID,
+                         ProductName = x.p.ProductName,
+                         Code = x.p.Code,
+                         Description = x.p.Description,
+                         Type = x.p.Type,
+                         Status = x.p.Status,
+                         Price = x.p.Price,
+                         PriceDollar = x.p.PriceDollar,
+                         PriceFormat = x.p.Price.ToString("#,##0"),
+                         PriceDollarFormat = x.p.PriceDollar.ToString("#,##0"),
+                         Stock = x.p.Stock,
+                         Alias = x.p.Alias,
+                         Sort = x.p.Sort,
+                         Views = x.p.Views,
+                         DateCreated = DateTime.Now,
+                         Categories = x.categories, // Mảng categories
                      CategoriesJoin = string.Join(",", x.categories), // Chuỗi categories 
                      ImgDefaultPath = x.i.ImagePath,
-                 }).ToListAsync();
+                     }).OrderByDescending(x => x.Sort).ToListAsync();
 
-            var pagedResult = new PageResultModel<ProductViewModel>()
+                var pagedResult = new PageResultModel<ProductViewModel>()
+                {
+                    TotalRecords = totalRow,
+                    PageIndex = request.PageIndex,
+                    PageSize = request.PageSize,
+                    Items = data
+                };
+
+                return new ResultObjectSuccess<PageResultModel<ProductViewModel>>(pagedResult);
+            }
+            catch (Exception e)
             {
-                TotalRecords = totalRow,
-                PageIndex = request.PageIndex,
-                PageSize = request.PageSize,
-                Items = data
-            };
+                _logger.LogError(e.Message);
+                return new ResultObjectError<PageResultModel<ProductViewModel>>(e.Message);
+            }
 
-            return new ResultObjectSuccess<PageResultModel<ProductViewModel>>(pagedResult);
         }
 
         public async Task<ResultMessage<ProductViewModel>> GetProductByID(Guid ID)
@@ -341,7 +353,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                         from i in pi.DefaultIfEmpty()
                         select new { p, i };
 
-            var data = await query.Take(8).OrderByDescending(x => x.p.Views)
+            var data = await query.Take(8)
                  .Select(x => new ProductViewModel()
                  {
                      ID = x.p.ID,
@@ -354,7 +366,7 @@ namespace ProjectWeb.Bussiness.Services.Products
                      Views = x.p.Views,
                      DateCreated = DateTime.Now,
                      ImgDefaultPath = x.i.ImagePath,
-                 }).ToListAsync();
+                 }).OrderByDescending(x => x.Views).ToListAsync();
 
             if(data != null)
                 return new ResultObjectSuccess<List<ProductViewModel>>(data);
