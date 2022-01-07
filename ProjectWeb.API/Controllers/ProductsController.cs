@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProjectWeb.Bussiness.Caches;
 using ProjectWeb.Common.UnitOfWorks;
 using ProjectWeb.Data.Entities;
 using ProjectWeb.Models.CommonModels;
@@ -28,6 +29,7 @@ namespace ProjectWeb.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [Cache(600)]
         public async Task<IActionResult> Get()
         {
             _logger.LogInformation("test log");
@@ -37,6 +39,7 @@ namespace ProjectWeb.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("paging")]
+        [Cache(600)]
         public async Task<IActionResult> GetAllPaging([FromQuery] ProductPagingRequest request)
         {
             var result = await _unitOfWork.Products.GetAllPaging(request);
@@ -45,6 +48,7 @@ namespace ProjectWeb.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("pagingV2")]
+        [Cache(600)]
         public IActionResult GetAllPagingV2([FromQuery] ProductPagingRequest request)
         {
             var result = _unitOfWork.Products.GetAllPagingUsingStored(request);
@@ -52,6 +56,7 @@ namespace ProjectWeb.API.Controllers
         }
 
         [HttpGet("byCategories")]
+        [Cache(600)]
         public async Task<IActionResult> GetAllByCategoryId([FromQuery] ProductByCategoryIdPagingRequest request)
         {
             var products = await _unitOfWork.Products.GetAllByCategoryId(request);
@@ -60,6 +65,7 @@ namespace ProjectWeb.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
+        [Cache(600)]
         public async Task<IActionResult> GetById(Guid id)
         {
             //Add View Count
@@ -73,6 +79,7 @@ namespace ProjectWeb.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("stored/{id}")]
+        [Cache(600)]
         public IActionResult GetByIdUsingStored(Guid id)
         {
             //Add View Count
@@ -86,6 +93,7 @@ namespace ProjectWeb.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}/v2")]
+        [Cache(600)]
         public async Task<IActionResult> GetByIdCustome(Guid id)
         {
             //Add View Count

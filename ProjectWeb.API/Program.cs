@@ -30,6 +30,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
 using Serilog.Formatting.Json;
+using ProjectWeb.Models.CommonModels.Caches;
+using ProjectWeb.Bussiness.Caches;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -134,6 +136,14 @@ builder.Services.AddAuthentication(opt =>
     options.TokenValidationParameters = tokenValidationParameters;
 });
 
+//Redis
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["RedisCacheSettings:ConnectionString"];
+});
+
+
+
 //DI
 //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -153,6 +163,14 @@ builder.Services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>(
 builder.Services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddSingleton(tokenValidationParameters);
+
+var redisCacheSettings = new RedisCacheSettings();
+builder.Configuration.GetSection(nameof(RedisCacheSettings)).Bind(redisCacheSettings);
+builder.Services.AddSingleton(redisCacheSettings);
+
+
+builder.Services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+
 
 
 var app = builder.Build();
