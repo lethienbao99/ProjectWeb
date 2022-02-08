@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
@@ -12,6 +13,7 @@ using ProjectWeb.APIServices.Services;
 using ProjectWeb.Models.FluentValidations.SystemUsers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -72,6 +74,16 @@ else
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "Uploads")
+        ),
+    RequestPath = "/contents"
+});
+
+
+
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
@@ -79,6 +91,11 @@ app.UseCookiePolicy();
 app.UseSession();
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapControllerRoute(
+         name: "areas",
+         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+       );
+
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");

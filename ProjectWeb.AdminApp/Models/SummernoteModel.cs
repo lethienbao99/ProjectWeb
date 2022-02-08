@@ -15,6 +15,8 @@
                 ['font', ['strikethrough', 'superscript', 'subscript']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video', 'elfinder']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']]
             ]";
