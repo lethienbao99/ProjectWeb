@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Scripts {
+@*@section Scripts {
     <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
     <script>
         ClassicEditor
@@ -19,7 +19,7 @@
                 console.error(err.stack);
             });
     </script>
-}
+}*@
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Cập nhật sản phẩm</h1>
@@ -53,7 +53,7 @@
 
                         <div class="form-group">
                             <label asp-for="Description" class="control-label"></label>
-                            <textarea asp-for="Description" class="form-control" id="ProductDescription"></textarea>
+                            <textarea asp-for="Description" class="form-control" id="summernoteEditor"></textarea>
                         </div>
                         <div class="form-group">
                             <label asp-for="Price" class="control-label"></label>
@@ -91,6 +91,11 @@
         </div>
     </div>
 </div>
+
+@{
+    var summernote = new ProjectWeb.AdminApp.Models.SummernoteModel("#summernoteEditor");
+    @await Component.InvokeAsync("Summernote", summernote);
+}
 
 
 

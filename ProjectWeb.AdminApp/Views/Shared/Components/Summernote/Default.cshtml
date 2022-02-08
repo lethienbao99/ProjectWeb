@@ -1,0 +1,11 @@
+﻿@model ProjectWeb.AdminApp.Models.SummernoteModel
+
+<script>
+    debugger
+    $(document).ready(function() {
+        $('@Model.IdAreaTextBox').summernote({
+            height: @Model.Height,
+            toolbar: @Html.Raw(Model.Toolbar)
+        });
+    });
+</script>

@@ -233,8 +233,13 @@ namespace ProjectWeb.APIServices.Services
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            if(multiContent != null)
-                return await client.PostAsync(url, multiContent);
+            if (multiContent != null)
+            { 
+                if(method == "POST")
+                    return await client.PostAsync(url, multiContent);
+                else if (method == "PUT")
+                    return await client.PutAsync(url, multiContent);
+            }
 
             if (method == "GET")
                 return await client.GetAsync(url);
@@ -244,8 +249,6 @@ namespace ProjectWeb.APIServices.Services
                 return await client.PostAsync(url, content);
             else if (method == "PUT")
                 return await client.PutAsync(url, content);
-            else if (method == "PUT" && multiContent != null)
-                return await client.PutAsync(url, multiContent);
             else if (method == "DELETE")
                 return await client.DeleteAsync(url);
             else

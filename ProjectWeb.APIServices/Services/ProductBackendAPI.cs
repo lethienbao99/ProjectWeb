@@ -130,7 +130,7 @@ namespace ProjectWeb.APIServices.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Code) ? null : request.Code.ToString()), "code");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ProductName) ? null : request.ProductName.ToString()), "productName");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? null : request.Description.ToString()), "description");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Type) ? null : request.Type.ToString()), "type");
+            //requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Type) ? null : request.Type.ToString()), "type");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Status) ? null : request.Status.ToString()), "status");
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.PriceDollar.ToString()), "priceDollar");
