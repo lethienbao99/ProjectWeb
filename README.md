@@ -5,9 +5,25 @@
 - Web API: https://apiservicesecommerce.azurewebsites.net/swagger/
 - E-commerce site demo: https://ecommercewebapplication.azurewebsites.net/
 ## Technologies
-- C#, ASP.NET 5.0
-- Entity Framework Core 5.0
-- Javascript
+- C#, .NET 6.0
+- Entity Framework 6.0
+- Javascript & Ajax/JQuery
+- SQL Server
+- Redis 
+## Description
+### Web API
+- Authorization (Access Token & Refresh Token)
+- Cache with Redis Server
+### Web for Manager:
+- Authentication (Login/Logout) 
+- Manager Products, Categories, Users, Roles
+### Web E-commerce for User
+- Login, Signup & Logout
+- View Categories, Products
+- Search Product
+- Review detail Product 
+- Order Product
+- Send mail confirm when order
 ## Design pattern
 - Repository and Unit of Work Pattern
 - Inversion of Control (Dependency Injection)
