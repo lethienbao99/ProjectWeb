@@ -18,7 +18,7 @@
 - Unit tests for ProductServices (basic)
 ### Web for Manager:
 - Authentication (Login/Logout) 
-- Manager Products, Categories, Users, Roles
+- Manager Products, Categories, Users, Roles, Images
 ### Web E-commerce for User
 - Login, Signup & Logout
 - View Categories, Products
