@@ -14,6 +14,7 @@
 ### Web API
 - Authorization (Access Token & Refresh Token)
 - Cache with Redis Server
+- Unit tests for ProductServices (basic)
 ### Web for Manager:
 - Authentication (Login/Logout) 
 - Manager Products, Categories, Users, Roles
