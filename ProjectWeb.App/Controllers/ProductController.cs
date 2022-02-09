@@ -40,6 +40,8 @@ namespace ProjectWeb.EcommerceApp.Controllers
              
             };
             var data = await _productBackendAPI.GetProductPagingV2(request);
+            if(data.Object == null)
+                return Json(null);
             return Json(data.Object.Items);
         }
     }

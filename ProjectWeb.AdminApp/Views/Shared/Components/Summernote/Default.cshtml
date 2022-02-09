@@ -1,8 +1,10 @@
 ﻿@model ProjectWeb.AdminApp.Models.SummernoteModel
 
 
+
 <script>
     debugger
+    
     $(document).ready(function() {
         $('@Model.IdAreaTextBox').summernote({
             height: @Model.Height,
@@ -10,21 +12,19 @@
         });
     });
 
-
-    setTimeout(function(){
       (function (factory) {
         if (typeof define === 'function' && define.amd) {
             define(['jquery'], factory);
         } 
         else if (typeof module === 'object' && module.exports) {
             module.exports = factory(require('jquery'));
-        } else {
+        } 
+        else {
             factory(window.jQuery);
         }
     }
     
     (function ($) {
-    debugger
       $.extend($.summernote.plugins, {
             // Tạo plugin tên elfinder  
             'elfinder': function (context) {
@@ -55,14 +55,6 @@
       
         });
     }));
-    }, 200);
-
-
-
-
-      debugger
-   
-
 
     function elfinderDialog(editor) {
   	    var fm = $('<div/>').dialogelfinder({
@@ -85,5 +77,8 @@
   	}).dialogelfinder('instance');
 }
 
-    
+
+
+
+
 </script>
