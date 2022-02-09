@@ -12,6 +12,7 @@
 - Redis 
 ## Description
 ### Web API
+- Restful API
 - Authorization (Access Token & Refresh Token)
 - Cache with Redis Server
 - Unit tests for ProductServices (basic)
