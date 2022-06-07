@@ -138,7 +138,9 @@
 
                     @foreach (var item in Model.ItemProductsWithPaging.Object.Items)
                     {
-                        var URLDetail = $"/{culture}/{_loc[ConstantsDisplay.ECW_SystemURL_Products]}/{item.ID}";
+                        var slugHelper = new Slugify.SlugHelper();
+                        string titleSlug = slugHelper.GenerateSlug(item.ProductName);
+                        var URLDetail = $"/{culture}/{_loc[ConstantsDisplay.ECW_SystemURL_Products]}/{item.ID}?title={titleSlug}.html";
                     <div class="col-6 mt-3 mb-5">
                         <a href="@URLDetail">
                             <div class="box-product">

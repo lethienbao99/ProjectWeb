@@ -79,6 +79,13 @@ namespace ProjectWeb.App
                     };
                 });
 
+
+            services.AddRouting(option =>
+            {
+                option.LowercaseUrls = true;
+                option.AppendTrailingSlash = true;
+            });
+
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 // You might want to only set the application cookies over a secure connection:

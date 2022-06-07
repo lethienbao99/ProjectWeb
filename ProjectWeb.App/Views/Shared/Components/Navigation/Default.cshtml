@@ -35,15 +35,22 @@
                                                             if (categoryChildNode.Any())
                                                             {
 
+                                                                var slugHelper = new Slugify.SlugHelper();
+                                                                string titleSlugParent = slugHelper.GenerateSlug(parentNode.CategoryName);
+                                                                var URLDetailParent = $"/{culture}/{_loc[ConstantsDisplay.ECW_SystemURL_Categories]}/{parentNode.ID}?title={titleSlugParent}.html";
+
                                                                 <ul>
                                                                     <li class="active">
-                                                                        <a href="/@culture/@_loc[ConstantsDisplay.ECW_SystemURL_Categories]/@parentNode.ID">@parentNode.CategoryName</a>
+                                                                        <a href="@URLDetailParent">@parentNode.CategoryName</a>
                                                                     </li>
 
                                                                     @foreach (var childNode in categoryChildNode)
                                                                     {
+                                                                        string titleSlugChild = slugHelper.GenerateSlug(childNode.CategoryName);
+                                                                        var URLDetailChild = $"/{culture}/{_loc[ConstantsDisplay.ECW_SystemURL_Categories]}/{childNode.ID}?title={titleSlugChild}.html";
+
                                                                         <li>
-                                                                            <a href="/@culture/@_loc[ConstantsDisplay.ECW_SystemURL_Categories]/@childNode.ID">@childNode.CategoryName</a>
+                                                                            <a href="@URLDetailChild">@childNode.CategoryName</a>
                                                                         </li>
                                                                     }
                                                                 </ul>
