@@ -43,36 +43,38 @@ namespace ProjectWeb.EcommerceApp.Controllers
         public async Task<IActionResult> Login(LoginRequest request)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(ModelState);
 
-            var result = await _systemUserBackendAPI.Authenticate(request);
+            var result = await _systemUserBackendAPI.AuthenticateWithTwoToken(request);
             if (result.Message != "Success")
             {
                 ModelState.AddModelError("", result.Message);
                 return View();
             }
-            var userPrincipal = this.ValidateToken(result.Object);
+            var userPrincipal = this.ValidateToken(result.Object.access_token);
             var authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
 
-            /*if (request.IsRememberMe == true)
-                authProperties.IsPersistent = true;
-            else
-                authProperties.IsPersistent = false;*/
+            var options = new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(2),
+                IsEssential = true,
+                HttpOnly = true
+            };
 
+            HttpContext.Response.Cookies.Append("access_token", result.Object.access_token, options);
+            HttpContext.Response.Cookies.Append("refresh_token", result.Object.refresh_token, options);
 
-
-            HttpContext.Response.Cookies.Append("access_token", result.Object, new CookieOptions { HttpOnly = true });
+            HttpContext.Session.SetString("access_token", result.Object.access_token);
 
             HttpContext.Session.SetString(SystemsConstants.SettingLanguage, _config[SystemsConstants.SettingLanguage]);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
                         authProperties);
-
             return RedirectToAction("Index", "Home");
 
         }
@@ -85,8 +87,8 @@ namespace ProjectWeb.EcommerceApp.Controllers
             TokenValidationParameters validationParameters = new TokenValidationParameters();
 
             validationParameters.ValidateLifetime = true;
-            validationParameters.ValidAudience = _config["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _config["Tokens:Issuer"];
+            validationParameters.ValidateIssuer = false;
+            validationParameters.ValidateAudience = false;
             validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
             return principal;

@@ -32,7 +32,6 @@ namespace ProjectWeb.API.Controllers
         [Cache(600)]
         public async Task<IActionResult> Get()
         {
-            _logger.LogInformation("test log");
             var products = await _unitOfWork.Products.GetAllAsync();
             return Ok(products);
         }
