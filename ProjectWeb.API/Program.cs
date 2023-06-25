@@ -171,7 +171,7 @@ builder.Services.AddSingleton(redisCacheSettings);
 
 builder.Services.AddSingleton<IResponseCacheService, ResponseCacheService>();
 
-
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

@@ -7,6 +7,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static ProjectWeb.Common.Enums.EnumConstants;
 
@@ -61,7 +62,7 @@ namespace ProjectWeb.APIServices.Services
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration[SystemsConstants.BaseURLApi]);
-
+           
             if (IsToken == true)
             {
                 /*var Token = _httpContextAccessor.HttpContext
@@ -75,6 +76,11 @@ namespace ProjectWeb.APIServices.Services
 
             var response = await client.GetAsync(Url);
 
+          /*  var httpRequestMessage = new HttpRequestMessage();
+            httpRequestMessage.Method = HttpMethod.Get;
+            httpRequestMessage.RequestUri = new Uri(_configuration[SystemsConstants.BaseURLApi] + Url);
+            var response = await client.SendAsync(httpRequestMessage, CancellationToken.None);
+*/
             if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 response = await AccessTokenRefreshWrapper(

@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Http;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.APIServices.Services;
 using ProjectWeb.Common.Enums;
+using ProjectWeb.EcommerceApp;
 using ProjectWeb.EcommerceApp.LocalizationResources;
 using ProjectWeb.Models.FluentValidations.SystemUsers;
 using System;
@@ -44,6 +46,8 @@ namespace ProjectWeb.App
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                    options.SlidingExpiration = true;
                     options.LoginPath = "/Account/Login/";
                     options.AccessDeniedPath = "/Account/Forbidden";
                 });
@@ -102,6 +106,11 @@ namespace ProjectWeb.App
             services.AddTransient<ICategoryBackendAPI, CategoryBackendAPI>();
             services.AddTransient<IOrderBackendAPI, OrderBackendAPI>();
             services.AddTransient<IMessageBackendAPI, MessageBackendAPI>();
+
+/*            services.AddTransient<HeaderHandler>()
+            .AddHttpClient<BaseBackendAPI>()
+            .AddHttpMessageHandler<HeaderHandler>();*/
+
             IMvcBuilder builder = services.AddRazorPages();
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (env == Environments.Development)
@@ -132,6 +141,11 @@ namespace ProjectWeb.App
             app.UseRouting();
             app.UseAuthorization();
             app.UseSession();
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
             app.UseRequestLocalization();
             app.UseEndpoints(endpoints =>
             {

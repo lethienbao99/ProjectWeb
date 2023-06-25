@@ -58,15 +58,9 @@ namespace ProjectWeb.EcommerceApp.Controllers
                 IsPersistent = false
             };
 
-            var options = new CookieOptions
-            {
-                Expires = DateTime.Now.AddDays(2),
-                IsEssential = true,
-                HttpOnly = true
-            };
 
-            HttpContext.Response.Cookies.Append("access_token", result.Object.access_token, options);
-            HttpContext.Response.Cookies.Append("refresh_token", result.Object.refresh_token, options);
+            HttpContext.Response.Cookies.Append("access_token", result.Object.access_token);
+            HttpContext.Response.Cookies.Append("refresh_token", result.Object.refresh_token);
 
             HttpContext.Session.SetString("access_token", result.Object.access_token);
 
