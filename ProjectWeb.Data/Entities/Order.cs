@@ -18,9 +18,9 @@ namespace ProjectWeb.Data.Entities
         public DateTime? DateOrderd { get; set; }
         public DateTime? DateRejected { get; set; }
 
-
-        public List<OrderDetail> OrderDetails { get; set; }
-        public SystemUser SystemUser { get; set; }
+        public virtual List<OrderDetail> OrderDetails { get; set; }
+        public virtual SystemUser SystemUser { get; set; }
+        public virtual Payment Payment { get; set; }
 
     }
 }
