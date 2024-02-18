@@ -51,6 +51,11 @@ namespace ProjectWeb.Data.EntityFamework
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens").HasKey(x => x.UserId);
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
 
+            //Payment
+            modelBuilder.ApplyConfiguration(new PaymentFluentAPI());
+            modelBuilder.ApplyConfiguration(new PaymentSignatureFluentAPI());
+            modelBuilder.ApplyConfiguration(new MerchantFluentAPI());
+
             //DataSeed.
             modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
@@ -67,6 +72,9 @@ namespace ProjectWeb.Data.EntityFamework
         public DbSet<Image> Images { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Token> Tokens { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentSignature> PaymentSignatures { get; set; }
+        public DbSet<Merchant> Merchants { get; set; }
 
     }
 }
