@@ -15,6 +15,8 @@ namespace ProjectWeb.Common.UnitOfWorks
         IOrderServices Orders { get; }
         IMessageServices Message { get; }
         IProductCategoriesServices ProductCategories { get; }
+        IPaymentServices Payments { get; }
+        IPaymentSignatureServices PaymentSignatures { get; }
         int Complete();
         Task<int> CompleteAsync();
     }

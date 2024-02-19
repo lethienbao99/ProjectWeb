@@ -296,7 +296,7 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
             var token = new JwtSecurityToken(null,
                 null,
                 claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds);
 
             var JwtToken = new JwtSecurityTokenHandler().WriteToken(token);
