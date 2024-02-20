@@ -76,6 +76,19 @@ namespace ProjectWeb.Data.EntityFamework
                     DateCreated = DateTime.Now
                 }
                 );*/
+
+            modelBuilder.Entity<Merchant>().HasData(new Merchant
+            {
+                ID = Guid.NewGuid(),
+                MerchantName = "VNPAY",
+                ShortName = "VNPay",
+                Version = "2.1.0",
+                Tmncode = "APPZFC7N",
+                MerchantPayLink = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
+                SerectKey = "YONPSVXYSUNSPVKIUOOOWXASIHLLYIFS",
+                MerchantReturnUrl = "https://localhost:5001",
+                MerchantIpnUrl = "https://localhost:5001",
+            });
         }
     }
 }

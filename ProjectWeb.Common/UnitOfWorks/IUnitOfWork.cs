@@ -17,6 +17,7 @@ namespace ProjectWeb.Common.UnitOfWorks
         IProductCategoriesServices ProductCategories { get; }
         IPaymentServices Payments { get; }
         IPaymentSignatureServices PaymentSignatures { get; }
+        IMerchantServices Merchants { get; }
         int Complete();
         Task<int> CompleteAsync();
     }

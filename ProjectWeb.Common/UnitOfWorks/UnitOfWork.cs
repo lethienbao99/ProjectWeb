@@ -23,8 +23,7 @@ namespace ProjectWeb.Common.UnitOfWorks
         public IProductCategoriesServices ProductCategories { get; }
         public IPaymentServices Payments { get; }
         public IPaymentSignatureServices PaymentSignatures { get; }
-
-
+        public IMerchantServices Merchants { get; }
 
         public UnitOfWork(
             ProjectWebDBContext context,
@@ -35,7 +34,8 @@ namespace ProjectWeb.Common.UnitOfWorks
             IMessageServices messageServices,
             IProductCategoriesServices productCategoryServices,
             IPaymentServices paymentServices,
-            IPaymentSignatureServices paymentSignatureServices
+            IPaymentSignatureServices paymentSignatureServices,
+            IMerchantServices merchantServices
             )
         {
             //DBContext.
@@ -50,6 +50,7 @@ namespace ProjectWeb.Common.UnitOfWorks
             ProductCategories = productCategoryServices;
             Payments = paymentServices;
             PaymentSignatures = paymentSignatureServices;
+            Merchants = merchantServices;
         }
         public int Complete()
         {
