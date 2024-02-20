@@ -13,6 +13,10 @@ namespace ProjectWeb.Data.Entities
     {
         public string MerchantName { get; set; }
 
+        public string ShortName { get; set; }
+
+        public string Version { get; set; }
+
         public string MerchantPayLink { get; set; }
 
         public string MerchantIpnUrl { get; set; }
@@ -20,6 +24,7 @@ namespace ProjectWeb.Data.Entities
         public string MerchantReturnUrl { get; set; }
 
         public string SerectKey { get; set; }
+        public string Tmncode { get; set; }
 
         public bool? IsActive { get; set; }
 

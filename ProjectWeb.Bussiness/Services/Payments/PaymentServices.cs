@@ -51,60 +51,69 @@ namespace ProjectWeb.Bussiness.Services.Payments
                 var result = new PaymentLinkResponseModel();
                 result.PaymentID = payment.ID;
 
-                if (recordInsert > 0)
+                if (recordInsert > 0 && request.MerchantID != null)
                 {
                     string paymentUrl = string.Empty;
-                    switch ("VNPAY")
-                    {
-                        case "VNPAY":
-                            var vnpayPayRequest = new VnPayPaymentRequestModel(
-                                "2.1.0",
-                                "APPZFC7N", 
-                                DateTime.Now, 
-                                "13.160.92.202" ?? string.Empty, 
-                                request.RequiredAmount ?? 0, 
-                                request.Currency ?? string.Empty,
-                                "other", 
-                                request.Content ?? string.Empty, 
-                                "https://localhost:7277/payment/api/vnpay-return", 
-                                result.PaymentID.Value.ToString() ?? string.Empty);
 
-                            paymentUrl = vnpayPayRequest.GetLink("https://sandbox.vnpayment.vn/paymentv2/vpcpay.html", "YONPSVXYSUNSPVKIUOOOWXASIHLLYIFS");
-                            break;
-                        /*case "MOMO":
-                            var momoOneTimePayRequest = new MomoOneTimePaymentRequest(momoConfig.PartnerCode,
-                                outputIdParam!.Value?.ToString() ?? string.Empty, (long)request.RequiredAmount!, outputIdParam!.Value?.ToString() ?? string.Empty,
-                                request.PaymentContent ?? string.Empty, momoConfig.ReturnUrl, momoConfig.IpnUrl, "captureWallet",
-                                string.Empty);
-                            momoOneTimePayRequest.MakeSignature(momoConfig.AccessKey, momoConfig.SecretKey);
-                            (bool createMomoLinkResult, string? createMessage) = momoOneTimePayRequest.GetLink(momoConfig.PaymentUrl);
-                            if (createMomoLinkResult)
-                            {
-                                paymentUrl = createMessage;
-                            }
-                            else
-                            {
-                                result.Message = createMessage;
-                            }
-                            break;
-                        case "ZALOPAY":
-                            var zalopayPayRequest = new CreateZalopayPayRequest(zaloPayConfig.AppId, zaloPayConfig.AppUser,
-                                DateTime.Now.GetTimeStamp(), (long)request.RequiredAmount!, DateTime.Now.ToString("yymmdd") + "_" + outputIdParam!.Value?.ToString() ?? string.Empty,
-                                "zalopayapp", request.PaymentContent ?? string.Empty);
-                            zalopayPayRequest.MakeSignature(zaloPayConfig.Key1);
-                            (bool createZaloPayLinkResult, string? createZaloPayMessage) = zalopayPayRequest.GetLink(zaloPayConfig.PaymentUrl);
-                            if (createZaloPayLinkResult)
-                            {
-                                paymentUrl = createZaloPayMessage;
-                            }
-                            else
-                            {
-                                result.Message = createZaloPayMessage;
-                            }
-                            break;*/
-                        default:
-                            break;
+                    var merchant = await _unitOfWork.Value.Merchants.GetByIDAsync(request.MerchantID.Value);
+                    if(merchant.IsSuccessed)
+                    {
+                        switch (merchant.Object?.ShortName)
+                        {
+                            case "VNPay":
+                                var vnpayPayRequest = new VnPayPaymentRequestModel(
+                                    merchant.Object.Version,
+                                    merchant.Object.Tmncode,
+                                    DateTime.Now,
+                                    "13.160.92.202" ?? string.Empty,
+                                    request.RequiredAmount ?? 0,
+                                    request.Currency ?? string.Empty,
+                                    "other",
+                                    request.Content ?? string.Empty,
+                                    merchant.Object.MerchantReturnUrl,
+                                    result.PaymentID.Value.ToString() ?? string.Empty);
+
+                                paymentUrl = vnpayPayRequest.GetLink(merchant.Object.MerchantPayLink, merchant.Object.SerectKey);
+                                break;
+                            /*case "MOMO":
+                                var momoOneTimePayRequest = new MomoOneTimePaymentRequest(momoConfig.PartnerCode,
+                                    outputIdParam!.Value?.ToString() ?? string.Empty, (long)request.RequiredAmount!, outputIdParam!.Value?.ToString() ?? string.Empty,
+                                    request.PaymentContent ?? string.Empty, momoConfig.ReturnUrl, momoConfig.IpnUrl, "captureWallet",
+                                    string.Empty);
+                                momoOneTimePayRequest.MakeSignature(momoConfig.AccessKey, momoConfig.SecretKey);
+                                (bool createMomoLinkResult, string? createMessage) = momoOneTimePayRequest.GetLink(momoConfig.PaymentUrl);
+                                if (createMomoLinkResult)
+                                {
+                                    paymentUrl = createMessage;
+                                }
+                                else
+                                {
+                                    result.Message = createMessage;
+                                }
+                                break;
+                            case "ZALOPAY":
+                                var zalopayPayRequest = new CreateZalopayPayRequest(zaloPayConfig.AppId, zaloPayConfig.AppUser,
+                                    DateTime.Now.GetTimeStamp(), (long)request.RequiredAmount!, DateTime.Now.ToString("yymmdd") + "_" + outputIdParam!.Value?.ToString() ?? string.Empty,
+                                    "zalopayapp", request.PaymentContent ?? string.Empty);
+                                zalopayPayRequest.MakeSignature(zaloPayConfig.Key1);
+                                (bool createZaloPayLinkResult, string? createZaloPayMessage) = zalopayPayRequest.GetLink(zaloPayConfig.PaymentUrl);
+                                if (createZaloPayLinkResult)
+                                {
+                                    paymentUrl = createZaloPayMessage;
+                                }
+                                else
+                                {
+                                    result.Message = createZaloPayMessage;
+                                }
+                                break;*/
+                            default:
+                                break;
+                        }
                     }
+
+
+
+                   
 
                     result.PaymentUrl = paymentUrl;
                 }

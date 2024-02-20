@@ -33,6 +33,7 @@ using Serilog.Formatting.Json;
 using ProjectWeb.Models.CommonModels.Caches;
 using ProjectWeb.Bussiness.Caches;
 using ProjectWeb.Bussiness.Services.Payments;
+using ProjectWeb.Bussiness.Services.Merchants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -162,6 +163,7 @@ builder.Services.AddTransient<IMessageServices, MessageServices>();
 builder.Services.AddTransient<IProductCategoriesServices, ProductCategoriesServices>();
 builder.Services.AddTransient<IPaymentServices, PaymentServices>();
 builder.Services.AddTransient<IPaymentSignatureServices, PaymentSignatureServices>();
+builder.Services.AddTransient<IMerchantServices, MerchantServices>();
 builder.Services.AddTransient<UserManager<SystemUser>, UserManager<SystemUser>>();
 builder.Services.AddTransient<SignInManager<SystemUser>, SignInManager<SystemUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
