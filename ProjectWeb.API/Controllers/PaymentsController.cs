@@ -9,7 +9,7 @@ namespace ProjectWeb.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [AllowAnonymous]
     public class PaymentsController : ControllerBase
     {
         private IUnitOfWork _unitOfWork;
