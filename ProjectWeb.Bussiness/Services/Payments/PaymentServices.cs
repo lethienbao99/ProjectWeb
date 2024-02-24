@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Logging;
 using ProjectWeb.Bussiness.Services.Products;
+using ProjectWeb.Common.Extensions.VnPay;
 using ProjectWeb.Common.IServices;
 using ProjectWeb.Common.Repositories;
 using ProjectWeb.Common.UnitOfWorks;
@@ -9,6 +10,7 @@ using ProjectWeb.Data.EntityFamework;
 using ProjectWeb.Models.Categories;
 using ProjectWeb.Models.CommonModels;
 using ProjectWeb.Models.Payments;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +40,7 @@ namespace ProjectWeb.Bussiness.Services.Payments
                 var payment = new Payment();
                 payment = request.Adapt<Payment>();
                 payment.ID = Guid.NewGuid();
+                payment.Currency = "VND";
                 _unitOfWork.Value.Payments.Insert(payment);
 
                 var paymentSignature = new PaymentSignature();
@@ -61,60 +64,42 @@ namespace ProjectWeb.Bussiness.Services.Payments
                         switch (merchant.Object?.ShortName)
                         {
                             case "VNPay":
-                                var vnpayPayRequest = new VnPayPaymentRequestModel(
-                                    merchant.Object.Version,
-                                    merchant.Object.Tmncode,
-                                    DateTime.Now,
-                                    "13.160.92.202" ?? string.Empty,
-                                    request.RequiredAmount ?? 0,
-                                    request.Currency ?? string.Empty,
-                                    "other",
-                                    request.Content ?? string.Empty,
-                                    merchant.Object.MerchantReturnUrl,
-                                    result.PaymentID.Value.ToString() ?? string.Empty);
+                                VnPayLibrary vnpay = new VnPayLibrary();
+                                vnpay.AddRequestData("vnp_Version", merchant.Object.Version);
+                                vnpay.AddRequestData("vnp_Command", "pay");
+                                vnpay.AddRequestData("vnp_TmnCode", merchant.Object.Tmncode);
+                                vnpay.AddRequestData("vnp_Amount", (request.RequiredAmount * 100).ToString()); //Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ. Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
 
-                                paymentUrl = vnpayPayRequest.GetLink(merchant.Object.MerchantPayLink, merchant.Object.SerectKey);
+                               /* if (bankcode_Vnpayqr.Checked == true)
+                                {
+                                    vnpay.AddRequestData("vnp_BankCode", "VNPAYQR");
+                                }
+                                else if (bankcode_Vnbank.Checked == true)
+                                {
+                                    vnpay.AddRequestData("vnp_BankCode", "VNBANK");
+                                }
+                                else if (bankcode_Intcard.Checked == true)
+                                {
+                                    vnpay.AddRequestData("vnp_BankCode", "INTCARD");
+                                }*/
+
+                                vnpay.AddRequestData("vnp_CreateDate", DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
+                                vnpay.AddRequestData("vnp_CurrCode", "VND");
+                                vnpay.AddRequestData("vnp_IpAddr", "13.160.92.202");
+                                vnpay.AddRequestData("vnp_Locale", "vn");
+                                vnpay.AddRequestData("vnp_OrderInfo", request.Content);
+                                vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
+                                vnpay.AddRequestData("vnp_ReturnUrl", merchant.Object.MerchantReturnUrl);
+                                vnpay.AddRequestData("vnp_TxnRef", request.RefID.ToString()); // Mã tham chiếu của giao dịch tại hệ thống của merchant. Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY. Không được trùng lặp trong ngày
+                                //Add Params of 2.1.0 Version
+                                //Billing
+                                 paymentUrl = vnpay.CreateRequestUrl(merchant.Object.MerchantPayLink, merchant.Object.SerectKey);
                                 break;
-                            /*case "MOMO":
-                                var momoOneTimePayRequest = new MomoOneTimePaymentRequest(momoConfig.PartnerCode,
-                                    outputIdParam!.Value?.ToString() ?? string.Empty, (long)request.RequiredAmount!, outputIdParam!.Value?.ToString() ?? string.Empty,
-                                    request.PaymentContent ?? string.Empty, momoConfig.ReturnUrl, momoConfig.IpnUrl, "captureWallet",
-                                    string.Empty);
-                                momoOneTimePayRequest.MakeSignature(momoConfig.AccessKey, momoConfig.SecretKey);
-                                (bool createMomoLinkResult, string? createMessage) = momoOneTimePayRequest.GetLink(momoConfig.PaymentUrl);
-                                if (createMomoLinkResult)
-                                {
-                                    paymentUrl = createMessage;
-                                }
-                                else
-                                {
-                                    result.Message = createMessage;
-                                }
-                                break;
-                            case "ZALOPAY":
-                                var zalopayPayRequest = new CreateZalopayPayRequest(zaloPayConfig.AppId, zaloPayConfig.AppUser,
-                                    DateTime.Now.GetTimeStamp(), (long)request.RequiredAmount!, DateTime.Now.ToString("yymmdd") + "_" + outputIdParam!.Value?.ToString() ?? string.Empty,
-                                    "zalopayapp", request.PaymentContent ?? string.Empty);
-                                zalopayPayRequest.MakeSignature(zaloPayConfig.Key1);
-                                (bool createZaloPayLinkResult, string? createZaloPayMessage) = zalopayPayRequest.GetLink(zaloPayConfig.PaymentUrl);
-                                if (createZaloPayLinkResult)
-                                {
-                                    paymentUrl = createZaloPayMessage;
-                                }
-                                else
-                                {
-                                    result.Message = createZaloPayMessage;
-                                }
-                                break;*/
+                            
                             default:
                                 break;
                         }
                     }
-
-
-
-                   
-
                     result.PaymentUrl = paymentUrl;
                 }
 
