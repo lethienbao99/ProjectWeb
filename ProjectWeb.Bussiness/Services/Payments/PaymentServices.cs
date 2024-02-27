@@ -1,5 +1,7 @@
-﻿using Mapster;
+﻿using MailKit.Search;
+using Mapster;
 using Microsoft.Extensions.Logging;
+using Org.BouncyCastle.Asn1.Ocsp;
 using ProjectWeb.Bussiness.Services.Products;
 using ProjectWeb.Common.Extensions.VnPay;
 using ProjectWeb.Common.IServices;
@@ -114,9 +116,49 @@ namespace ProjectWeb.Bussiness.Services.Payments
             }
         }
 
-        public Task GetLinkPayment(string paymentLink)
+
+        public async Task<ResultMessage<string>> ReturnPayment(long? vnp_Amount, string vnp_BankCode, string vnp_BankTranNo, string vnp_CardType, string vnp_OrderInfo, string vnp_PayDate, string vnp_ResponseCode, string vnp_TmnCode, string vnp_TransactionNo, string vnp_TransactionStatus, string vnp_TxnRef, string vnp_SecureHashType, string vnp_SecureHash)
         {
-            throw new NotImplementedException();
+            var merchant = _unitOfWork.Value.Merchants.FirstOrDefault(s => s.IsActive == true && s.MerchantName == "VNPAY");
+            if(merchant != null)
+            {
+                VnPayLibrary vnpay = new VnPayLibrary();
+   /*             vnpay.AddResponseData("vnp_Amount", vnp_Amount.ToString());
+                vnpay.AddResponseData("vnp_BankCode", vnp_BankCode.ToString());
+                vnpay.AddResponseData("vnp_BankTranNo", vnp_BankTranNo.ToString());
+                vnpay.AddResponseData("vnp_CardType", vnp_CardType.ToString());
+                vnpay.AddResponseData("vnp_OrderInfo", vnp_OrderInfo.ToString());
+                vnpay.AddResponseData("vnp_PayDate", vnp_PayDate.ToString());
+                vnpay.AddResponseData("vnp_ResponseCode", vnp_ResponseCode.ToString());
+                vnpay.AddResponseData("vnp_TmnCode", vnp_TmnCode.ToString());
+                vnpay.AddResponseData("vnp_TransactionNo", vnp_TransactionNo.ToString());
+                vnpay.AddResponseData("vnp_TxnRef", vnp_TxnRef.ToString());
+                vnpay.AddResponseData("vnp_SecureHashType", vnp_SecureHashType.ToString());
+                vnpay.AddResponseData("vnp_SecureHash", vnp_SecureHash.ToString());*/
+
+                bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, merchant.SerectKey);
+                if (checkSignature)
+                {
+                    if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
+                    {
+                        //Thanh toan thanh cong
+                        return new ResultObjectSuccess<string>("Thanh toán thành công");
+                    }
+                    else
+                    {
+
+                        return new ResultObjectError<string>("Có lỗi xảy ra trong quá trình xử lý");
+                    }
+                }
+                else
+                {
+                    return new ResultObjectError<string>("Invalid signature");
+                }
+            }
+
+            return new ResultObjectError<string>("Không tìm thấy dịch vụ thanh toán");
+
+
         }
     }
 }
