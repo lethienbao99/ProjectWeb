@@ -3,6 +3,7 @@ using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace ProjectWeb.Common.Repositories
         string DeleteByID(Guid id);
         void DeleteNotSQLByModel(T entity);
         string DeleteNotSQLByID(Guid id);
+        T FirstOrDefault(Expression<Func<T, bool>> predicate);
 
         //Async
         Task<ResultMessage<IEnumerable<T>>> GetAllAsync();
