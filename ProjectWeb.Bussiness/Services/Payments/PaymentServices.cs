@@ -123,18 +123,16 @@ namespace ProjectWeb.Bussiness.Services.Payments
             if(merchant != null)
             {
                 VnPayLibrary vnpay = new VnPayLibrary();
-   /*             vnpay.AddResponseData("vnp_Amount", vnp_Amount.ToString());
-                vnpay.AddResponseData("vnp_BankCode", vnp_BankCode.ToString());
-                vnpay.AddResponseData("vnp_BankTranNo", vnp_BankTranNo.ToString());
-                vnpay.AddResponseData("vnp_CardType", vnp_CardType.ToString());
-                vnpay.AddResponseData("vnp_OrderInfo", vnp_OrderInfo.ToString());
-                vnpay.AddResponseData("vnp_PayDate", vnp_PayDate.ToString());
-                vnpay.AddResponseData("vnp_ResponseCode", vnp_ResponseCode.ToString());
-                vnpay.AddResponseData("vnp_TmnCode", vnp_TmnCode.ToString());
-                vnpay.AddResponseData("vnp_TransactionNo", vnp_TransactionNo.ToString());
-                vnpay.AddResponseData("vnp_TxnRef", vnp_TxnRef.ToString());
-                vnpay.AddResponseData("vnp_SecureHashType", vnp_SecureHashType.ToString());
-                vnpay.AddResponseData("vnp_SecureHash", vnp_SecureHash.ToString());*/
+                vnpay.AddResponseData("vnp_Amount", vnp_Amount?.ToString());
+                vnpay.AddResponseData("vnp_BankCode", vnp_BankCode?.ToString());
+                vnpay.AddResponseData("vnp_BankTranNo", vnp_BankTranNo?.ToString());
+                vnpay.AddResponseData("vnp_CardType", vnp_CardType?.ToString());
+                vnpay.AddResponseData("vnp_OrderInfo", vnp_OrderInfo?.ToString());
+                vnpay.AddResponseData("vnp_PayDate", vnp_PayDate?.ToString());
+                vnpay.AddResponseData("vnp_ResponseCode", vnp_ResponseCode?.ToString());
+                vnpay.AddResponseData("vnp_TmnCode", vnp_TmnCode?.ToString());
+                vnpay.AddResponseData("vnp_TransactionNo", vnp_TransactionNo?.ToString());
+                vnpay.AddResponseData("vnp_TxnRef", vnp_TxnRef?.ToString());
 
                 bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, merchant.SerectKey);
                 if (checkSignature)
