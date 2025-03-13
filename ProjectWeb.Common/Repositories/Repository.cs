@@ -5,6 +5,7 @@ using ProjectWeb.Models.CommonModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -75,6 +76,11 @@ namespace ProjectWeb.Common.Repositories
             {
                 return entities.FirstOrDefault(s => s.ID == id && s.IsDelete == null);
             }
+        }
+
+        public T FirstOrDefault(Expression<Func<T, bool>> predicate)
+        {
+            return entities.FirstOrDefault(predicate);
         }
 
         public void Insert(T entity)

@@ -88,6 +88,7 @@ namespace ProjectWeb.Data.EntityFamework
                 SerectKey = "YONPSVXYSUNSPVKIUOOOWXASIHLLYIFS",
                 MerchantReturnUrl = "https://localhost:5001",
                 MerchantIpnUrl = "https://localhost:5001",
+                IsActive = true,
             });
         }
     }
