@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
 using ProjectWeb.APIServices.Services;
+using ProjectWeb.EcommerceApp.Hubs;
 using ProjectWeb.EcommerceApp.LocalizationResources;
 using ProjectWeb.Models.FluentValidations.SystemUsers;
 using System;
@@ -90,7 +91,7 @@ if (env == Environments.Development)
 }
 
 builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
-
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 //Middleware 
@@ -152,5 +153,5 @@ app.UseEndpoints(endpoints =>
      name: "default",
      pattern: "{culture=vi}/{controller=Home}/{action=Index}/{id?}");
 });
-
+app.MapHub<ChatHub>("/hubs/chat");
 app.Run();
