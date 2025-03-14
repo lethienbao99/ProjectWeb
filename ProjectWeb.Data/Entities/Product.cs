@@ -18,7 +18,7 @@ namespace ProjectWeb.Data.Entities
         public int Stock { get; set; }
         public string Alias { get; set; }
         public int Views { get; set; }
-
+        public Guid? UserCreateID { get; set; }
         public List<ProductCategory> ProductCategories { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
         public List<Cart> Carts { get; set; }

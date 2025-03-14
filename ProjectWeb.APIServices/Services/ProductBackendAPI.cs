@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ProjectWeb.APIServices.IServiceBackendAPIs;
@@ -54,6 +55,7 @@ namespace ProjectWeb.APIServices.Services
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? null : request.Description.ToString()), "description");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Type) ? null : request.Type.ToString()), "type");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Status) ? null : request.Status.ToString()), "status");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.UserCreateName) ? null : request.UserCreateName.ToString()), "userCreateName");
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.PriceDollar.ToString()), "priceDollar");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");

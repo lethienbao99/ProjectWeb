@@ -49,6 +49,8 @@ namespace ProjectWeb.Models.Products
         public List<string> Categories { get; set; } = new List<string>();
         public string CategoriesJoin { get; set; }
         public List<ProductImageViewModel> ListImageProduct { get; set; }
+        public Guid? UserCreateID { get; set; }
+
     }
 
     public class ProductPagingRequest : PagingRequestBase

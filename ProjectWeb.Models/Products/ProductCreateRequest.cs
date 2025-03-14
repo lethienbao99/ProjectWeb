@@ -20,6 +20,8 @@ namespace ProjectWeb.Models.Products
         public int Stock { get; set; }
         public string Alias { get; set; }
         public int Views { get; set; }
+        public string UserCreateName { get; set; }
+        public Guid? UserCreateID { get; set; }
         public IFormFile ThumbnailImage { get; set; }
     }
 }

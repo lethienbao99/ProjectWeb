@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectWeb.Bussiness.Caches;
@@ -21,10 +22,13 @@ namespace ProjectWeb.API.Controllers
     {
         private IUnitOfWork _unitOfWork;
         private readonly ILogger<ProductsController> _logger;
-        public ProductsController(IUnitOfWork unitOfWork, ILogger<ProductsController> logger)
+        private readonly UserManager<SystemUser> _userManager;
+
+        public ProductsController(IUnitOfWork unitOfWork, ILogger<ProductsController> logger, UserManager<SystemUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -129,6 +133,7 @@ namespace ProjectWeb.API.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
+            var user = await _userManager.FindByNameAsync(request.UserCreateName);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -144,8 +149,8 @@ namespace ProjectWeb.API.Controllers
                 Price = request.Price,
                 Stock = request.Stock,
                 Alias = request.Alias,
-                DateCreated = DateTime.Now
-
+                DateCreated = DateTime.Now,
+                UserCreateID = user.Id,
             };
             _unitOfWork.Products.Insert(product);
 

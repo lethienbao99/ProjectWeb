@@ -132,7 +132,10 @@ namespace ProjectWeb.Bussiness.Services.SystemUsers
                 user = user.Where(x => x.su.UserName.Contains(request.Keyword)
                 || x.ui.FirstName.Contains(request.Keyword) || x.ui.LastName.Contains(request.Keyword));
             }
-
+            if (!string.IsNullOrEmpty(request.UserName))
+            {
+                user = user.Where(x => x.su.UserName.ToLower() == request.UserName.ToLower());
+            }
             int totalRow = user.Count();
 
             var data = await user.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).OrderBy(x => x.ui.Sort)

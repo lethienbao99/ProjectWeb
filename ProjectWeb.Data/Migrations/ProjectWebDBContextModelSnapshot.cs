@@ -223,7 +223,7 @@ namespace ProjectWeb.Data.Migrations
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "c3dbf622-2577-4021-8d9e-600eba90b38b",
+                            ConcurrencyStamp = "cae3150d-0277-4288-af02-bc7db3531acc",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -446,7 +446,8 @@ namespace ProjectWeb.Data.Migrations
                     b.HasData(
                         new
                         {
-                            ID = new Guid("56b31a9c-9feb-412e-b14d-76ee14a7b13a"),
+                            ID = new Guid("95ac4a87-ab65-4d37-a8f8-669bdc82f3f8"),
+                            IsActive = true,
                             MerchantIpnUrl = "https://localhost:5001",
                             MerchantName = "VNPAY",
                             MerchantPayLink = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
@@ -561,6 +562,9 @@ namespace ProjectWeb.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusPayment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TotalPrice")
@@ -795,6 +799,9 @@ namespace ProjectWeb.Data.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserCreateID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Views")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -931,13 +938,13 @@ namespace ProjectWeb.Data.Migrations
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0762758f-19de-424a-9552-fbc7938d9c51",
+                            ConcurrencyStamp = "5e02f76c-6e9b-4856-83dc-d68e57822338",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM83qxyCnl2fyxkLrIiysCIxOdhxA9i9XA8suvxilfXw2CXuPPJFDx7HC0E9mzCxHw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA4rG2OOfDrg9eX1+xoZX8kkchPu/CrJZUvR4ygcI+pEKdxY8V3KB+bobwse3Ek8zQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

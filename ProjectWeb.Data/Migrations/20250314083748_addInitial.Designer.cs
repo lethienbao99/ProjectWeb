@@ -7,26 +7,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectWeb.Data.EntityFamework;
 
+#nullable disable
+
 namespace ProjectWeb.Data.Migrations
 {
     [DbContext(typeof(ProjectWebDBContext))]
-    [Migration("20210812115922_AddColM")]
-    partial class AddColM
+    [Migration("20250314083748_addInitial")]
+    partial class addInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -41,15 +45,16 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -64,7 +69,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
@@ -85,7 +90,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
@@ -100,7 +105,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
 
                     b.HasData(
                         new
@@ -126,7 +131,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.AppConfig", b =>
@@ -154,10 +159,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -166,7 +170,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("AppConfigs");
+                    b.ToTable("AppConfigs", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.AppRole", b =>
@@ -204,10 +208,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.HasKey("Id");
 
@@ -216,13 +219,13 @@ namespace ProjectWeb.Data.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"),
-                            ConcurrencyStamp = "556c5aa4-0cc2-4ee7-825d-1f059f3a5524",
+                            ConcurrencyStamp = "cae3150d-0277-4288-af02-bc7db3531acc",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin",
@@ -256,10 +259,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -276,7 +278,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Category", b =>
@@ -318,10 +320,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -331,7 +332,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Image", b =>
@@ -371,16 +372,94 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.HasKey("ID");
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Merchant", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MerchantIpnUrl")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("MerchantName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("MerchantPayLink")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("MerchantReturnUrl")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("SerectKey")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Sort")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tmncode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Merchants", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ID = new Guid("95ac4a87-ab65-4d37-a8f8-669bdc82f3f8"),
+                            IsActive = true,
+                            MerchantIpnUrl = "https://localhost:5001",
+                            MerchantName = "VNPAY",
+                            MerchantPayLink = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
+                            MerchantReturnUrl = "https://localhost:5001",
+                            SerectKey = "YONPSVXYSUNSPVKIUOOOWXASIHLLYIFS",
+                            ShortName = "VNPay",
+                            Sort = 0,
+                            Tmncode = "APPZFC7N",
+                            Version = "2.1.0"
+                        });
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Message", b =>
@@ -415,10 +494,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("TitleText")
                         .HasMaxLength(100)
@@ -431,7 +509,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Order", b =>
@@ -481,12 +559,14 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusPayment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TotalPrice")
@@ -499,7 +579,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.OrderDetail", b =>
@@ -530,10 +610,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
@@ -544,7 +623,127 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<Guid?>("MerchantID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OrderID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("PaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("PaymentDestinationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RefID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("RequiredAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Sort")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MerchantID");
+
+                    b.HasIndex("OrderID")
+                        .IsUnique()
+                        .HasFilter("[OrderID] IS NOT NULL");
+
+                    b.ToTable("Payments", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectWeb.Data.Entities.PaymentSignature", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsValid")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("PaymentID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SignAlgo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("SignDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SignOwn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SignValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Sort")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PaymentID");
+
+                    b.ToTable("PaymentSignatures", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Product", b =>
@@ -589,10 +788,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -603,6 +801,9 @@ namespace ProjectWeb.Data.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserCreateID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Views")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -610,7 +811,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.ProductCategory", b =>
@@ -638,10 +839,9 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.HasKey("ID", "ProductID", "CategoryID");
 
@@ -649,7 +849,7 @@ namespace ProjectWeb.Data.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.SystemUser", b =>
@@ -733,26 +933,66 @@ namespace ProjectWeb.Data.Migrations
                     b.HasIndex("UserInfomationID")
                         .IsUnique();
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AspNetUsers", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "804ba01f-d1d7-4fef-9d59-9340eb1cd711",
+                            ConcurrencyStamp = "5e02f76c-6e9b-4856-83dc-d68e57822338",
                             Email = "lethienbao3012@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "lethienbao3012@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIHi2xJcpoYI82uTUTXGFTEhEudVfWXLgkF1pJY9zmIMqYvlsC/dmx4OFdxhi+Ssqw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA4rG2OOfDrg9eX1+xoZX8kkchPu/CrJZUvR4ygcI+pEKdxY8V3KB+bobwse3Ek8zQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UserInfomationID = new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"),
                             UserName = "admin"
                         });
+                });
+
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Token", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Sort")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tokens", (string)null);
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.UserInformation", b =>
@@ -794,17 +1034,16 @@ namespace ProjectWeb.Data.Migrations
 
                     b.Property<int>("Sort")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sort"), 1L, 1);
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("UserInformations");
+                    b.ToTable("UserInformations", (string)null);
 
                     b.HasData(
                         new
@@ -939,6 +1178,30 @@ namespace ProjectWeb.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Payment", b =>
+                {
+                    b.HasOne("ProjectWeb.Data.Entities.Merchant", "Merchant")
+                        .WithMany("Payments")
+                        .HasForeignKey("MerchantID");
+
+                    b.HasOne("ProjectWeb.Data.Entities.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("ProjectWeb.Data.Entities.Payment", "OrderID");
+
+                    b.Navigation("Merchant");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ProjectWeb.Data.Entities.PaymentSignature", b =>
+                {
+                    b.HasOne("ProjectWeb.Data.Entities.Payment", "Payment")
+                        .WithMany("PaymentSignatures")
+                        .HasForeignKey("PaymentID");
+
+                    b.Navigation("Payment");
+                });
+
             modelBuilder.Entity("ProjectWeb.Data.Entities.ProductCategory", b =>
                 {
                     b.HasOne("ProjectWeb.Data.Entities.Category", "Category")
@@ -969,14 +1232,37 @@ namespace ProjectWeb.Data.Migrations
                     b.Navigation("UserInfomation");
                 });
 
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Token", b =>
+                {
+                    b.HasOne("ProjectWeb.Data.Entities.SystemUser", "User")
+                        .WithMany("Tokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ProjectWeb.Data.Entities.Category", b =>
                 {
                     b.Navigation("ProductCategories");
                 });
 
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Merchant", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
             modelBuilder.Entity("ProjectWeb.Data.Entities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("ProjectWeb.Data.Entities.Payment", b =>
+                {
+                    b.Navigation("PaymentSignatures");
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.Product", b =>
@@ -997,6 +1283,8 @@ namespace ProjectWeb.Data.Migrations
                     b.Navigation("Carts");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("Tokens");
                 });
 
             modelBuilder.Entity("ProjectWeb.Data.Entities.UserInformation", b =>

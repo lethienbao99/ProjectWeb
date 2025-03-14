@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -27,10 +28,11 @@ namespace ProjectWeb.Bussiness.Services.Products
         private readonly IStorageServices _storageServices;
         private readonly Lazy<IUnitOfWork> _unitOfWork;
         private readonly ILogger<ProductServices> _logger;
+        private readonly UserManager<SystemUser> _userManager;
 
-
-        public ProductServices(ProjectWebDBContext context, IStorageServices storageServices, Lazy<IUnitOfWork> unitOfWork, ILogger<ProductServices> logger) : base(context)
+        public ProductServices(UserManager<SystemUser> userManager, ProjectWebDBContext context, IStorageServices storageServices, Lazy<IUnitOfWork> unitOfWork, ILogger<ProductServices> logger) : base(context)
         {
+            _userManager = userManager;
             _context = context;
             _storageServices = storageServices;
             _unitOfWork = unitOfWork;
@@ -39,6 +41,7 @@ namespace ProjectWeb.Bussiness.Services.Products
 
         public async Task<ResultMessage<Guid>> CreateWithImages(ProductCreateRequest request)
         {
+            var user = await _userManager.FindByNameAsync(request.UserCreateName);
             var product = new Product()
             {
                 ID = Guid.NewGuid(),
@@ -51,7 +54,8 @@ namespace ProjectWeb.Bussiness.Services.Products
                 Price = request.Price,
                 Stock = request.Stock,
                 Alias = request.Alias,
-                DateCreated = DateTime.Now
+                DateCreated = DateTime.Now,
+                UserCreateID = user.Id,
 
             };
             if(request.ThumbnailImage != null)
@@ -327,7 +331,8 @@ namespace ProjectWeb.Bussiness.Services.Products
                     Categories = query,
                     CategoryId = CategoryIDChildNode,
                     CategoryName = CategoryNameChildNode,
-                    ImgDefaultPath = x.i.ImagePath
+                    ImgDefaultPath = x.i.ImagePath,
+                    UserCreateID = x.p.UserCreateID
                 }
                 ).FirstOrDefaultAsync();
 

@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace ProjectWeb.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class addInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,8 +54,10 @@ namespace ProjectWeb.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CategoryName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Alias = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -70,6 +74,31 @@ namespace ProjectWeb.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Merchants",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MerchantName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Version = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MerchantPayLink = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    MerchantIpnUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    MerchantReturnUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    SerectKey = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Tmncode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true),
+                    Sort = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Merchants", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -80,8 +109,11 @@ namespace ProjectWeb.Data.Migrations
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
+                    PriceDollar = table.Column<double>(type: "float", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
                     Alias = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Views = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    UserCreateID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Sort = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -160,6 +192,34 @@ namespace ProjectWeb.Data.Migrations
                     table.PrimaryKey("PK_Images", x => x.ID);
                     table.ForeignKey(
                         name: "FK_Images_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TitleText = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    MessageText = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Guest = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Sort = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Messages_Products_ProductID",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ID",
@@ -363,6 +423,8 @@ namespace ProjectWeb.Data.Migrations
                     ShipEmail = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     ShipNumberPhone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StatusPayment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
                     DateOrderd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateRejected = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Sort = table.Column<int>(type: "int", nullable: false)
@@ -378,6 +440,32 @@ namespace ProjectWeb.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Orders_AspNetUsers_UserID",
                         column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tokens",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Sort = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tokens", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Tokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -416,10 +504,80 @@ namespace ProjectWeb.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    RefID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RequiredAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Language = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    PaidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MerchantID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PaymentDestinationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OrderID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Sort = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Payments_Merchants_MerchantID",
+                        column: x => x.MerchantID,
+                        principalTable: "Merchants",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Orders",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentSignatures",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SignValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SignAlgo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SignDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SignOwn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: true),
+                    Sort = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentSignatures", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_PaymentSignatures_Payments_PaymentID",
+                        column: x => x.PaymentID,
+                        principalTable: "Payments",
+                        principalColumn: "ID");
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "DateCreated", "DateDeleted", "DateUpdated", "Description", "IsDelete", "Name", "NormalizedName" },
-                values: new object[] { new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"), "7734f27e-63e8-4e75-8b10-802ea90d63e7", null, null, null, "Administrator role", null, "admin", "admin" });
+                values: new object[] { new Guid("ee976566-d4be-407b-96d4-5c69da8806a8"), "cae3150d-0277-4288-af02-bc7db3531acc", null, null, null, "Administrator role", null, "admin", "admin" });
+
+            migrationBuilder.InsertData(
+                table: "Merchants",
+                columns: new[] { "ID", "DateCreated", "DateDeleted", "DateUpdated", "IsActive", "IsDelete", "MerchantIpnUrl", "MerchantName", "MerchantPayLink", "MerchantReturnUrl", "SerectKey", "ShortName", "Sort", "Tmncode", "Version" },
+                values: new object[] { new Guid("95ac4a87-ab65-4d37-a8f8-669bdc82f3f8"), null, null, null, true, null, "https://localhost:5001", "VNPAY", "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html", "https://localhost:5001", "YONPSVXYSUNSPVKIUOOOWXASIHLLYIFS", "VNPay", 0, "APPZFC7N", "2.1.0" });
 
             migrationBuilder.InsertData(
                 table: "UserInformations",
@@ -429,7 +587,7 @@ namespace ProjectWeb.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateCreated", "DateDeleted", "DateUpdated", "Email", "EmailConfirmed", "IsDelete", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserInfomationID", "UserName" },
-                values: new object[] { new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"), 0, "247ade46-c5ea-417b-a347-3d44fc7e7d57", null, null, null, "lethienbao3012@gmail.com", true, null, false, null, "lethienbao3012@gmail.com", "admin", "AQAAAAEAACcQAAAAEEeuwgr1QPgX6m69WBigC/JQlN3pWEemfjdeVVdpQyOQsIVqAwOwx8Z8vLVqjZWbvQ==", null, false, "", false, new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"), "admin" });
+                values: new object[] { new Guid("fd3bc079-8c61-4ff2-a5b7-278a58ec5273"), 0, "5e02f76c-6e9b-4856-83dc-d68e57822338", null, null, null, "lethienbao3012@gmail.com", true, null, false, null, "lethienbao3012@gmail.com", "admin", "AQAAAAEAACcQAAAAEA4rG2OOfDrg9eX1+xoZX8kkchPu/CrJZUvR4ygcI+pEKdxY8V3KB+bobwse3Ek8zQ==", null, false, "", false, new Guid("2ae5fecc-aeb6-4514-bfb5-34f2284adbf8"), "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -497,6 +655,11 @@ namespace ProjectWeb.Data.Migrations
                 column: "ProductID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_ProductID",
+                table: "Messages",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderID",
                 table: "OrderDetails",
                 column: "OrderID");
@@ -512,6 +675,23 @@ namespace ProjectWeb.Data.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_MerchantID",
+                table: "Payments",
+                column: "MerchantID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_OrderID",
+                table: "Payments",
+                column: "OrderID",
+                unique: true,
+                filter: "[OrderID] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentSignatures_PaymentID",
+                table: "PaymentSignatures",
+                column: "PaymentID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductCategories_CategoryID",
                 table: "ProductCategories",
                 column: "CategoryID");
@@ -520,6 +700,11 @@ namespace ProjectWeb.Data.Migrations
                 name: "IX_ProductCategories_ProductID",
                 table: "ProductCategories",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tokens_UserId",
+                table: "Tokens",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -549,22 +734,37 @@ namespace ProjectWeb.Data.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "PaymentSignatures");
 
             migrationBuilder.DropTable(
                 name: "ProductCategories");
 
             migrationBuilder.DropTable(
+                name: "Tokens");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Merchants");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

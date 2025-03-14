@@ -67,5 +67,6 @@ namespace ProjectWeb.Models.SystemUsers
     public class UserPagingRequest : PagingRequestBase
     {
         public string Keyword { get; set; }
+        public string UserName { get; set; }
     }
 }

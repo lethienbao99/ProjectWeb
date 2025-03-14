@@ -46,7 +46,7 @@ namespace ProjectWeb.APIServices.Services
         public async Task<ResultMessage<PageResultModel<SystemUserModel>>> GetUserPaging(UserPagingRequest request)
         {
             return await GetAndReturnAsync<PageResultModel<SystemUserModel>>($"/api/SystemUsers/Paging?pageIndex=" +
-                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}");
+                $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&username={request.UserName}");
         }
 
         public async Task<ResultMessage<bool>> Signup(SignUpRequest request)
