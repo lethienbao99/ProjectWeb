@@ -91,8 +91,10 @@ if (env == Environments.Development)
 }
 
 builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()); ;
-builder.Services.AddSignalR();
-
+builder.Services.AddSignalR(options =>
+{
+    options.MaximumReceiveMessageSize = 1024 * 1024 * 10; // 10MB limit
+});
 var app = builder.Build();
 //Middleware 
 // Configure the HTTP request pipeline.

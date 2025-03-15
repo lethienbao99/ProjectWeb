@@ -1,19 +1,66 @@
 ﻿var connectionChat = new signalR.HubConnectionBuilder()
     .withUrl("/hubs/chat").build();
-connectionChat.on("MessageRevieced", function (user, message) {
+connectionChat.on("MessageRevieced", function (user, message, type) {
     debugger
-    document.getElementById(
-        "messageBox"
-    ).innerHTML += `<div class="second-chat">
+    if (type == "Text") {
+        document.getElementById(
+            "messageBox"
+        ).innerHTML += `<div class="second-chat">
               <div class="circle" id="circle-mar"></div>
               <p>${message}</p>
               <div class="arrow"></div>
             </div>
             <input type="hidden" value="${user}" id="userReply" />
             `;
-    var objDiv = document.getElementById("messageBox");
-    objDiv.scrollTop = objDiv.scrollHeight;
+        var objDiv = document.getElementById("messageBox");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+    else {
+        document.getElementById(
+            "messageBox"
+        ).innerHTML += `<div class="second-chat">
+              <img src="${message}" style="max-width: 200px;"/>
+            </div>
+            <input type="hidden" value="${user}" id="userReply" />
+            `;
+        var objDiv = document.getElementById("messageBox");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
 });
+
+// Handle image upload
+document.getElementById("imageInput").addEventListener("change", function () {
+    debugger
+    var base64Image = '';
+    var UserIDLogin = document.getElementById("UserIDLogin").value;
+    var receiver = document.getElementById("UserCreateID").value 
+    if (UserIDLogin == receiver)
+        receiver = document.getElementById("userReply").value;
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            base64Image = event.target.result;
+            connectionChat.send("SendMesaageToReceiver", receiver, base64Image, "Image").catch(function (err) {
+                console.error("Error sending image:", err);
+            });
+        };
+        reader.readAsDataURL(file);
+        setTimeout(() => {
+            document.getElementById(
+                "messageBox"
+            ).innerHTML += `<div class="first-chat">
+              <img src="${base64Image}" style="max-width: 200px;"/>
+            </div>
+            `;
+            document.getElementById("imageInput").value = "";
+            var objDiv = document.getElementById("messageBox");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }, 1000);
+
+    }
+});
+
 
 document.getElementById("sendMessage").addEventListener("click", function (event) {
     debugger
@@ -25,7 +72,7 @@ document.getElementById("sendMessage").addEventListener("click", function (event
         receiver = document.getElementById("userReply").value;
 
     if (receiver.length > 0) {
-        connectionChat.send("SendMesaageToReceiver", receiver, message).catch(function (err) {
+        connectionChat.send("SendMesaageToReceiver", receiver, message, "Text").catch(function (err) {
             return console.log(err);
         });
         let userText = message;

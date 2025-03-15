@@ -22,14 +22,14 @@ namespace ProjectWeb.EcommerceApp.Hubs
             _user = user;
         }
 
-        public async Task SendMesaageToAll(string user, string message)
+        public async Task SendMesaageToAll(string user, string message, string type)
         {
-            await Clients.All.SendAsync("MessageRevieced", user, message);
+            await Clients.All.SendAsync("MessageRevieced", user, message, type);
         }
 
-        public async Task SendMesaageToReceiver(string receiver, string message)
+        public async Task SendMesaageToReceiver(string receiver, string message, string type)
         {
-            await Clients.User(receiver).SendAsync("MessageRevieced", Context.UserIdentifier, message);
+            await Clients.User(receiver).SendAsync("MessageRevieced", Context.UserIdentifier, message, type);
         }
     }
 }

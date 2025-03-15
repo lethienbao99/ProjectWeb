@@ -280,4 +280,26 @@
   .message-box .second-chat .arrow {
   margin-left:41px;
   }
+
+
+.chat-window2 .input-box .upload-image {
+    cursor: pointer;
+}
+    .chat-window2 .input-box .image-upload-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+        .chat-window2 .input-box .image-upload-label i {
+            color: grey;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+            .chat-window2 .input-box .image-upload-label i:hover {
+                color: #4c5aa1; /* Matches your chat bubble color on hover */
+            }
+
+
 }
